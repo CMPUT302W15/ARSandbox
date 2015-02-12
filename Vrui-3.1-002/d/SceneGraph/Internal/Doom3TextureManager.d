@@ -1,0 +1,35 @@
+$(OBJDIR)/SceneGraph/Internal/Doom3TextureManager.o: \
+ SceneGraph/Internal/Doom3TextureManager.cpp  \
+ /home/sandbox/src/Vrui-3.1-002/SceneGraph/Internal/Doom3TextureManager.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLObject.h \
+ /home/sandbox/src/Vrui-3.1-002/Images/RGBAImage.h \
+ /home/sandbox/src/Vrui-3.1-002/Images/Image.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLColor.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLScalarLimits.h \
+ /home/sandbox/src/Vrui-3.1-002/SceneGraph/Internal/Doom3NameTree.h \
+ /home/sandbox/src/Vrui-3.1-002/SceneGraph/Internal/Doom3NameTree.icpp \
+ /home/sandbox/src/Vrui-3.1-002/Misc/StringPrintf.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ThrowStdErr.h \
+ /home/sandbox/src/Vrui-3.1-002/IO/File.h  \
+ /home/sandbox/src/Vrui-3.1-002/Misc/Endianness.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/RefCounted.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/Autopointer.h \
+ /home/sandbox/src/Vrui-3.1-002/Math/Math.h  \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Vector.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/ComponentArray.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLContextData.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/HashTable.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/PoolAllocator.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/StandardHashFunction.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/CallbackData.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/CallbackList.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/TLSHelper.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/Config.h \
+ /home/sandbox/src/Vrui-3.1-002/Images/TargaImageFileReader.h \
+ /home/sandbox/src/Vrui-3.1-002/Images/TargaImageFileReader.icpp \
+ /home/sandbox/src/Vrui-3.1-002/Misc/Utility.h \
+ /home/sandbox/src/Vrui-3.1-002/SceneGraph/Internal/Doom3FileManager.h \
+ /home/sandbox/src/Vrui-3.1-002/IO/SeekableFile.h \
+ /home/sandbox/src/Vrui-3.1-002/IO/Directory.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/FileTests.h \
+ /home/sandbox/src/Vrui-3.1-002/IO/ZipArchive.h

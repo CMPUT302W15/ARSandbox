@@ -1,0 +1,32 @@
+$(OBJDIR)/Vrui/Internal/ToolKillZoneBox.o: \
+ Vrui/Internal/ToolKillZoneBox.cpp  \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/Internal/ToolKillZoneBox.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Box.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/ComponentArray.h \
+ /home/sandbox/src/Vrui-3.1-002/Math/Math.h  \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Point.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Vector.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Ray.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/SolidHitResult.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/HitResult.h \
+ /home/sandbox/src/Vrui-3.1-002/Math/Constants.h \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/Geometry.h \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/Internal/ToolKillZone.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLMaterial.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLColor.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLScalarLimits.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLMaterialEnums.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLObject.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ConfigurationFile.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ValueCoder.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ConfigurationFile.icpp \
+ /home/sandbox/src/Vrui-3.1-002/Misc/StringMarshaller.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/GeometryValueCoders.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLModels.h \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/InputDevice.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/CallbackList.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/CallbackData.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/OrthonormalTransformation.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/HVector.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Rotation.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Matrix.h

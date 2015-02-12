@@ -1,0 +1,33 @@
+$(OBJDIR)/Vrui/Internal/TheoraMovieSaver.o: \
+ Vrui/Internal/TheoraMovieSaver.cpp  \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/Internal/TheoraMovieSaver.h \
+ /home/sandbox/src/Vrui-3.1-002/IO/File.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/Endianness.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/RefCounted.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/Autopointer.h \
+ /home/sandbox/src/Vrui-3.1-002/Video/OggStream.h  \
+ /home/sandbox/src/Vrui-3.1-002/Video/TheoraFrame.h \
+ /home/sandbox/src/Vrui-3.1-002/Video/TheoraEncoder.h \
+ /home/sandbox/src/Vrui-3.1-002/Video/TheoraPacket.h \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/Internal/MovieSaver.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/Time.h  \
+ /home/sandbox/src/Vrui-3.1-002/Threads/Thread.h \
+ /home/sandbox/src/Vrui-3.1-002/Threads/TripleBuffer.h \
+ /home/sandbox/src/Vrui-3.1-002/Threads/Spinlock.h \
+ /home/sandbox/src/Vrui-3.1-002/Threads/Config.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ThrowStdErr.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/StandardValueCoders.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ValueCoder.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ConfigurationFile.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ConfigurationFile.icpp \
+ /home/sandbox/src/Vrui-3.1-002/Misc/StringMarshaller.h \
+ /home/sandbox/src/Vrui-3.1-002/IO/OpenFile.h \
+ /home/sandbox/src/Vrui-3.1-002/IO/SeekableFile.h \
+ /home/sandbox/src/Vrui-3.1-002/IO/Directory.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/FileTests.h \
+ /home/sandbox/src/Vrui-3.1-002/Video/FrameBuffer.h \
+ /home/sandbox/src/Vrui-3.1-002/Video/ImageExtractorRGB8.h \
+ /home/sandbox/src/Vrui-3.1-002/Video/ImageExtractor.h \
+ /home/sandbox/src/Vrui-3.1-002/Video/OggPage.h \
+ /home/sandbox/src/Vrui-3.1-002/Video/TheoraInfo.h \
+ /home/sandbox/src/Vrui-3.1-002/Video/TheoraComment.h

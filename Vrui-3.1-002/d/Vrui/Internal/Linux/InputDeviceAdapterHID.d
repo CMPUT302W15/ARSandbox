@@ -1,0 +1,36 @@
+$(OBJDIR)/Vrui/Internal/Linux/InputDeviceAdapterHID.o: \
+ Vrui/Internal/Linux/InputDeviceAdapterHID.cpp  \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/Internal/Linux/InputDeviceAdapterHID.h \
+ /home/sandbox/src/Vrui-3.1-002/Threads/Mutex.h \
+ /home/sandbox/src/Vrui-3.1-002/Threads/Config.h \
+ /home/sandbox/src/Vrui-3.1-002/Threads/Thread.h \
+ /home/sandbox/src/Vrui-3.1-002/Math/BrokenLine.h \
+ /home/sandbox/src/Vrui-3.1-002/Math/Math.h  \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/Internal/InputDeviceAdapter.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ThrowStdErr.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/FdSet.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/StandardValueCoders.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ValueCoder.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/CompoundValueCoders.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/CompoundValueCoders.icpp \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ConfigurationFile.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/ConfigurationFile.icpp \
+ /home/sandbox/src/Vrui-3.1-002/Misc/StringMarshaller.h \
+ /home/sandbox/src/Vrui-3.1-002/Math/MathValueCoders.h \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/InputDevice.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/CallbackList.h \
+ /home/sandbox/src/Vrui-3.1-002/Misc/CallbackData.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Point.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/ComponentArray.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Vector.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Ray.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/OrthonormalTransformation.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/HVector.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Rotation.h \
+ /home/sandbox/src/Vrui-3.1-002/Geometry/Matrix.h \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/Geometry.h \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/InputDeviceFeature.h \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/InputDeviceManager.h \
+ /home/sandbox/src/Vrui-3.1-002/Vrui/Vrui.h  \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLColor.h \
+ /home/sandbox/src/Vrui-3.1-002/GL/GLScalarLimits.h
