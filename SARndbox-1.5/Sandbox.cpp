@@ -103,7 +103,7 @@ void addRainSound()
                      player->start();
                 }
                 else
-                {     
+                {
                      if ( ! player->isPlaying() )
                 {
                           delete player;
@@ -120,12 +120,12 @@ Sandbox::WaterToolFactory* Sandbox::WaterTool::initClass(Vrui::ToolManager& tool
 	{
 	/* Create the tool factory: */
 	factory=new WaterToolFactory("WaterTool","Manage Water",0,toolManager);
-	
+
 	/* Set up the tool class' input layout: */
 	factory->setNumButtons(2);
 	factory->setButtonFunction(0,"Rain");
 	factory->setButtonFunction(1,"Dry");
-	
+
 	/* Register and return the class: */
 	toolManager.addClass(factory,Vrui::ToolManager::defaultToolFactoryDestructor);
 	return factory;
@@ -169,12 +169,12 @@ Sandbox::LocalWaterToolFactory* Sandbox::LocalWaterTool::initClass(Vrui::ToolMan
 	{
 	/* Create the tool factory: */
 	factory=new LocalWaterToolFactory("LocalWaterTool","Add Water Locally",0,toolManager);
-	
+
 	/* Set up the tool class' input layout: */
 	factory->setNumButtons(2);
 	factory->setButtonFunction(0,"Rain");
 	factory->setButtonFunction(1,"Dry");
-	
+
 	/* Register and return the class: */
 	toolManager.addClass(factory,Vrui::ToolManager::defaultToolFactoryDestructor);
 	return factory;
@@ -228,26 +228,26 @@ void Sandbox::LocalWaterTool::buttonCallback(int buttonSlotIndex,Vrui::InputDevi
 void Sandbox::LocalWaterTool::glRenderActionTransparent(GLContextData& contextData) const
 	{
 	glPushAttrib(GL_ENABLE_BIT|GL_POLYGON_BIT);
-	
+
 	/* Go to navigational coordinates: */
 	glPushMatrix();
 	glLoadMatrix(Vrui::getDisplayState(contextData).modelviewNavigational);
-	
+
 	/* Get the current rain disk position and size in camera coordinates: */
 	Vrui::Point rainPos=Vrui::getInverseNavigationTransformation().transform(getButtonDevicePosition(0));
 	Vrui::Scalar rainRadius=Vrui::getPointPickDistance()*Vrui::Scalar(3);
-	
+
 	/* Construct the rain cylinder: */
 	Vrui::Vector z=application->waterTable->getBaseTransform().inverseTransform(Vrui::Vector(0,0,1));
 	Vrui::Vector x=Geometry::normal(z);
 	Vrui::Vector y=Geometry::cross(z,x);
 	x.normalize();
 	y.normalize();
-	
+
 	/* Set the rain cylinder's material: */
 	GLfloat diffuseCol[4]={0.0f,0.0f,1.0f,0.333f};
 	glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,diffuseCol);
-	
+
 	/* Render the back faces of the rain cylinder: */
 	glCullFace(GL_FRONT);
 	glBegin(GL_QUAD_STRIP);
@@ -259,7 +259,7 @@ void Sandbox::LocalWaterTool::glRenderActionTransparent(GLContextData& contextDa
 		glVertex(rainPos+x*(Math::cos(angle)*rainRadius)+y*(Math::sin(angle)*rainRadius)-z*Vrui::Scalar(50));
 		}
 	glEnd();
-	
+
 	/* Render the front faces of the rain cylinder: */
 	glCullFace(GL_BACK);
 	glBegin(GL_QUAD_STRIP);
@@ -279,7 +279,7 @@ void Sandbox::LocalWaterTool::glRenderActionTransparent(GLContextData& contextDa
 		glVertex(rainPos+x*(Math::cos(angle)*rainRadius)+y*(Math::sin(angle)*rainRadius));
 		}
 	glEnd();
-	
+
 	glPopMatrix();
 	glPopAttrib();
 	}
@@ -290,18 +290,18 @@ void Sandbox::LocalWaterTool::addWater(GLContextData& contextData) const
 		{
 		glPushAttrib(GL_ENABLE_BIT);
 		glDisable(GL_CULL_FACE);
-		
+
 		/* Get the current rain disk position and size in camera coordinates: */
 		Vrui::Point rainPos=Vrui::getInverseNavigationTransformation().transform(getButtonDevicePosition(0));
 		Vrui::Scalar rainRadius=Vrui::getPointPickDistance()*Vrui::Scalar(3);
-		
+
 		/* Render the rain disk: */
 		Vrui::Vector z=application->waterTable->getBaseTransform().inverseTransform(Vrui::Vector(0,0,1));
 		Vrui::Vector x=Geometry::normal(z);
 		Vrui::Vector y=Geometry::cross(z,x);
 		x*=rainRadius/Geometry::mag(x);
 		y*=rainRadius/Geometry::mag(y);
-		
+
 		glVertexAttrib1fARB(1,adding);
 		glBegin(GL_POLYGON);
 		for(int i=0;i<32;++i)
@@ -310,7 +310,7 @@ void Sandbox::LocalWaterTool::addWater(GLContextData& contextData) const
 			glVertex(rainPos+x*Math::cos(angle)+y*Math::sin(angle));
 			}
 		glEnd();
-		
+
 		glPopAttrib();
 		}
 	}
@@ -335,7 +335,7 @@ Sandbox::DataItem::DataItem(void)
 	supported=supported&&GLARBMultitexture::isSupported();
 	if(!supported)
 		Misc::throwStdErr("Sandbox: Not all required extensions are supported by local OpenGL");
-	
+
 	/* Initialize all required extensions: */
 	GLEXTFramebufferObject::initExtension();
 	GLARBTextureRectangle::initExtension();
@@ -367,22 +367,32 @@ void Sandbox::rawDepthFrameDispatcher(const Kinect::FrameBuffer& frameBuffer)
 		frameFilter->receiveRawFrame(frameBuffer);
 	if(rmFrameFilter!=0)
 		rmFrameFilter->receiveRawFrame(frameBuffer);
+    //We add our new frame filter here.
+    if(ourFrameFilter!=0)
+        ourFrameFilter->receiveRawFrame(frameBuffer);
 	}
 
 void Sandbox::receiveFilteredFrame(const Kinect::FrameBuffer& frameBuffer)
 	{
 	/* Put the new frame into the frame input buffer: */
 	filteredFrames.postNewValue(frameBuffer);
-	
+
 	/* Wake up the foreground thread: */
 	Vrui::requestUpdate();
 	}
+
+//OUR NEW METHOD
+void Sandbox::receiveOurFrame(const Kinect::FrameBuffer& frameBuffer)
+    {
+        std::cout<<"Our frame function was called!\n"<<std::endl;
+    }
+//OUR NEW METHOD ENDS
 
 void Sandbox::receiveRainObjects(const RainMaker::BlobList& newRainObjects)
 	{
 	/* Put the new object list into the object list buffer: */
 	rainObjects.postNewValue(newRainObjects);
-	
+
 	/* Don't wake up the foreground thread; do it when a new filtered frame arrives: */
 	// Vrui::requestUpdate();
 	}
@@ -400,14 +410,14 @@ void Sandbox::addWater(GLContextData& contextData) const
 		/* Render all rain objects into the water table: */
 		glPushAttrib(GL_ENABLE_BIT);
 		glDisable(GL_CULL_FACE);
-		
+
 		/* Create a local coordinate frame to render rain disks: */
 		Vrui::Vector z=waterTable->getBaseTransform().inverseTransform(Vrui::Vector(0,0,1));
 		Vrui::Vector x=Geometry::normal(z);
 		Vrui::Vector y=Geometry::cross(z,x);
 		x.normalize();
 		y.normalize();
-		
+
 		glVertexAttrib1fARB(1,rainStrength);
 		for(RainMaker::BlobList::const_iterator roIt=rainObjects.getLockedValue().begin();roIt!=rainObjects.getLockedValue().end();++roIt)
 			{
@@ -415,18 +425,18 @@ void Sandbox::addWater(GLContextData& contextData) const
 			glBegin(GL_POLYGON);
 			for(int i=0;i<32;++i)
 				{
-		
+
 				Vrui::Scalar angle=Vrui::Scalar(2)*Math::Constants<Vrui::Scalar>::pi*Vrui::Scalar(i)/Vrui::Scalar(32);
 				glVertex(roIt->centroid+x*(Math::cos(angle)*roIt->radius)+y*(Math::sin(angle)*roIt->radius));
 				}
 			glEnd();
 
-			
+
 			}
 		glPopAttrib();
-		
+
 		}
-	
+
 	/* Remove water at the boundary: */
 	GLint viewport[4];
 	glGetIntegerv(GL_VIEWPORT,viewport);
@@ -437,9 +447,9 @@ void Sandbox::addWater(GLContextData& contextData) const
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
-	
+
 	glLineWidth(1.0f);
-	
+
 	glBegin(GL_LINE_LOOP);
 	glVertexAttrib1fARB(1,-1.0f);
 	glVertex2f(viewport[0]+0.5f,viewport[1]+0.5f);
@@ -447,7 +457,7 @@ void Sandbox::addWater(GLContextData& contextData) const
 	glVertex2f(viewport[0]+viewport[2]-0.5f,viewport[1]+viewport[3]-0.5f);
 	glVertex2f(viewport[0]+0.5f,viewport[1]+viewport[3]-0.5f);
 	glEnd();
-	
+
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
@@ -464,18 +474,18 @@ GLMotif::PopupMenu* Sandbox::createMainMenu(void)
 	/* Create a popup shell to hold the main menu: */
 	GLMotif::PopupMenu* mainMenuPopup=new GLMotif::PopupMenu("MainMenuPopup",Vrui::getWidgetManager());
 	mainMenuPopup->setTitle("AR Sandbox");
-	
+
 	/* Create the main menu itself: */
 	GLMotif::Menu* mainMenu=new GLMotif::Menu("MainMenu",mainMenuPopup,false);
-	
+
 	/* Create a button to pause topography updates: */
 	GLMotif::ToggleButton* pauseUpdatesButton=new GLMotif::ToggleButton("PauseUpdatesButton",mainMenu,"Pause Topography");
 	pauseUpdatesButton->setToggle(false);
 	pauseUpdatesButton->getValueChangedCallbacks().add(this,&Sandbox::pauseUpdatesCallback);
-	
+
 	/* Finish building the main menu: */
 	mainMenu->manageChild();
-	
+
 	return mainMenuPopup;
 	}
 
@@ -495,7 +505,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	/* Initialize the custom tool classes: */
 	WaterTool::initClass(*Vrui::getToolManager());
 	LocalWaterTool::initClass(*Vrui::getToolManager());
-	
+
 	/* Process command line parameters: */
 	bool printHelp=false;
 	int cameraIndex=0;
@@ -625,7 +635,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 				renderWaterSurface=true;
 			}
 		}
-	
+
 	if(printHelp)
 		{
 		std::cout<<"Usage: SARndbox [option 1] ... [option n]"<<std::endl;
@@ -694,23 +704,23 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 		std::cout<<"  -rws"<<std::endl;
 		std::cout<<"     Renders water surface as geometric surface"<<std::endl;
 		}
-	
+
 	/* Enable background USB event handling: */
 	usbContext.startEventHandling();
-	
+
 	/* Open the Kinect camera device: */
 	camera=new Kinect::Camera(usbContext,cameraIndex);
 	camera->setCompressDepthFrames(true);
 	camera->setSmoothDepthFrames(false);
 	for(int i=0;i<2;++i)
 		frameSize[i]=camera->getActualFrameSize(Kinect::FrameSource::DEPTH)[i];
-	
+
 	/* Get the camera's per-pixel depth correction parameters: */
 	Misc::SelfDestructPointer<Kinect::FrameSource::DepthCorrection> depthCorrection(camera->getDepthCorrectionParameters());
-	
+
 	/* Get the camera's intrinsic parameters: */
 	cameraIps=camera->getIntrinsicParameters();
-	
+
 	/* Read the sandbox layout file: */
 	Geometry::Plane<double,3> basePlane;
 	Geometry::Point<double,3> basePlaneCorners[4];
@@ -727,7 +737,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 		basePlaneCorners[i]=Misc::ValueCoder<Geometry::Point<double,3> >::decode(s.c_str(),s.c_str()+s.length());
 		}
 	}
-	
+
 	/* Load the height color map: */
 	std::vector<GLColorMap::Color> heightMapColors;
 	std::vector<GLdouble> heightMapKeys;
@@ -740,7 +750,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 			{
 			/* Read the next color map key value: */
 			heightMapKeys.push_back(GLdouble(heightMapSource.readNumber()));
-			
+
 			/* Read the next color map color value: */
 			GLColorMap::Color color;
 			for(int i=0;i<3;++i)
@@ -761,7 +771,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 			heightMapKeys.push_back(GLdouble(heightMapSource.readNumber()));
 			if(!heightMapSource.isLiteral(','))
 				Misc::throwStdErr("Sandbox::Sandbox: Format error in color map file %s",heightColorMapFileName.c_str());
-			
+
 			/* Read the next color map color value: */
 			GLColorMap::Color color;
 			for(int i=0;i<3;++i)
@@ -773,13 +783,13 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 			}
 		}
 	heightMap=GLColorMap(heightMapKeys.size(),&heightMapColors[0],&heightMapKeys[0]);
-	
+
 	/* Limit the valid elevation range to the extent of the height color map: */
 	if(elevationMin<heightMap.getScalarRangeMin())
 		elevationMin=heightMap.getScalarRangeMin();
 	if(elevationMax>heightMap.getScalarRangeMax())
 		elevationMax=heightMap.getScalarRangeMax();
-	
+
 	/* Create the frame filter object: */
 	frameFilter=new FrameFilter(frameSize,numAveragingSlots,cameraIps.depthProjection,basePlane);
 	frameFilter->setDepthCorrection(*depthCorrection);
@@ -787,18 +797,26 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	frameFilter->setStableParameters(minNumSamples,maxVariance);
 	frameFilter->setSpatialFilter(true);
 	frameFilter->setOutputFrameFunction(Misc::createFunctionCall(this,&Sandbox::receiveFilteredFrame));
-	
+	//HERE GOES OUR SHIT
+	ourFrameFilter = new FrameFilter(frameSize, 10, cameraIps.depthProjection, basePlane);
+	ourFrameFilter->setDepthCorrection(*depthCorrection);
+    ourFrameFilter->setValidElevationInterval(cameraIps.depthProjection,basePlane,elevationMin,elevationMax);
+	ourFrameFilter->setStableParameters(minNumSamples,maxVariance);
+	ourFrameFilter->setSpatialFilter(true);
+	ourFrameFilter->setOutputFrameFunction(Misc::createFunctionCall(this,&Sandbox::receiveOurFrame));
+	//OUR SHIT ENDS HERE
+
 	/* Limit the valid rain elevation range to above the valid elevation range: */
 	if(rainElevationMin<elevationMax)
 		rainElevationMin=elevationMax;
 	if(rainElevationMax<rainElevationMin)
 		rainElevationMax=rainElevationMin;
-	
+
 	/* Create the rain maker object: */
 	rainMaker=new RainMaker(frameSize,camera->getActualFrameSize(Kinect::FrameSource::COLOR),cameraIps.depthProjection,cameraIps.colorProjection,basePlane,rainElevationMin,rainElevationMax,20);
 	rainMaker->setDepthIsFloat(true);
 	rainMaker->setOutputBlobsFunction(Misc::createFunctionCall(this,&Sandbox::receiveRainObjects));
-	
+
 	/* Create a second frame filter for the rain maker: */
 	rmFrameFilter=new FrameFilter(frameSize,10,cameraIps.depthProjection,basePlane);
 	rmFrameFilter->setDepthCorrection(*depthCorrection);
@@ -808,10 +826,10 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	rmFrameFilter->setInstableValue(2047.0f);
 	rmFrameFilter->setSpatialFilter(false);
 	rmFrameFilter->setOutputFrameFunction(Misc::createFunctionCall(rainMaker,&RainMaker::receiveRawDepthFrame));
-	
+
 	/* Start streaming depth frames: */
 	camera->startStreaming(Misc::createFunctionCall(rainMaker,&RainMaker::receiveRawColorFrame),Misc::createFunctionCall(this,&Sandbox::rawDepthFrameDispatcher));
-	
+
 	/* Load the projector transformation: */
 	if(fixProjectorView)
 		{
@@ -832,7 +850,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 			fixProjectorView=false;
 			}
 		}
-	
+
 	/* Calculate a bounding box around all potential surfaces: */
 	bbox=Box::empty;
 	for(int i=0;i<4;++i)
@@ -840,17 +858,17 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 		bbox.addPoint(basePlane.project(basePlaneCorners[i])+basePlane.getNormal()*elevationMin);
 		bbox.addPoint(basePlane.project(basePlaneCorners[i])+basePlane.getNormal()*elevationMax);
 		}
-	
+
 	/* Initialize the water flow simulator: */
 	waterTable=new WaterTable2(wtSize[0],wtSize[1],basePlane,basePlaneCorners);
 	waterTable->setElevationRange(elevationMin,rainElevationMax);
 	waterTable->setWaterDeposit(evaporationRate);
-	
+
 	/* Register a render function with the water table: */
 	addWaterFunction=Misc::createFunctionCall(this,&Sandbox::addWater);
 	waterTable->addRenderFunction(addWaterFunction);
 	addWaterFunctionRegistered=true;
-	
+
 	/* Initialize the surface renderer: */
 	surfaceRenderer=new SurfaceRenderer(frameSize,cameraIps.depthProjection,basePlane);
 	surfaceRenderer->setUseHeightMap(useHeightMap);
@@ -885,7 +903,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 			surfaceRenderer->setWaterOpacity(waterOpacity);
 			}
 		}
-	
+
 	#if 0
 	/* Create a fixed-position light source: */
 	sun=Vrui::getLightsourceManager()->createLightsource(true);
@@ -894,11 +912,11 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	sun->enable();
 	sun->getLight().position=GLLight::Position(1,0,1,0);
 	#endif
-	
+
 	/* Create the main menu: */
 	mainMenu=createMainMenu();
 	Vrui::setMainMenu(mainMenu);
-	
+
 	/* Initialize the navigation transformation: */
 	Vrui::Point::AffineCombiner cc;
 	for(int i=0;i<4;++i)
@@ -920,7 +938,7 @@ Sandbox::~Sandbox(void)
 	camera->stopStreaming();
 	delete camera;
 	delete frameFilter;
-	
+
 	/* Delete helper objects: */
 	delete surfaceRenderer;
 	delete waterTable;
@@ -928,7 +946,7 @@ Sandbox::~Sandbox(void)
 	delete rainMaker;
 	delete addWaterFunction;
 	delete waterRenderer;
-	
+
 	delete mainMenu;
 	}
 
@@ -940,7 +958,7 @@ void Sandbox::frame(void)
 		/* Update the surface renderer's depth image: */
 		surfaceRenderer->setDepthImage(filteredFrames.getLockedValue());
 		}
-	
+
 	/* Lock the most recent rain object list: */
 	rainObjects.lockNewValue();
 	#if 0
@@ -954,10 +972,10 @@ void Sandbox::frame(void)
 		addWaterFunctionRegistered=registerWaterFunction;
 		}
 	#endif
-	
+
 	/* Update the surface renderer: */
 	surfaceRenderer->setAnimationTime(Vrui::getApplicationTime());
-	
+
 	if(pauseUpdates)
 		Vrui::scheduleUpdate(Vrui::getApplicationTime()+1.0/30.0);
 	}
@@ -966,12 +984,12 @@ void Sandbox::display(GLContextData& contextData) const
 	{
 	/* Get the data item: */
 	DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
-	
+
 	if(waterTable!=0)
 		{
 		/* Update the water table's bathymetry: */
 		waterTable->updateBathymetry(*surfaceRenderer,contextData);
-		
+
 		/* Run the water flow simulation's second pass: */
 		GLfloat totalTimeStep=GLfloat(Vrui::getFrameTime()*waterSpeed);
 		unsigned int numSteps=0;
@@ -985,7 +1003,7 @@ void Sandbox::display(GLContextData& contextData) const
 		// if(totalTimeStep>1.0e-8f)
 		//	std::cout<<"Ran out of time by "<<totalTimeStep<<std::endl;
 		}
-	
+
 	if(fixProjectorView)
 		{
 		/* Install the projector transformation: */
@@ -995,86 +1013,86 @@ void Sandbox::display(GLContextData& contextData) const
 		glMultMatrix(Geometry::invert(Vrui::getDisplayState(contextData).modelviewNavigational));
 		glMatrixMode(GL_MODELVIEW);
 		}
-	
+
 	if(hillshade)
 		{
 		/* Set the surface material: */
 		glMaterial(GLMaterialEnums::FRONT,surfaceMaterial);
-		
+
 		if(useShadows)
 			{
 			/* Set up OpenGL state: */
 			glPushAttrib(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_ENABLE_BIT|GL_POLYGON_BIT);
-			
+
 			GLLightTracker& lt=*contextData.getLightTracker();
-			
+
 			/* Save the currently-bound frame buffer and viewport: */
 			GLint currentFrameBuffer;
 			glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,&currentFrameBuffer);
 			GLint currentViewport[4];
 			glGetIntegerv(GL_VIEWPORT,currentViewport);
-			
+
 			/*******************************************************************
 			First rendering pass: Global ambient illumination only
 			*******************************************************************/
-			
+
 			/* Draw the surface mesh: */
 			surfaceRenderer->glRenderGlobalAmbientHeightMap(dataItem->heightColorMapObject,contextData);
-			
+
 			/*******************************************************************
 			Second rendering pass: Add local illumination for every light source
 			*******************************************************************/
-			
+
 			/* Enable additive rendering: */
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_ONE,GL_ONE);
 			glDepthFunc(GL_LEQUAL);
 			glDepthMask(GL_FALSE);
-			
+
 			for(int lightSourceIndex=0;lightSourceIndex<lt.getMaxNumLights();++lightSourceIndex)
 				if(lt.getLightState(lightSourceIndex).isEnabled())
 					{
 					/***************************************************************
 					First step: Render to the light source's shadow map
 					***************************************************************/
-					
+
 					/* Set up OpenGL state to render to the shadow map: */
 					glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,dataItem->shadowFramebufferObject);
 					glViewport(0,0,dataItem->shadowBufferSize[0],dataItem->shadowBufferSize[1]);
 					glDepthMask(GL_TRUE);
 					glClear(GL_DEPTH_BUFFER_BIT);
 					glCullFace(GL_FRONT);
-					
+
 					/*************************************************************
 					Calculate the shadow projection matrix:
 					*************************************************************/
-					
+
 					/* Get the light source position in eye space: */
 					Geometry::HVector<float,3> lightPosEc;
 					glGetLightfv(GL_LIGHT0+lightSourceIndex,GL_POSITION,lightPosEc.getComponents());
-					
+
 					/* Transform the light source position to camera space: */
 					Vrui::ONTransform::HVector lightPosCc=Vrui::getDisplayState(contextData).modelviewNavigational.inverseTransform(Vrui::ONTransform::HVector(lightPosEc));
-					
+
 					/* Calculate the direction vector from the center of the bounding box to the light source: */
 					Vrui::Point bboxCenter=Geometry::mid(bbox.min,bbox.max);
 					Vrui::Vector lightDirCc=Vrui::Vector(lightPosCc.getComponents())-Vrui::Vector(bboxCenter.getComponents())*lightPosCc[3];
-					
+
 					/* Build a transformation that aligns the light direction with the positive z axis: */
 					Vrui::ONTransform shadowModelview=Vrui::ONTransform::rotate(Vrui::Rotation::rotateFromTo(lightDirCc,Vrui::Vector(0,0,1)));
 					shadowModelview*=Vrui::ONTransform::translateToOriginFrom(bboxCenter);
-					
+
 					/* Create a projection matrix, based on whether the light is positional or directional: */
 					PTransform shadowProjection(0.0);
 					if(lightPosEc[3]!=0.0f)
 						{
 						/* Modify the modelview transformation such that the light source is at the origin: */
 						shadowModelview.leftMultiply(Vrui::ONTransform::translate(Vrui::Vector(0,0,-lightDirCc.mag())));
-						
+
 						/***********************************************************
 						Create a perspective projection:
 						***********************************************************/
-						
+
 						/* Calculate the perspective bounding box of the surface bounding box in eye space: */
 						Box pBox=Box::empty;
 						for(int i=0;i<8;++i)
@@ -1082,7 +1100,7 @@ void Sandbox::display(GLContextData& contextData) const
 							Vrui::Point bc=shadowModelview.transform(bbox.getVertex(i));
 							pBox.addPoint(Vrui::Point(-bc[0]/bc[2],-bc[1]/bc[2],-bc[2]));
 							}
-						
+
 						/* Upload the frustum matrix: */
 						double l=pBox.min[0]*pBox.min[2];
 						double r=pBox.max[0]*pBox.min[2];
@@ -1103,11 +1121,11 @@ void Sandbox::display(GLContextData& contextData) const
 						/***********************************************************
 						Create a perspective projection:
 						***********************************************************/
-						
+
 						/* Transform the bounding box with the modelview transformation: */
 						Box bboxEc=bbox;
 						bboxEc.transform(shadowModelview);
-						
+
 						/* Upload the ortho matrix: */
 						double l=bboxEc.min[0];
 						double r=bboxEc.max[0];
@@ -1123,19 +1141,19 @@ void Sandbox::display(GLContextData& contextData) const
 						shadowProjection.getMatrix()(2,3)=-(f+n)/(f-n);
 						shadowProjection.getMatrix()(3,3)=1.0;
 						}
-					
+
 					/* Multiply the shadow modelview matrix onto the shadow projection matrix: */
 					shadowProjection*=shadowModelview;
-					
+
 					/* Draw the surface into the shadow buffer: */
 					surfaceRenderer->glRenderDepthOnly(shadowProjection,contextData);
-					
+
 					/* Reset OpenGL state: */
 					glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,currentFrameBuffer);
 					glViewport(currentViewport[0],currentViewport[1],currentViewport[2],currentViewport[3]);
 					glCullFace(GL_BACK);
 					glDepthMask(GL_FALSE);
-					
+
 					#if SAVEDEPTH
 					/* Save the depth image: */
 					{
@@ -1156,11 +1174,11 @@ void Sandbox::display(GLContextData& contextData) const
 					Images::writeImageFile(dti,"DepthImage.png");
 					}
 					#endif
-					
+
 					/* Draw the surface using the shadow texture: */
 					surfaceRenderer->glRenderShadowedIlluminatedHeightMap(dataItem->heightColorMapObject,dataItem->shadowDepthTextureObject,shadowProjection,contextData);
 					}
-			
+
 			/* Reset OpenGL state: */
 			glPopAttrib();
 			}
@@ -1175,17 +1193,17 @@ void Sandbox::display(GLContextData& contextData) const
 		/* Render the surface with height map: */
 		surfaceRenderer->glRenderSinglePass(dataItem->heightColorMapObject,contextData);
 		}
-	
+
 	if(waterRenderer!=0)
 		{
 		/* Bind the water surface texture: */
 		waterTable->bindQuantityTexture(contextData);
-		
+
 		/* Draw the water surface: */
 		glMaterialAmbientAndDiffuse(GLMaterialEnums::FRONT,GLColor<GLfloat,4>(0.4f,0.5f,0.8f));
 		waterRenderer->glRenderSinglePass(0,contextData);
 		}
-	
+
 	if(fixProjectorView)
 		{
 		/* Go back to regular navigation space: */
@@ -1200,7 +1218,7 @@ void Sandbox::initContext(GLContextData& contextData) const
 	/* Create a data item and add it to the context: */
 	DataItem* dataItem=new DataItem;
 	contextData.addDataItem(this,dataItem);
-	
+
 	/* Upload the height color map as a 1D texture: */
 	glGenTextures(1,&dataItem->heightColorMapObject);
 	glBindTexture(GL_TEXTURE_1D,dataItem->heightColorMapObject);
@@ -1209,20 +1227,20 @@ void Sandbox::initContext(GLContextData& contextData) const
 	glTexParameteri(GL_TEXTURE_1D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 	glTexImage1D(GL_TEXTURE_1D,0,GL_RGB8,heightMap.getNumEntries(),0,GL_RGBA,GL_FLOAT,heightMap.getColors());
 	glBindTexture(GL_TEXTURE_1D,0);
-	
+
 	{
 	/* Save the currently bound frame buffer: */
 	GLint currentFrameBuffer;
 	glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,&currentFrameBuffer);
-	
+
 	/* Set the default shadow buffer size: */
 	dataItem->shadowBufferSize[0]=1024;
 	dataItem->shadowBufferSize[1]=1024;
-	
+
 	/* Generate the shadow rendering frame buffer: */
 	glGenFramebuffersEXT(1,&dataItem->shadowFramebufferObject);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,dataItem->shadowFramebufferObject);
-	
+
 	/* Generate a depth texture for shadow rendering: */
 	glGenTextures(1,&dataItem->shadowDepthTextureObject);
 	glBindTexture(GL_TEXTURE_2D,dataItem->shadowDepthTextureObject);
@@ -1235,13 +1253,13 @@ void Sandbox::initContext(GLContextData& contextData) const
 	glTexParameteri(GL_TEXTURE_2D,GL_DEPTH_TEXTURE_MODE_ARB,GL_INTENSITY);
 	glTexImage2D(GL_TEXTURE_2D,0,GL_DEPTH_COMPONENT24_ARB,dataItem->shadowBufferSize[0],dataItem->shadowBufferSize[1],0,GL_DEPTH_COMPONENT,GL_UNSIGNED_BYTE,0);
 	glBindTexture(GL_TEXTURE_2D,0);
-	
+
 	/* Attach the depth texture to the frame buffer object: */
 	glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_TEXTURE_2D,dataItem->shadowDepthTextureObject,0);
 	glDrawBuffer(GL_NONE);
 	glReadBuffer(GL_NONE);
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,currentFrameBuffer);
-	} 
+	}
 	}
 
 /*************
@@ -1261,6 +1279,6 @@ int main(int argc,char* argv[])
 		std::cerr<<"Caught exception "<<err.what()<<std::endl;
 		return 1;
 		}
-	
+
 	return 0;
 	}

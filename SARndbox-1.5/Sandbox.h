@@ -67,62 +67,62 @@ class Sandbox:public Vrui::Application,public GLObject
 	private:
 	typedef Geometry::Box<double,3> Box; // Type for bounding boxes
 	typedef Geometry::ProjectiveTransformation<double,3> PTransform; // Type for projective transformations
-	
+
 	class WaterTool;
 	typedef Vrui::GenericToolFactory<WaterTool> WaterToolFactory;
-	
+
 	class WaterTool:public Vrui::Tool,public Vrui::Application::Tool<Sandbox>
 		{
 		friend class Vrui::GenericToolFactory<WaterTool>;
-		
+
 		/* Elements: */
 		private:
 		static WaterToolFactory* factory; // Pointer to the factory object for this class
-		
+
 		/* Constructors and destructors: */
 		public:
 		static WaterToolFactory* initClass(Vrui::ToolManager& toolManager);
 		WaterTool(const Vrui::ToolFactory* factory,const Vrui::ToolInputAssignment& inputAssignment);
 		virtual ~WaterTool(void);
-		
+
 		/* Methods from class Vrui::Tool: */
 		virtual const Vrui::ToolFactory* getFactory(void) const;
 		virtual void buttonCallback(int buttonSlotIndex,Vrui::InputDevice::ButtonCallbackData* cbData);
 		};
-	
+
 	class LocalWaterTool;
 	typedef Vrui::GenericToolFactory<LocalWaterTool> LocalWaterToolFactory;
-	
+
 	class LocalWaterTool:public Vrui::Tool,public Vrui::Application::Tool<Sandbox>,public Vrui::TransparentObject
 		{
 		friend class Vrui::GenericToolFactory<LocalWaterTool>;
-		
+
 		/* Elements: */
 		private:
 		static LocalWaterToolFactory* factory; // Pointer to the factory object for this class
-		
+
 		const AddWaterFunction* addWaterFunction; // Render function registered with the water table
 		GLfloat adding; // Amount of data added or removed from the water table
-		
+
 		/* Constructors and destructors: */
 		public:
 		static LocalWaterToolFactory* initClass(Vrui::ToolManager& toolManager);
 		LocalWaterTool(const Vrui::ToolFactory* factory,const Vrui::ToolInputAssignment& inputAssignment);
 		virtual ~LocalWaterTool(void);
-		
+
 		/* Methods from class Vrui::Tool: */
 		virtual void initialize(void);
 		virtual void deinitialize(void);
 		virtual const Vrui::ToolFactory* getFactory(void) const;
 		virtual void buttonCallback(int buttonSlotIndex,Vrui::InputDevice::ButtonCallbackData* cbData);
-		
+
 		/* Methods from class Vrui::TransparentObject: */
 		virtual void glRenderActionTransparent(GLContextData& contextData) const;
-		
+
 		/* New methods: */
 		void addWater(GLContextData& contextData) const; // Function to render geometry that adds water to the water table
 		};
-	
+
 	struct DataItem:public GLObject::DataItem
 		{
 		/* Elements: */
@@ -131,15 +131,15 @@ class Sandbox:public Vrui::Application,public GLObject
 		GLsizei shadowBufferSize[2]; // Size of the shadow rendering frame buffer
 		GLuint shadowFramebufferObject; // Frame buffer object to render shadow maps
 		GLuint shadowDepthTextureObject; // Depth texture for the shadow rendering frame buffer
-		
+
 		/* Constructors and destructors: */
 		DataItem(void);
 		virtual ~DataItem(void);
 		};
-	
+
 	friend class WaterTool;
 	friend class LocalWaterTool;
-	
+
 	/* Elements: */
 	private:
 	USB::Context usbContext; // USB context for the Kinect camera device
@@ -170,7 +170,11 @@ class Sandbox:public Vrui::Application,public GLObject
 	SurfaceRenderer* waterRenderer; // A second surface renderer to render the water surface directly
 	Vrui::Lightsource* sun; // An external fixed light source
 	GLMotif::PopupMenu* mainMenu;
-	
+
+	//OUR ELEMENTS GO HERE
+	FrameFilter* ourFrameFilter;
+	//OUR ELEMENTS END HERE
+
 	/* Private methods: */
 	void rawDepthFrameDispatcher(const Kinect::FrameBuffer& frameBuffer); // Callback receiving raw depth frames from the Kinect camera; forwards them to the frame filter and rain maker objects
 	void receiveFilteredFrame(const Kinect::FrameBuffer& frameBuffer); // Callback receiving filtered depth frames from the filter object
@@ -178,16 +182,20 @@ class Sandbox:public Vrui::Application,public GLObject
 	void addWater(GLContextData& contextData) const; // Function to render geometry that adds water to the water table
 	void pauseUpdatesCallback(GLMotif::ToggleButton::ValueChangedCallbackData* cbData);
 	GLMotif::PopupMenu* createMainMenu(void);
-	
+
+	//OUR METHOD GOES HERE
+	void receiveOurFrame(const Kinect::FrameBuffer& frameBuffer);
+	//OUR METHODS END HERE
+
 	/* Constructors and destructors: */
 	public:
 	Sandbox(int& argc,char**& argv,char**& appDefaults);
 	virtual ~Sandbox(void);
-	
+
 	/* Methods from Vrui::Application: */
 	virtual void frame(void);
 	virtual void display(GLContextData& contextData) const;
-	
+
 	/* Methods from GLObject: */
 	virtual void initContext(GLContextData& contextData) const;
 	};
