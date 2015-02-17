@@ -533,6 +533,9 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	double rainElevationMin=-1000.0;
 	double rainElevationMax=1000.0;
 	double evaporationRate=0.0;
+
+	//Our CL parameters:
+	useGame = false;
 	for(int i=1;i<argc;++i)
 		{
 		if(argv[i][0]=='-')
@@ -633,6 +636,9 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 				useHeightMap=true;
 			else if(strcasecmp(argv[i]+1,"rws")==0)
 				renderWaterSurface=true;
+            //Our CL arugment:
+            else if(strcasecmp(argv[i]+1, "g")==0)
+                useGame=true;
 			}
 		}
 
@@ -876,6 +882,8 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	surfaceRenderer->setHeightMapRange(heightMap.getNumEntries(),heightMap.getScalarRangeMin(),heightMap.getScalarRangeMax());
 	surfaceRenderer->setDrawContourLines(useContourLines);
 	surfaceRenderer->setContourLineDistance(contourLineSpacing);
+	//Our extra initialization:
+	surfaceRenderer->setDrawGameElements(useGame);
 	if(hillshade)
 		surfaceRenderer->setIlluminate(true);
 	if(waterTable!=0&&waterSpeed>0.0)

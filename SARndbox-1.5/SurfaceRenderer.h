@@ -42,7 +42,7 @@ class SurfaceRenderer:public GLObject
 	typedef double Scalar;
 	typedef Geometry::Plane<Scalar,3> Plane; // Type for planes in camera space
 	typedef Geometry::ProjectiveTransformation<Scalar,3> PTransform; // Type for projective transformations
-	
+
 	private:
 	struct DataItem:public GLObject::DataItem
 		{
@@ -68,12 +68,12 @@ class SurfaceRenderer:public GLObject
 		GLint globalAmbientHeightMapShaderUniforms[10]; // Locations of the global ambient height map shader's uniform variables
 		GLhandleARB shadowedIlluminatedHeightMapShader; // Shader program to render the surface using illumination with shadows and a height color map
 		GLint shadowedIlluminatedHeightMapShaderUniforms[13]; // Locations of the shadowed illuminated height map shader's uniform variables
-		
+
 		/* Constructors and destructors: */
 		DataItem(void);
 		virtual ~DataItem(void);
 		};
-	
+
 	/* Elements: */
 	IO::FileMonitor fileMonitor; // Monitor to watch the renderer's external shader source files
 	unsigned int size[2]; // Width and height of the depth image
@@ -95,20 +95,24 @@ class SurfaceRenderer:public GLObject
 	Kinect::FrameBuffer depthImage; // The most recent float-pixel depth image
 	unsigned int depthImageVersion; // Version number of the depth image
 	double animationTime; // Time value for water animation
-	
+
+	//Our Elements:
+	bool drawGameElements;
+
 	/* Private methods: */
 	void shaderSourceFileChanged(const IO::FileMonitor::Event& event); // Callback called when one of the external shader source files is changed
 	GLhandleARB createSinglePassSurfaceShader(const GLLightTracker& lt,GLint* uniformLocations) const; // Creates a single-pass surface rendering shader based on current renderer settings
-	
+
 	/* Constructors and destructors: */
 	public:
 	SurfaceRenderer(const unsigned int sSize[2],const PTransform& sDepthProjection,const Plane& sBasePlane); // Creates a renderer for the given image size, depth projection, and base plane
-	
+
 	/* Methods from GLObject: */
 	virtual void initContext(GLContextData& contextData) const;
-	
+
 	/* New methods: */
 	void setUsePreboundDepthTexture(bool newUsePreboundDepthTexture); // Enables or disables using a pre-bound depth texture
+	void setDrawGameElements(bool newDrawGameElements); //Enables or disables drawing of game elements.
 	void setDrawContourLines(bool newDrawContourLines); // Enables or disables topographic contour lines
 	void setContourLineDistance(GLfloat newContourLineDistance); // Sets the elevation distance between adjacent topographic contour lines
 	void setUseHeightMap(bool newUseHeightMap); // Enable or disable height-based surface coloring

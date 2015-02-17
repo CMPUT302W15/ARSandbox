@@ -448,7 +448,8 @@ SurfaceRenderer::SurfaceRenderer(const unsigned int sSize[2],const SurfaceRender
 	 illuminate(false),waterTable(0),advectWaterTexture(false),surfaceSettingsVersion(1),
 	 waterOpacity(2.0f),
 	 depthImageVersion(1),
-	 animationTime(0.0)
+	 animationTime(0.0),
+	 drawGameElements(false)
 	{
 	/* Monitor the external shader source files: */
 	fileMonitor.addPath((std::string(SHADERDIR)+std::string("/SurfaceAddContourLines.fs")).c_str(),IO::FileMonitor::Modified,Misc::createFunctionCall(this,&SurfaceRenderer::shaderSourceFileChanged));
@@ -613,6 +614,11 @@ void SurfaceRenderer::setUsePreboundDepthTexture(bool newUsePreboundDepthTexture
 	{
 	usePreboundDepthTexture=newUsePreboundDepthTexture;
 	}
+
+void SurfaceRenderer::setDrawGameElements(bool newDrawGameElements)
+    {
+    drawGameElements = newDrawGameElements;
+    }
 
 void SurfaceRenderer::setDrawContourLines(bool newDrawContourLines)
 	{
@@ -1066,6 +1072,11 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
 
 		/* Upload the contour line distance factor: */
 		glUniform1fARB(*(ulPtr++),contourLineFactor);
+		// NEW CODE
+
+        //glBindBufferARB(GL_TEXTURE_RECTANGLE_ARB, );
+		// NEW CODE END
+
 		}
 
 	if(illuminate)

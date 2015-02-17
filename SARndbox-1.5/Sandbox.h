@@ -173,6 +173,7 @@ class Sandbox:public Vrui::Application,public GLObject
 
 	//OUR ELEMENTS GO HERE
 	FrameFilter* ourFrameFilter;
+	bool useGame;
 	//OUR ELEMENTS END HERE
 
 	/* Private methods: */

@@ -14,3 +14,5 @@ http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-14-render-to-text
 -glRenderElevation vs. glRenderSinglePass
 
 -Bind our icon textures in glRenderSinglePass?
+
+-We'll need to add our textures to DataItem and SurfaceRenderer::initContext?
