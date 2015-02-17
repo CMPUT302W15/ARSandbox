@@ -42,6 +42,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <GL/GLContextData.h>
 #include <GL/GLGeometryVertex.h>
 
+#include <Images/RGBImage.h>
+#include <Images/ReadImageFile.h>
+#include <Vrui/OpenFile.h>
+
 #include "WaterTable2.h"
 
 namespace {
@@ -978,7 +982,7 @@ void SurfaceRenderer::glPrepareContourLines(GLContextData& contextData) const
 void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextData& contextData) const
 	{
 	//OUR SHIT
-	std::cout<<"SurfaceRenderer::glRenderSinglePass called.\n"<<std::endl;
+	//std::cout<<"SurfaceRenderer::glRenderSinglePass called.\n"<<std::endl;
 	//SHIT ENDS
 	/* Get the data item: */
 	DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
@@ -1072,11 +1076,6 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
 
 		/* Upload the contour line distance factor: */
 		glUniform1fARB(*(ulPtr++),contourLineFactor);
-		// NEW CODE
-
-        //glBindBufferARB(GL_TEXTURE_RECTANGLE_ARB, );
-		// NEW CODE END
-
 		}
 
 	if(illuminate)
@@ -1111,6 +1110,37 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
 		glUniform1fARB(*(ulPtr++),GLfloat(animationTime));
 		}
 
+    //if(drawGameElements)
+    if(0)
+        {
+        //Our rendering stuff will go here.
+        GLuint imageTextureId;
+		Images::RGBImage image;
+		image=Images::readImageFile("home-cat.jpg",Vrui::openFile("home-cat.jpg"));
+		glGenTextures(1,&imageTextureId);
+        glPushAttrib(GL_ENABLE_BIT);
+        glEnable(GL_TEXTURE_2D);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        /* Bind the texture object: */
+        glBindTexture(GL_TEXTURE_2D,imageTextureId);
+        	/* Initialize basic texture settings: */
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_BASE_LEVEL,0);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAX_LEVEL,0);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+
+        /* Upload the texture image: */
+        image.glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,true);
+
+        /* Protect the texture object: */
+        glBindTexture(GL_TEXTURE_2D,0);
+
+        glBindTexture(GL_TEXTURE_2D,0);
+        glDisable(GL_TEXTURE_2D);
+        }
+
 	/* Draw the surface: */
 	typedef GLGeometry::Vertex<void,0,void,0,void,float,3> Vertex;
 	GLVertexArrayParts::enable(Vertex::getPartsMask());
@@ -1122,6 +1152,7 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
 	/* Unbind all textures and buffers: */
 	if(waterTable!=0)
 		{
+
 		glActiveTextureARB(GL_TEXTURE4_ARB);
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
@@ -1130,6 +1161,8 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
 		glBindTexture(GL_TEXTURE_RECTANGLE_ARB,0);
+
+		//glDeleteTextures(1,&imageTextureId);
 		}
 	if(drawContourLines)
 		{

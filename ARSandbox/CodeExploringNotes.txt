@@ -16,3 +16,5 @@ http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-14-render-to-text
 -Bind our icon textures in glRenderSinglePass?
 
 -We'll need to add our textures to DataItem and SurfaceRenderer::initContext?
+
+-ImageView sample program shows how to render an image file.

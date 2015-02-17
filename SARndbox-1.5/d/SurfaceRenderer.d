@@ -45,7 +45,20 @@ $(OBJDIR)/SurfaceRenderer.o: SurfaceRenderer.cpp \
  /home/sandbox/Vrui-3.1/include/Misc/CallbackList.h \
  /home/sandbox/Vrui-3.1/include/GL/GLGeometryVertex.h \
  /home/sandbox/Vrui-3.1/include/GL/GLColor.h \
- /home/sandbox/Vrui-3.1/include/GL/GLScalarLimits.h WaterTable2.h \
+ /home/sandbox/Vrui-3.1/include/GL/GLScalarLimits.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBImage.h \
+ /home/sandbox/Vrui-3.1/include/Images/Image.h \
+ /home/sandbox/Vrui-3.1/include/Images/ReadImageFile.h \
+ /home/sandbox/Vrui-3.1/include/IO/File.h  \
+ /home/sandbox/Vrui-3.1/include/Misc/Endianness.h \
+ /home/sandbox/Vrui-3.1/include/Misc/RefCounted.h \
+ /home/sandbox/Vrui-3.1/include/Misc/Autopointer.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h \
+ /home/sandbox/Vrui-3.1/include/Vrui/OpenFile.h \
+ /home/sandbox/Vrui-3.1/include/IO/OpenFile.h \
+ /home/sandbox/Vrui-3.1/include/IO/SeekableFile.h \
+ /home/sandbox/Vrui-3.1/include/IO/Directory.h \
+ /home/sandbox/Vrui-3.1/include/Misc/FileTests.h WaterTable2.h \
  /home/sandbox/Vrui-3.1/include/Misc/FunctionCalls.h \
  /home/sandbox/Vrui-3.1/include/Geometry/Box.h \
  /home/sandbox/Vrui-3.1/include/Geometry/OrthonormalTransformation.h
