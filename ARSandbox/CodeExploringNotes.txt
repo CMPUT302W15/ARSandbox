@@ -1,0 +1,16 @@
+Code Exploring Notes:
+
+-Extra SurfaceRenderer for rendering our icons.
+-RainMaker for idea on how to detect icon completion.
+
+-Sandbox::addWater renders the rain objects. Look here for rendering glyphs?
+
+-Create new TripleBuffer for our rendering.
+
+-glRenderSinglePass in SurfaceRenderer looks promising.
+
+http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-14-render-to-texture/ ?
+
+-glRenderElevation vs. glRenderSinglePass
+
+-Bind our icon textures in glRenderSinglePass?

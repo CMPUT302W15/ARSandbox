@@ -797,6 +797,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	frameFilter->setStableParameters(minNumSamples,maxVariance);
 	frameFilter->setSpatialFilter(true);
 	frameFilter->setOutputFrameFunction(Misc::createFunctionCall(this,&Sandbox::receiveFilteredFrame));
+
 	//HERE GOES OUR SHIT
 	ourFrameFilter = new FrameFilter(frameSize, 10, cameraIps.depthProjection, basePlane);
 	ourFrameFilter->setDepthCorrection(*depthCorrection);
@@ -982,6 +983,9 @@ void Sandbox::frame(void)
 
 void Sandbox::display(GLContextData& contextData) const
 	{
+	//OUR SHIT HERE
+	std:cout<<"Sandbox::display called.\n"<<std::endl;
+	//OUR SHIT ENDS
 	/* Get the data item: */
 	DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
 
