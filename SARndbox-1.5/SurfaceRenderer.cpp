@@ -124,7 +124,7 @@ SurfaceRenderer::DataItem::DataItem(void)
 
 	//NEW CODE
 	glGenTextures(1,&imageTextureId);
-	image=Images::readImageFile("home-cat.jpg",Vrui::openFile("home-cat.jpg"));
+	image=Images::readImageFile("hill_icon.png",Vrui::openFile("hill_icon.png"));
 	}
 
 SurfaceRenderer::DataItem::~DataItem(void)
