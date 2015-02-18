@@ -659,6 +659,7 @@ void SurfaceRenderer::initContext(GLContextData& contextData) const
 
 	/* Upload the texture image: */
 	dataItem->image.glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,!haveNpotdt);
+	//Changed this.
 
 	/* Protect the texture object: */
 	glBindTexture(GL_TEXTURE_2D,0);
@@ -1211,6 +1212,9 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
         std::cout<<dataItem->imageTextureId<<std::endl;
 
         std::cout<<"Entered our drawGameElements block.\n"<<std::endl;
+        float zValue = -1000.0f;
+        float xTranslation = 0.0f;
+        float yTranslation = 0.0f;
         	/* Set up OpenGL state: */
         glPushAttrib(GL_ENABLE_BIT);
         glEnable(GL_TEXTURE_2D);
@@ -1222,13 +1226,14 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
         /* Draw the image: */
         glBegin(GL_QUADS);
         glTexCoord2f(dataItem->texMin[0],dataItem->texMin[1]);
-        glVertex2i(0,0);
+        glVertex3f(0 + xTranslation,0 + yTranslation, zValue);
+        //glVertex2i(0.5,0.5);
         glTexCoord2f(dataItem->texMax[0],dataItem->texMin[1]);
-        glVertex2i(dataItem->image.getSize(0),0);
+        glVertex3f(dataItem->image.getSize(0) + xTranslation,0 + yTranslation, zValue);
         glTexCoord2f(dataItem->texMax[0],dataItem->texMax[1]);
-        glVertex2i(dataItem->image.getSize(0),dataItem->image.getSize(1));
+        glVertex3f(dataItem->image.getSize(0) + xTranslation,dataItem->image.getSize(1) + yTranslation, zValue);
         glTexCoord2f(dataItem->texMin[0],dataItem->texMax[1]);
-        glVertex2i(0,dataItem->image.getSize(1));
+        glVertex3f(0 + xTranslation,dataItem->image.getSize(1) + yTranslation, zValue);
         glEnd();
 
         /* Protect the texture object: */
