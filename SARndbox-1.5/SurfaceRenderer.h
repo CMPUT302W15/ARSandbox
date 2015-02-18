@@ -31,6 +31,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <GL/GLObject.h>
 #include <Kinect/FrameBuffer.h>
 
+#include <Images/RGBImage.h>
+#include <Images/ReadImageFile.h>
+
 /* Forward declarations: */
 class GLLightTracker;
 class WaterTable2;
@@ -72,6 +75,7 @@ class SurfaceRenderer:public GLObject
 		//NEW CODE
         GLuint imageTextureId; // ID of image texture object
         GLfloat texMin[2],texMax[2]; // Texture coordinate rectangle to render the image texture
+        Images::RGBImage image;
 
 		/* Constructors and destructors: */
 		DataItem(void);

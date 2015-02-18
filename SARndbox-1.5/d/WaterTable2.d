@@ -45,4 +45,14 @@ $(OBJDIR)/WaterTable2.o: WaterTable2.cpp  \
  /home/sandbox/Vrui-3.1/include/Threads/Thread.h \
  /home/sandbox/Vrui-3.1/include/Geometry/ProjectiveTransformation.h \
  /home/sandbox/Vrui-3.1/include/Kinect/FrameBuffer.h \
- /home/sandbox/Vrui-3.1/include/Threads/Atomic.h
+ /home/sandbox/Vrui-3.1/include/Threads/Atomic.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBImage.h \
+ /home/sandbox/Vrui-3.1/include/Images/Image.h \
+ /home/sandbox/Vrui-3.1/include/GL/GLColor.h \
+ /home/sandbox/Vrui-3.1/include/GL/GLScalarLimits.h \
+ /home/sandbox/Vrui-3.1/include/Images/ReadImageFile.h \
+ /home/sandbox/Vrui-3.1/include/IO/File.h  \
+ /home/sandbox/Vrui-3.1/include/Misc/Endianness.h \
+ /home/sandbox/Vrui-3.1/include/Misc/RefCounted.h \
+ /home/sandbox/Vrui-3.1/include/Misc/Autopointer.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h

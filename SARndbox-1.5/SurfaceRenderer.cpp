@@ -45,6 +45,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <Images/RGBImage.h>
 #include <Images/ReadImageFile.h>
 #include <Vrui/OpenFile.h>
+#include <GL/Extensions/GLARBTextureNonPowerOfTwo.h>
 
 #include "WaterTable2.h"
 
@@ -123,6 +124,7 @@ SurfaceRenderer::DataItem::DataItem(void)
 
 	//NEW CODE
 	glGenTextures(1,&imageTextureId);
+	image=Images::readImageFile("home-cat.jpg",Vrui::openFile("home-cat.jpg"));
 	}
 
 SurfaceRenderer::DataItem::~DataItem(void)
@@ -618,6 +620,48 @@ void SurfaceRenderer::initContext(GLContextData& contextData) const
 	dataItem->shadowedIlluminatedHeightMapShaderUniforms[11]=glGetUniformLocationARB(dataItem->shadowedIlluminatedHeightMapShader,"shadowTextureSampler");
 	dataItem->shadowedIlluminatedHeightMapShaderUniforms[12]=glGetUniformLocationARB(dataItem->shadowedIlluminatedHeightMapShader,"shadowProjection");
 	}
+
+	//OUR CODE
+		/* Check whether non-power-of-two-dimension textures are supported: */
+	bool haveNpotdt=GLARBTextureNonPowerOfTwo::isSupported();
+	if(haveNpotdt)
+		GLARBTextureNonPowerOfTwo::initExtension();
+
+	/* Calculate the texture coordinate rectangle: */
+	unsigned int texSize[2];
+	if(haveNpotdt)
+		{
+		for(int i=0;i<2;++i)
+			texSize[i]=dataItem->image.getSize(i);
+		}
+	else
+		{
+		for(int i=0;i<2;++i)
+			for(texSize[i]=1U;texSize[i]<dataItem->image.getSize(i);texSize[i]<<=1)
+				;
+		}
+	for(int i=0;i<2;++i)
+		{
+		dataItem->texMin[i]=0.0f;
+		dataItem->texMax[i]=GLfloat(dataItem->image.getSize(i))/GLfloat(texSize[i]);
+		}
+
+	/* Bind the texture object: */
+	glBindTexture(GL_TEXTURE_2D,dataItem->imageTextureId);
+
+	/* Initialize basic texture settings: */
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_BASE_LEVEL,0);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAX_LEVEL,0);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+
+	/* Upload the texture image: */
+	dataItem->image.glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,!haveNpotdt);
+
+	/* Protect the texture object: */
+	glBindTexture(GL_TEXTURE_2D,0);
 	}
 
 void SurfaceRenderer::setUsePreboundDepthTexture(bool newUsePreboundDepthTexture)
@@ -1123,31 +1167,6 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
         std::cout<<dataItem->imageTextureId<<std::endl;
 
         std::cout<<"Entered our drawGameElements block.\n"<<std::endl;
-        GLuint imageTextureId;
-		Images::RGBImage image;
-		image=Images::readImageFile("home-cat.jpg",Vrui::openFile("home-cat.jpg"));
-		glGenTextures(1,&imageTextureId);
-        glPushAttrib(GL_ENABLE_BIT);
-        glEnable(GL_TEXTURE_2D);
-        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-        /* Bind the texture object: */
-        glBindTexture(GL_TEXTURE_2D,imageTextureId);
-        	/* Initialize basic texture settings: */
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_BASE_LEVEL,0);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAX_LEVEL,0);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-
-        /* Upload the texture image: */
-        image.glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,true);
-
-        /* Protect the texture object: */
-        glBindTexture(GL_TEXTURE_2D,0);
-
-        glBindTexture(GL_TEXTURE_2D,0);
-        glDisable(GL_TEXTURE_2D);
         }
 
 	/* Draw the surface: */
