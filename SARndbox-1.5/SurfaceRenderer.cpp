@@ -90,7 +90,7 @@ SurfaceRenderer::DataItem::DataItem(void)
 	 depthShader(0),elevationShader(0),
 	 contourLineFramebufferObject(0),contourLineDepthBufferObject(0),contourLineColorTextureObject(0),
 	 heightMapShader(0),lightTrackerVersion(0),surfaceSettingsVersion(0),
-	 globalAmbientHeightMapShader(0),shadowedIlluminatedHeightMapShader(0)
+	 globalAmbientHeightMapShader(0),shadowedIlluminatedHeightMapShader(0),imageTextureId(0)
 	{
 	/* Check if all required extensions are supported: */
 	bool supported=GLARBFragmentShader::isSupported();
@@ -120,6 +120,9 @@ SurfaceRenderer::DataItem::DataItem(void)
 	glGenBuffersARB(1,&vertexBuffer);
 	glGenBuffersARB(1,&indexBuffer);
 	glGenTextures(1,&depthTexture);
+
+	//NEW CODE
+	glGenTextures(1,&imageTextureId);
 	}
 
 SurfaceRenderer::DataItem::~DataItem(void)
@@ -136,6 +139,9 @@ SurfaceRenderer::DataItem::~DataItem(void)
 	glDeleteObjectARB(heightMapShader);
 	glDeleteObjectARB(globalAmbientHeightMapShader);
 	glDeleteObjectARB(shadowedIlluminatedHeightMapShader);
+
+	//NEW CODE
+	glDeleteTextures(1,&imageTextureId);
 	}
 
 /********************************
@@ -1110,10 +1116,13 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
 		glUniform1fARB(*(ulPtr++),GLfloat(animationTime));
 		}
 
-    //if(drawGameElements)
-    if(0)
+    if(drawGameElements)
+    //if(0)
         {
         //Our rendering stuff will go here.
+        std::cout<<dataItem->imageTextureId<<std::endl;
+
+        std::cout<<"Entered our drawGameElements block.\n"<<std::endl;
         GLuint imageTextureId;
 		Images::RGBImage image;
 		image=Images::readImageFile("home-cat.jpg",Vrui::openFile("home-cat.jpg"));

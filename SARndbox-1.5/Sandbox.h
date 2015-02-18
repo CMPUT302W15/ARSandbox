@@ -173,6 +173,7 @@ class Sandbox:public Vrui::Application,public GLObject
 
 	//OUR ELEMENTS GO HERE
 	FrameFilter* ourFrameFilter;
+	SurfaceRenderer* gameRenderer;//Surface renderer used for rendering game objects.
 	bool useGame;
 	//OUR ELEMENTS END HERE
 

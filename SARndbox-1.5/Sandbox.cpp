@@ -884,6 +884,10 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	surfaceRenderer->setContourLineDistance(contourLineSpacing);
 	//Our extra initialization:
 	surfaceRenderer->setDrawGameElements(useGame);
+	gameRenderer = new SurfaceRenderer(frameSize, cameraIps.depthProjection, basePlane);
+	gameRenderer->setUseHeightMap(false);
+	gameRenderer->setDrawContourLines(false);
+	gameRenderer->setDrawGameElements(useGame);
 	if(hillshade)
 		surfaceRenderer->setIlluminate(true);
 	if(waterTable!=0&&waterSpeed>0.0)
@@ -957,6 +961,9 @@ Sandbox::~Sandbox(void)
 	delete waterRenderer;
 
 	delete mainMenu;
+
+	//Our deletion work.
+	delete gameRenderer;
 	}
 
 void Sandbox::frame(void)

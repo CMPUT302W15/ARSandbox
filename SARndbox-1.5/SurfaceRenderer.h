@@ -69,6 +69,10 @@ class SurfaceRenderer:public GLObject
 		GLhandleARB shadowedIlluminatedHeightMapShader; // Shader program to render the surface using illumination with shadows and a height color map
 		GLint shadowedIlluminatedHeightMapShaderUniforms[13]; // Locations of the shadowed illuminated height map shader's uniform variables
 
+		//NEW CODE
+        GLuint imageTextureId; // ID of image texture object
+        GLfloat texMin[2],texMax[2]; // Texture coordinate rectangle to render the image texture
+
 		/* Constructors and destructors: */
 		DataItem(void);
 		virtual ~DataItem(void);
