@@ -137,6 +137,8 @@ class SurfaceRenderer:public GLObject
 	void glRenderSinglePass(GLuint heightColorMapTexture,GLContextData& contextData) const; // Renders the surface in a single pass using the current surface settings
 	void glRenderGlobalAmbientHeightMap(GLuint heightColorMapTexture,GLContextData& contextData) const; // Renders the global ambient component of the surface as an illuminated height map in the current OpenGL context using the given pixel-corner elevation texture and 1D height color map
 	void glRenderShadowedIlluminatedHeightMap(GLuint heightColorMapTexture,GLuint shadowTexture,const PTransform& shadowProjection,GLContextData& contextData) const; // Renders the surface as an illuminated height map in the current OpenGL context using the given pixel-corner elevation texture and 1D height color map
+
+	void glRenderGameElements(GLContextData& contextData);//Renders the game elements.
 	};
 
 #endif

@@ -1159,16 +1159,6 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
 		/* Upload the water animation time: */
 		glUniform1fARB(*(ulPtr++),GLfloat(animationTime));
 		}
-
-    if(drawGameElements)
-    //if(0)
-        {
-        //Our rendering stuff will go here.
-        std::cout<<dataItem->imageTextureId<<std::endl;
-
-        std::cout<<"Entered our drawGameElements block.\n"<<std::endl;
-        }
-
 	/* Draw the surface: */
 	typedef GLGeometry::Vertex<void,0,void,0,void,float,3> Vertex;
 	GLVertexArrayParts::enable(Vertex::getPartsMask());
@@ -1213,6 +1203,52 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
 	/* Unbind the height map shader: */
 	glUseProgramObjectARB(0);
 	}
+
+void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
+    {
+                //Our rendering stuff will go here.
+        DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
+        std::cout<<dataItem->imageTextureId<<std::endl;
+
+        std::cout<<"Entered our drawGameElements block.\n"<<std::endl;
+        	/* Set up OpenGL state: */
+        glPushAttrib(GL_ENABLE_BIT);
+        glEnable(GL_TEXTURE_2D);
+        glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
+
+        /* Bind the texture object: */
+        glBindTexture(GL_TEXTURE_2D,dataItem->imageTextureId);
+
+        /* Draw the image: */
+        glBegin(GL_QUADS);
+        glTexCoord2f(dataItem->texMin[0],dataItem->texMin[1]);
+        glVertex2i(0,0);
+        glTexCoord2f(dataItem->texMax[0],dataItem->texMin[1]);
+        glVertex2i(dataItem->image.getSize(0),0);
+        glTexCoord2f(dataItem->texMax[0],dataItem->texMax[1]);
+        glVertex2i(dataItem->image.getSize(0),dataItem->image.getSize(1));
+        glTexCoord2f(dataItem->texMin[0],dataItem->texMax[1]);
+        glVertex2i(0,dataItem->image.getSize(1));
+        glEnd();
+
+        /* Protect the texture object: */
+        glBindTexture(GL_TEXTURE_2D,0);
+
+        /* Draw the image's backside: */
+        //glDisable(GL_TEXTURE_2D);
+        //glMaterial(GLMaterialEnums::FRONT,GLMaterial(GLMaterial::Color(0.7f,0.7f,0.7f)));
+
+        //glBegin(GL_QUADS);
+        //glNormal3f(0.0f,0.0f,-1.0f);
+        //glVertex2i(0,0);
+        //glVertex2i(0,dataItem->image.getSize(1));
+        //glVertex2i(dataItem->image.getSize(0),dataItem->image.getSize(1));
+        //glVertex2i(dataItem->image.getSize(0),0);
+        //glEnd();
+
+        /* Restore OpenGL state: */
+        glPopAttrib();
+    }
 
 void SurfaceRenderer::glRenderGlobalAmbientHeightMap(GLuint heightColorMapTexture,GLContextData& contextData) const
 	{

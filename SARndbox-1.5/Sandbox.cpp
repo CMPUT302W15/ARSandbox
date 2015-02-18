@@ -883,7 +883,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	surfaceRenderer->setDrawContourLines(useContourLines);
 	surfaceRenderer->setContourLineDistance(contourLineSpacing);
 	//Our extra initialization:
-	surfaceRenderer->setDrawGameElements(useGame);
+	//surfaceRenderer->setDrawGameElements(useGame);
 	gameRenderer = new SurfaceRenderer(frameSize, cameraIps.depthProjection, basePlane);
 	gameRenderer->setUseHeightMap(false);
 	gameRenderer->setDrawContourLines(false);
@@ -1230,6 +1230,10 @@ void Sandbox::display(GLContextData& contextData) const
 		glPopMatrix();
 		glMatrixMode(GL_MODELVIEW);
 		}
+    if(useGame)
+        {
+        gameRenderer->glRenderGameElements(contextData);
+        }
 	}
 
 void Sandbox::initContext(GLContextData& contextData) const
