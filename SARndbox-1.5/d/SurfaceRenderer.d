@@ -36,7 +36,10 @@ $(OBJDIR)/SurfaceRenderer.o: SurfaceRenderer.cpp \
  /home/sandbox/Vrui-3.1/include/Misc/Endianness.h \
  /home/sandbox/Vrui-3.1/include/Misc/RefCounted.h \
  /home/sandbox/Vrui-3.1/include/Misc/Autopointer.h \
- /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h GameIcon.h \
+ /home/sandbox/Vrui-3.1/include/Images/GetImageFileSize.h \
+ /home/sandbox/Vrui-3.1/include/IO/Directory.h \
+ /home/sandbox/Vrui-3.1/include/Misc/FileTests.h \
  /home/sandbox/Vrui-3.1/include/Misc/PrintInteger.h \
  /home/sandbox/Vrui-3.1/include/Misc/ThrowStdErr.h \
  /home/sandbox/Vrui-3.1/include/GL/GLVertexArrayParts.h \
@@ -57,8 +60,6 @@ $(OBJDIR)/SurfaceRenderer.o: SurfaceRenderer.cpp \
  /home/sandbox/Vrui-3.1/include/Vrui/OpenFile.h \
  /home/sandbox/Vrui-3.1/include/IO/OpenFile.h \
  /home/sandbox/Vrui-3.1/include/IO/SeekableFile.h \
- /home/sandbox/Vrui-3.1/include/IO/Directory.h \
- /home/sandbox/Vrui-3.1/include/Misc/FileTests.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBTextureNonPowerOfTwo.h \
  WaterTable2.h /home/sandbox/Vrui-3.1/include/Misc/FunctionCalls.h \
  /home/sandbox/Vrui-3.1/include/Geometry/Box.h \

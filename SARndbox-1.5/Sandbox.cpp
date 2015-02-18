@@ -83,6 +83,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "Sound/SoundPlayer.h"
 
 #include <iostream>
+#include "GameIcon.h"
 
 using namespace std;
 
@@ -1232,7 +1233,11 @@ void Sandbox::display(GLContextData& contextData) const
 		}
     if(useGame)
         {
-        gameRenderer->glRenderGameElements(contextData);
+        GameIcon* tempIcon = new GameIcon(200, 200,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
+        GameIcon* tempIcon2 = new GameIcon(0, 0,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
+        gameRenderer->glRenderGameIcon(contextData, *tempIcon);
+        gameRenderer->glRenderGameIcon(contextData, *tempIcon2);
+        //gameRenderer->glRenderGameElements(contextData, tempIcon);
         }
 	}
 

@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #include <Images/RGBImage.h>
 #include <Images/ReadImageFile.h>
+#include "GameIcon.h"
 
 /* Forward declarations: */
 class GLLightTracker;
@@ -139,6 +140,7 @@ class SurfaceRenderer:public GLObject
 	void glRenderShadowedIlluminatedHeightMap(GLuint heightColorMapTexture,GLuint shadowTexture,const PTransform& shadowProjection,GLContextData& contextData) const; // Renders the surface as an illuminated height map in the current OpenGL context using the given pixel-corner elevation texture and 1D height color map
 
 	void glRenderGameElements(GLContextData& contextData);//Renders the game elements.
+	void glRenderGameIcon(GLContextData& contextData, GameIcon& icon);
 	};
 
 #endif

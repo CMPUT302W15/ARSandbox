@@ -133,7 +133,8 @@ $(OBJDIR)/Sandbox.o: Sandbox.cpp  Sandbox.h \
  /home/sandbox/Vrui-3.1/include/Images/RGBImage.h \
  /home/sandbox/Vrui-3.1/include/Images/Image.h \
  /home/sandbox/Vrui-3.1/include/Images/ReadImageFile.h \
- /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h WaterTable2.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h GameIcon.h \
+ /home/sandbox/Vrui-3.1/include/Images/GetImageFileSize.h WaterTable2.h \
  /home/sandbox/Vrui-3.1/include/Sound/SoundPlayer.h \
  /home/sandbox/Vrui-3.1/include/Sound/Config.h \
  /home/sandbox/Vrui-3.1/include/Sound/Linux/ALSAPCMDevice.h \
