@@ -41,6 +41,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #include "RainMaker.h"
 
+#include "GameIcon.h"
+
 /* Forward declarations: */
 namespace Misc {
 template <class ParameterParam>
@@ -174,7 +176,9 @@ class Sandbox:public Vrui::Application,public GLObject
 	//OUR ELEMENTS GO HERE
 	FrameFilter* ourFrameFilter;
 	SurfaceRenderer* gameRenderer;//Surface renderer used for rendering game objects.
-	bool useGame;
+	bool useGame;//A boolean that determines whether or not game elements will be used.
+	GameIcon* icons;//An array of GameIcon objects that must be rendered.
+	int numIcons;//The number of GameIcons that must be rendered.
 	//OUR ELEMENTS END HERE
 
 	/* Private methods: */

@@ -9,13 +9,13 @@
 #include <Vrui/Vrui.h>
 #include <Vrui/OpenFile.h>
 
-GameIcon::GameIcon(float x, float y, char* iconFilename) //,const string& filename
+GameIcon::GameIcon(float x, float y, const char* iconFilename)
 {
     //ctor
     xCoord = x;
     yCoord = y;
-    //iconFilename = filename;
-    iconImage = Images::readImageFile(iconFilename,Vrui::openFile(iconFilename));
+    fileName = iconFilename;
+    iconImage = Images::readImageFile(fileName,Vrui::openFile(fileName));
 }
 
 GameIcon::~GameIcon()

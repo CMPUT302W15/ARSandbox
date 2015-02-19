@@ -13,12 +13,13 @@
 class GameIcon
 {
     public:
-        GameIcon(float x, float y, char* iconFilename); // const std::string& filename
+        GameIcon(float x, float y, const char* iconFilename); // const std::string& filename
         virtual ~GameIcon();
 
         /*Public Elements*/
         float xCoord;
         float yCoord;
+        const char* fileName;
         Images::RGBImage iconImage;
         GLuint texId;
     protected:
