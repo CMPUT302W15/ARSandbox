@@ -119,7 +119,8 @@ SARNDBOX_SOURCES = FrameFilter.cpp \
                    WaterTable2.cpp \
                    RainMaker.cpp \
                    Sandbox.cpp \
-                   GameIcon.cpp
+                   GameIcon.cpp \
+                   pugixml.cpp
 
 # Set location of shader directory:
 $(OBJDIR)/SurfaceRenderer.o: CFLAGS += -DSHADERDIR='"$(SHAREINSTALLDIR)/Shaders"'

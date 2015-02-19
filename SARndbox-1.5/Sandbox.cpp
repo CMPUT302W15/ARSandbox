@@ -84,6 +84,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #include <iostream>
 #include "GameIcon.h"
+#include "pugixml.hpp"
 
 using namespace std;
 
@@ -639,7 +640,28 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 				renderWaterSurface=true;
             //Our CL arugment:
             else if(strcasecmp(argv[i]+1, "g")==0)
+				{
+				++i
                 useGame=true;
+
+				const char* source = argv[i];
+
+				pugi::xml_document doc;
+				pugi::xml_parse_result result = doc.load_file(source);
+				pugi::xml_node icons = doc.child("object");
+				
+
+				for (pugi::xml_node icon = icons.first_child(); icon; icon = icon.next_sibling())
+					{
+					std::cout << "Icon:";
+					for (pugi::xml_attribute attr = icon.first_attribute(); attr; attr = attr.next_attribute())
+						{
+						std::cout << " " << attr.name() << "=" << attr.value();
+						}
+
+					std::cout << std::endl;
+					}
+				}
 			}
 		}
 
