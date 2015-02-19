@@ -14,6 +14,7 @@ class GameIcon
 {
     public:
         GameIcon(float x, float y, const char* iconFilename); // const std::string& filename
+        GameIcon();
         virtual ~GameIcon();
 
         /*Public Elements*/
@@ -22,6 +23,9 @@ class GameIcon
         const char* fileName;
         Images::RGBImage iconImage;
         GLuint texId;
+
+        /*Public methods*/
+        void generateImage();
     protected:
     private:
 };

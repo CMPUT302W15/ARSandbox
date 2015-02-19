@@ -1203,9 +1203,6 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
     {
                 //Our rendering stuff will go here.
         DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
-        std::cout<<dataItem->imageTextureId<<std::endl;
-
-        std::cout<<"Entered our drawGameElements block.\n"<<std::endl;
         float zValue = -1000.0f;
         float xTranslation = 0.0f;
         float yTranslation = 0.0f;
@@ -1295,9 +1292,6 @@ void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& ico
 	glBindTexture(GL_TEXTURE_2D,0);
 
                     //Our rendering stuff will go here.
-        std::cout<<icon.texId<<std::endl;
-
-        std::cout<<"Entered our drawGameElements block.\n"<<std::endl;
         float zValue = -900.0f;
         float xTranslation = 0.0f;
         float yTranslation = 0.0f;

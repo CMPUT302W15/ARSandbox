@@ -139,4 +139,6 @@ $(OBJDIR)/Sandbox.o: Sandbox.cpp  Sandbox.h \
  /home/sandbox/Vrui-3.1/include/Sound/SoundPlayer.h \
  /home/sandbox/Vrui-3.1/include/Sound/Config.h \
  /home/sandbox/Vrui-3.1/include/Sound/Linux/ALSAPCMDevice.h \
- /home/sandbox/Vrui-3.1/include/Sound/SoundDataFormat.h
+ /home/sandbox/Vrui-3.1/include/Sound/SoundDataFormat.h pugixml.hpp \
+ pugiconfig.hpp  \
+ 

@@ -177,7 +177,7 @@ class Sandbox:public Vrui::Application,public GLObject
 	FrameFilter* ourFrameFilter;
 	SurfaceRenderer* gameRenderer;//Surface renderer used for rendering game objects.
 	bool useGame;//A boolean that determines whether or not game elements will be used.
-	GameIcon* icons;//An array of GameIcon objects that must be rendered.
+	GameIcon* gameIcons;//An array of GameIcon objects that must be rendered.
 	int numIcons;//The number of GameIcons that must be rendered.
 	//OUR ELEMENTS END HERE
 

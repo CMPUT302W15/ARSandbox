@@ -18,6 +18,15 @@ GameIcon::GameIcon(float x, float y, const char* iconFilename)
     iconImage = Images::readImageFile(fileName,Vrui::openFile(fileName));
 }
 
+void GameIcon::generateImage(void)
+{
+    if(fileName)
+        iconImage = Images::readImageFile(fileName,Vrui::openFile(fileName));
+}
+
+GameIcon::GameIcon(){
+}
+
 GameIcon::~GameIcon()
 {
     //dtor
