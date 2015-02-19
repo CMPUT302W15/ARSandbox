@@ -6,14 +6,16 @@
 #include <Images/ReadImageFile.h>
 #include <IO/File.h>
 #include <IO/Directory.h>
+#include <Vrui/Vrui.h>
+#include <Vrui/OpenFile.h>
 
-GameIcon::GameIcon(float x, float y, Images::RGBImage i) //,const string& filename
+GameIcon::GameIcon(float x, float y, char* iconFilename) //,const string& filename
 {
     //ctor
     xCoord = x;
     yCoord = y;
     //iconFilename = filename;
-    iconImage = i;
+    iconImage = Images::readImageFile(iconFilename,Vrui::openFile(iconFilename));
 }
 
 GameIcon::~GameIcon()

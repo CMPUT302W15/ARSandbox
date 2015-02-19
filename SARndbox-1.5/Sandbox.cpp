@@ -1233,8 +1233,10 @@ void Sandbox::display(GLContextData& contextData) const
 		}
     if(useGame)
         {
-        GameIcon* tempIcon = new GameIcon(200, 200,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
-        GameIcon* tempIcon2 = new GameIcon(0, 0,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
+        //GameIcon* tempIcon = new GameIcon(200, 200,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
+        //GameIcon* tempIcon2 = new GameIcon(0, 0,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
+        GameIcon* tempIcon = new GameIcon(200, 200,"hill_icon1.png");
+        GameIcon* tempIcon2 = new GameIcon(0, 0,"water_icon.png");
         gameRenderer->glRenderGameIcon(contextData, *tempIcon);
         gameRenderer->glRenderGameIcon(contextData, *tempIcon2);
         //gameRenderer->glRenderGameElements(contextData, tempIcon);

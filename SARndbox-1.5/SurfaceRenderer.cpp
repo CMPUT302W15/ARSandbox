@@ -123,8 +123,8 @@ SurfaceRenderer::DataItem::DataItem(void)
 	glGenTextures(1,&depthTexture);
 
 	//NEW CODE
-	glGenTextures(1,&imageTextureId);
-	image=Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png"));
+	//glGenTextures(1,&imageTextureId);
+	//image=Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png"));
 	}
 
 SurfaceRenderer::DataItem::~DataItem(void)
@@ -143,7 +143,7 @@ SurfaceRenderer::DataItem::~DataItem(void)
 	glDeleteObjectARB(shadowedIlluminatedHeightMapShader);
 
 	//NEW CODE
-	glDeleteTextures(1,&imageTextureId);
+	//glDeleteTextures(1,&imageTextureId);
 	}
 
 /********************************
@@ -623,12 +623,12 @@ void SurfaceRenderer::initContext(GLContextData& contextData) const
 
 	//OUR CODE
 		/* Check whether non-power-of-two-dimension textures are supported: */
-	bool haveNpotdt=GLARBTextureNonPowerOfTwo::isSupported();
-	if(haveNpotdt)
-		GLARBTextureNonPowerOfTwo::initExtension();
+	//bool haveNpotdt=GLARBTextureNonPowerOfTwo::isSupported();
+	//if(haveNpotdt)
+		//GLARBTextureNonPowerOfTwo::initExtension();
 
 	/* Calculate the texture coordinate rectangle: */
-	unsigned int texSize[2];
+	/*unsigned int texSize[2];
 	if(haveNpotdt)
 		{
 		for(int i=0;i<2;++i)
@@ -644,25 +644,25 @@ void SurfaceRenderer::initContext(GLContextData& contextData) const
 		{
 		dataItem->texMin[i]=0.0f;
 		dataItem->texMax[i]=GLfloat(dataItem->image.getSize(i))/GLfloat(texSize[i]);
-		}
+		}*/
 
 	/* Bind the texture object: */
-	glBindTexture(GL_TEXTURE_2D,dataItem->imageTextureId);
+	//glBindTexture(GL_TEXTURE_2D,dataItem->imageTextureId);
 
 	/* Initialize basic texture settings: */
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_BASE_LEVEL,0);
+	/*glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_BASE_LEVEL,0);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAX_LEVEL,0);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);*/
 
 	/* Upload the texture image: */
-	dataItem->image.glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,!haveNpotdt);
+	//dataItem->image.glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,!haveNpotdt);
 	//Changed this.
 
 	/* Protect the texture object: */
-	glBindTexture(GL_TEXTURE_2D,0);
+	//glBindTexture(GL_TEXTURE_2D,0);
 	}
 
 void SurfaceRenderer::setUsePreboundDepthTexture(bool newUsePreboundDepthTexture)
@@ -807,9 +807,6 @@ void SurfaceRenderer::glRenderDepthOnly(const SurfaceRenderer::PTransform& model
 
 void SurfaceRenderer::glRenderElevation(GLContextData& contextData) const
 	{
-	//OUR SHIT
-	std::cout<<"SurfaceRenderer::glRenderElevation called.\n"<<std::endl;
-	//SHIT ENDS
 	/* Get the data item: */
 	DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
 
@@ -1032,9 +1029,6 @@ void SurfaceRenderer::glPrepareContourLines(GLContextData& contextData) const
 
 void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextData& contextData) const
 	{
-	//OUR SHIT
-	//std::cout<<"SurfaceRenderer::glRenderSinglePass called.\n"<<std::endl;
-	//SHIT ENDS
 	/* Get the data item: */
 	DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
 
@@ -1301,10 +1295,10 @@ void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& ico
 	glBindTexture(GL_TEXTURE_2D,0);
 
                     //Our rendering stuff will go here.
-        std::cout<<dataItem->imageTextureId<<std::endl;
+        std::cout<<icon.texId<<std::endl;
 
         std::cout<<"Entered our drawGameElements block.\n"<<std::endl;
-        float zValue = -1000.0f;
+        float zValue = -900.0f;
         float xTranslation = 0.0f;
         float yTranslation = 0.0f;
         	/* Set up OpenGL state: */
@@ -1313,7 +1307,7 @@ void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& ico
         glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
 
         /* Bind the texture object: */
-        glBindTexture(GL_TEXTURE_2D,dataItem->imageTextureId);
+        glBindTexture(GL_TEXTURE_2D,icon.texId);
 
         /* Draw the image: */
         glBegin(GL_QUADS);

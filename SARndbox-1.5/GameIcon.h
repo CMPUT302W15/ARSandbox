@@ -13,7 +13,7 @@
 class GameIcon
 {
     public:
-        GameIcon(float x, float y, Images::RGBImage i); // const std::string& filename
+        GameIcon(float x, float y, char* iconFilename); // const std::string& filename
         virtual ~GameIcon();
 
         /*Public Elements*/
