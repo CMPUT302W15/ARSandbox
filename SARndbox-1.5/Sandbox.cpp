@@ -710,6 +710,9 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 		std::cout<<"     Enables elevation color mapping"<<std::endl;
 		std::cout<<"  -rws"<<std::endl;
 		std::cout<<"     Renders water surface as geometric surface"<<std::endl;
+
+		std::cout<<"  -g <map filename>"<<std::endl;
+		std::cout<<"    Turns on game elements using the provided map file."<<std::endl;
 		}
 
 	/* Enable background USB event handling: */
@@ -1238,7 +1241,7 @@ void Sandbox::display(GLContextData& contextData) const
         const char* name1 = "hill_icon1.png";
         const char* name2 = "water_icon.png";
         GameIcon* tempIcon = new GameIcon(200, 200, name1);
-        GameIcon* tempIcon2 = new GameIcon(0, 0, name2);
+        GameIcon* tempIcon2 = new GameIcon(0, 0, name1);
         gameRenderer->glRenderGameIcon(contextData, *tempIcon);
         gameRenderer->glRenderGameIcon(contextData, *tempIcon2);
         //gameRenderer->glRenderGameElements(contextData, tempIcon);
