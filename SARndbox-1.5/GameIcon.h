@@ -8,14 +8,14 @@
 class GameIcon
 {
     public:
-        GameIcon(float x, float y, const char* iconFilename); // const std::string& filename
+        GameIcon(float x, float y, const char* iconType); // const std::string& filename
         GameIcon();
         virtual ~GameIcon();
 
         /*Public Elements*/
         float xCoord;
         float yCoord;
-        const char* fileName;
+        const char* type;
         GLuint texId;
 
         /*Public methods*/
@@ -23,5 +23,7 @@ class GameIcon
     protected:
     private:
 };
+
+enum Type {Mountain, Valley, River};
 
 #endif // GAMEICON_H

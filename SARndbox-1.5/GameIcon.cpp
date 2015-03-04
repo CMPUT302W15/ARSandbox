@@ -2,22 +2,22 @@
 #include <iostream>
 #include <string>
 
-GameIcon::GameIcon(float x, float y, const char* iconFilename)
+GameIcon::GameIcon(float x, float y, const char* iconType)
 {
     //ctor
     xCoord = x;
     yCoord = y;
-    fileName = iconFilename;
-    //iconImage = Images::readImageFile(fileName,Vrui::openFile(fileName));
+	type = iconType;
+	
+}
+
+GameIcon::GameIcon()
+{
+	//ctor
 }
 
 void GameIcon::generateImage(void)
 {
-    //if(fileName)
-    //    iconImage = Images::readImageFile(fileName,Vrui::openFile(fileName));
-}
-
-GameIcon::GameIcon(){
 }
 
 GameIcon::~GameIcon()
