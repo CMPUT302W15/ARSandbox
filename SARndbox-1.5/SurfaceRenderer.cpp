@@ -1244,6 +1244,16 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
 
         /* Restore OpenGL state: */
         glPopAttrib();
+        float* diPtr=static_cast<float*>(depthImage.getBuffer());
+        for(unsigned int y=0;y<size[1];++y)
+            for(unsigned int x=0;x<size[0];++x,++diPtr){
+                std::cout<<"x=";
+                std::cout<<x;
+                std::cout<<" y=";
+                std::cout<<y;
+                std::cout<<" diPtr=";
+                std::cout<<*diPtr<<std::endl;
+            }
     }
 
 void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& icon)

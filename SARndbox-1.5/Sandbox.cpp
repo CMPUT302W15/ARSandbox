@@ -292,7 +292,6 @@ void Sandbox::LocalWaterTool::addWater(GLContextData& contextData) const
 		{
 		glPushAttrib(GL_ENABLE_BIT);
 		glDisable(GL_CULL_FACE);
-
 		/* Get the current rain disk position and size in camera coordinates: */
 		Vrui::Point rainPos=Vrui::getInverseNavigationTransformation().transform(getButtonDevicePosition(0));
 		Vrui::Scalar rainRadius=Vrui::getPointPickDistance()*Vrui::Scalar(3);
@@ -386,7 +385,12 @@ void Sandbox::receiveFilteredFrame(const Kinect::FrameBuffer& frameBuffer)
 //OUR NEW METHOD
 void Sandbox::receiveOurFrame(const Kinect::FrameBuffer& frameBuffer)
     {
-        std::cout<<"Our frame function was called!\n"<<std::endl;
+        std::cout<<"Our frame function was called!"<<std::endl;
+        std::cout<<frameBuffer.getBuffer()<<std::endl;
+        const void* pixelBuffer = frameBuffer.getBuffer();
+        gameFrames.postNewValue(frameBuffer);
+
+        Vrui::requestUpdate();
     }
 //OUR NEW METHOD ENDS
 
@@ -402,7 +406,7 @@ void Sandbox::receiveRainObjects(const RainMaker::BlobList& newRainObjects)
 /* ### FLAG ### Where rain is being triggered*/
 void Sandbox::addWater(GLContextData& contextData) const
 	{
-
+    std::cout<<"Sandbox::addWater called."<<std::endl;
 	/* Check if the most recent rain object list is not empty: */
 	if(!rainObjects.getLockedValue().empty())
 		{
@@ -1005,6 +1009,10 @@ void Sandbox::frame(void)
 		surfaceRenderer->setDepthImage(filteredFrames.getLockedValue());
 		}
 
+    if(gameFrames.lockNewValue())
+        {
+        gameRenderer->setDepthImage(gameFrames.getLockedValue());
+        }
 	/* Lock the most recent rain object list: */
 	rainObjects.lockNewValue();
 	#if 0
