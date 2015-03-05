@@ -1,11 +1,6 @@
 #ifndef GAMEICON_H
 #define GAMEICON_H
 
-#include <Images/RGBImage.h>
-#include <Images/GetImageFileSize.h>
-#include <Images/ReadImageFile.h>
-#include <IO/File.h>
-#include <IO/Directory.h>
 #include <iostream>
 #include <string>
 #include <GL/gl.h>
@@ -13,21 +8,28 @@
 class GameIcon
 {
     public:
-        GameIcon(float x, float y, const char* iconFilename); // const std::string& filename
+        GameIcon(float x, float y, const char* typeString); // const std::string& filename
         GameIcon();
         virtual ~GameIcon();
 
+        enum IconType {Mountain, Valley};
+
+
         /*Public Elements*/
+
         float xCoord;
         float yCoord;
-        const char* fileName;
-        Images::RGBImage iconImage;
+        float zValue;
+        float scale;
+        IconType type;
+
         GLuint texId;
 
         /*Public methods*/
-        void generateImage();
+        void generateIcon();
+        void setType(const char* typeString);
+        void drawIcon();
     protected:
     private:
 };
-
 #endif // GAMEICON_H
