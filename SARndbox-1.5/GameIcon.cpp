@@ -10,6 +10,8 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
     xCoord = x;
     yCoord = y;
 
+	zValue = 0.0f;
+
 	x_offset = 0.0f;
 	y_offset = 0.0f;
 	z_offset = 0.0f;
@@ -51,7 +53,7 @@ void GameIcon::generateIcon(void)
 	float tempData[] = {
 		 0.0f + x_offset,  1.0f + y_offset,  0.7f + z_offset,
 		 0.5f + x_offset,  0.0f + y_offset, -0.3f + z_offset,
-		 0.0f + x_offset, -0.5f + y_offset, -0.3f + z_offset,
+		 //0.0f + x_offset, -0.5f + y_offset, -0.3f + z_offset,
 		-0.5f + x_offset,  0.0f + y_offset, -0.3f + z_offset
         };
 
@@ -68,10 +70,11 @@ void GameIcon::drawIcon(void)
 {
 
 	float tempData[] = {
-		 0.0f + x_offset,  1.0f + y_offset,  0.0f + z_offset,
-		 0.5f + x_offset,  0.0f + y_offset,  0.0f + z_offset,
-		 0.0f + x_offset,  0.0f + y_offset,  0.0f + z_offset,
-		-0.5f + x_offset,  0.0f + y_offset,  0.0f + z_offset
+			xCoord*scale, yCoord + (0.50*scale), zValue,
+            xCoord + (0.25*scale), yCoord*scale, zValue,
+            xCoord*scale, yCoord*scale, zValue,
+            xCoord - (0.25*scale), yCoord*scale, zValue,
+            
         };
 
 	const GLfloat blue[4] = { .3f, .3f, 1.f, 1.f };

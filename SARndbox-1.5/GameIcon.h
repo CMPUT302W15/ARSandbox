@@ -20,6 +20,7 @@ class GameIcon
 
         float xCoord;
         float yCoord;
+		float zValue;
 		float x_offset;
 		float y_offset;
 		float z_offset;
