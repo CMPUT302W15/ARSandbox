@@ -2,8 +2,11 @@
 #define GAMEICON_H
 
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string>
 #include <GL/gl.h>
+#include <GL/glut.h>
 
 class GameIcon
 {
@@ -13,17 +16,27 @@ class GameIcon
         virtual ~GameIcon();
 
         /*Public Elements*/
+		enum Type {Mountain, Valley};
+
         float xCoord;
         float yCoord;
-        const char* type;
+		float x_offset;
+		float y_offset;
+		float z_offset;
+		float scale;
+
+		float data[];
+
+		Type type;
         GLuint texId;
 
         /*Public methods*/
-        void generateImage();
+        void generateIcon();
+		void drawIcon();
+		void setType(const char* typeString);
     protected:
     private:
 };
 
-enum Type {Mountain, Valley, River};
 
 #endif // GAMEICON_H

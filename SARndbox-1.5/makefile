@@ -5,3 +5,4 @@ GameIcon.o: GameIcon.cpp
 	$(CC) -c GameIcon.cpp
 clean:
 	rm test
+	rm GameIcon.o
