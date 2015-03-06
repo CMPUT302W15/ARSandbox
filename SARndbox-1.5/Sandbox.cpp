@@ -1271,20 +1271,16 @@ void Sandbox::display(GLContextData& contextData) const
 		}
     if(useGame)
         {
-        GameIcon* tempIcon = new GameIcon(20, 20,"Mountain");
+        //GameIcon* tempIcon = new GameIcon(0.0f, 0.0f,"Mountain");
         //GameIcon* tempIcon2 = new GameIcon(0, 0,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
         //const char* name1 = "hill_icon1.png";
         //const char* name2 = "water_icon.png";
         //GameIcon* tempIcon2 = new GameIcon(0, 0, name1);
-        gameRenderer->glRenderGameIcon(contextData, *tempIcon);
-        //gameRenderer->glRenderGameIcon(contextData, *tempIcon2);
-        /*
         for(int i = 0; i < numIcons; i++)
             {
             gameRenderer->glRenderGameIcon(contextData, gameIcons[i]);
             }
         //gameRenderer->glRenderGameElements(contextData, tempIcon);
-        */
         }
 	}
 

@@ -13,9 +13,9 @@ GameIcon::GameIcon(float x, float y, const char* typeString)
     xCoord = x;
     yCoord = y;
 
-    zValue = -1000.0f;
+    zValue = -900.0f;
 
-    scale = 1;
+    scale = 100;
 
     if (strcasecmp(typeString, "mountain") == 0)
     {
@@ -24,7 +24,7 @@ GameIcon::GameIcon(float x, float y, const char* typeString)
 }
 
 GameIcon::GameIcon(){
-    scale = 1;
+    scale = 100;
     zValue = -1000.0f;
 
 }
@@ -41,30 +41,36 @@ void GameIcon::setType(const char* typeString)
     }
 }
 
-void GameIcon::drawIcon()
+void GameIcon::drawIcon(void)
 {
-    if (type == Mountain)
-    {
-        float tempData[] = {
-            xCoord - (25*scale), yCoord, zValue,
-            xCoord + (25*scale), yCoord, zValue,
-            xCoord, yCoord + (50*scale), zValue
+    float tempData[] = {
+            xCoord + (0.25*scale), yCoord*scale, zValue,
+            xCoord*scale, yCoord + (0.50*scale), zValue,
+            xCoord - (0.25*scale), yCoord*scale, zValue,
+            xCoord*scale, yCoord*scale, zValue
         };
 
+    glPushAttrib(GL_ENABLE_BIT);
 
-        // innit opengl for our icon
-        //glMaterial(GLMaterialEnums::FRONT,GLMaterial(GLMaterial::Color(0.7f,0.7f,0.7f)));
+    glEnable( GL_COLOR_MATERIAL );
+    glColor3f(1.0f, 0.5f, 0.0f);
 
-        glBegin(GL_QUADS);
-        // draw
-        for (int i = 0; i < sizeof(tempData)/sizeof(float);i = i + 3)
-        {
-            glVertex3f(tempData[i], tempData[i+1], tempData[i+2]);
+    glBegin(GL_QUADS);
 
-        }
-        glEnd();
-
+    for (int i = 0; i < 12; i) {
+        //printf("%f\t%f\t%i\n", data[i], data[i+1],i);
+        std::cout << "x:";
+        std::cout << tempData[i];
+        std::cout << "  y:";
+        std::cout << tempData[i+1];
+        std::cout << " z:";
+        std::cout << tempData[i+2] << std::endl;
+        glVertex3f(tempData[i], tempData[i+1], tempData[i+2]);
+        i = i + 3;
     }
+    glEnd();
+    //glFlush();
+    glPopAttrib();
 }
 
 GameIcon::~GameIcon()

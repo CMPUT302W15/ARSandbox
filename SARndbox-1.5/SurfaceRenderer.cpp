@@ -1263,20 +1263,7 @@ void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& ico
     {
     DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
 
-        /* Draw the image's backside: */
-        //glDisable(GL_TEXTURE_2D);
-        //glMaterial(GLMaterialEnums::FRONT,GLMaterial(GLMaterial::Color(0.7f,0.7f,0.7f)));
-
-        //glBegin(GL_QUADS);
-        //glNormal3f(0.0f,0.0f,-1.0f);
-        //glVertex2i(0,0);
-        //glVertex2i(0,dataItem->image.getSize(1));
-        //glVertex2i(dataItem->image.getSize(0),dataItem->image.getSize(1));
-        //glVertex2i(dataItem->image.getSize(0),0);
-        //glEnd();
-
-        /* Restore OpenGL state: */
-        //glPopAttrib();
+        icon.drawIcon();
     }
 
 void SurfaceRenderer::glRenderGlobalAmbientHeightMap(GLuint heightColorMapTexture,GLContextData& contextData) const

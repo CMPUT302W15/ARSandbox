@@ -1,3 +1,4 @@
 <object>
-  <icon xCoords="10" yCoords="20" iconType="Mountain"/>
+  <icon xCoords="0.0" yCoords="0.0" iconType="Mountain"/>
+  <icon xCoords="0.0" yCoords="0.3" iconType="Mountain"/>
 </object>
