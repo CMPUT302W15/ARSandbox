@@ -43,11 +43,11 @@ void GameIcon::setType(const char* typeString)
 
 void GameIcon::drawIcon(void)
 {
-    float tempData[] = {
-            xCoord + (0.25*scale), yCoord*scale, zValue,
-            xCoord*scale, yCoord + (0.50*scale), zValue,
-            xCoord - (0.25*scale), yCoord*scale, zValue,
-            xCoord*scale, yCoord*scale, zValue
+	float tempData[] = {
+			xCoord,     yCoord + (1.50*scale), zValue,
+            xCoord + (1.25*scale),  yCoord,    zValue,
+            xCoord,     yCoord,    zValue,
+            xCoord + (-1.25*scale), yCoord,    zValue
         };
 
     glPushAttrib(GL_ENABLE_BIT);
