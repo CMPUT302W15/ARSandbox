@@ -16,25 +16,28 @@ class GameIcon
         virtual ~GameIcon();
 
         /*Public Elements*/
-		enum Type {Mountain, Valley};
+		enum Type {Mountain, Valley, None};
 
         float xCoord;
         float yCoord;
 		float zValue;
-		float x_offset;
-		float y_offset;
-		float z_offset;
+
 		float scale;
 
-		float data[];
+		float DEG2RAD;
+
+		float * data;
+
+		bool complete;
 
 		Type type;
         GLuint texId;
 
         /*Public methods*/
-        void generateIcon();
 		void drawIcon();
+		void drawCircle();
 		void setType(const char* typeString);
+		void toggleComplete();
     protected:
     private:
 };
