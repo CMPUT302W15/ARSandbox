@@ -2,34 +2,45 @@
 #define GAMEICON_H
 
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string>
 #include <GL/gl.h>
+#include <GL/glut.h>
 
 class GameIcon
 {
     public:
-        GameIcon(float x, float y, const char* typeString); // const std::string& filename
+        GameIcon(float x, float y, const char* iconType); // const std::string& filename
         GameIcon();
         virtual ~GameIcon();
 
-        enum IconType {Mountain, Valley};
-
-
         /*Public Elements*/
+		enum Type {Mountain, Valley, None};
 
         float xCoord;
         float yCoord;
-        float zValue;
-        float scale;
-        IconType type;
+		float zValue;
 
+		float scale;
+
+		float DEG2RAD;
+
+		float * data;
+
+		bool complete;
+
+		Type type;
         GLuint texId;
 
         /*Public methods*/
-        void generateIcon();
-        void setType(const char* typeString);
-        void drawIcon();
+		void drawIcon();
+		void drawCircle();
+		void setType(const char* typeString);
+		void toggleComplete();
     protected:
     private:
 };
+
+
 #endif // GAMEICON_H
