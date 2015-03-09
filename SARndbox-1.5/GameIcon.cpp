@@ -67,16 +67,16 @@ void GameIcon::drawIcon(void)
 	else if (type == Valley)
 	{
 		float tempData[] = {
-				// first item
-		        xCoord + (1.0*scale),  yCoord + (0.5*scale),    zValue,
-				xCoord + (1.0*scale),  yCoord + (-1.5*scale), zValue,
-				xCoord + (1.0*scale),  yCoord + (-1.5*scale), zValue,
-		        xCoord + (0.3*scale),  yCoord + (-1.5*scale),    zValue,
-				// second item
-		        xCoord + (-0.3*scale),  yCoord + (-1.5*scale),    zValue,
-				xCoord + (-1.0*scale),  yCoord + (-1.5*scale), zValue,
-				xCoord + (-1.0*scale),  yCoord + (-1.5*scale), zValue,
-		        xCoord + (-1.0*scale),  yCoord + (0.5*scale),    zValue,
+				// first item (right side)
+		        xCoord + (1.0*scale),  yCoord + (0.5*scale),  zValue,	// top right
+				xCoord + (0.5*scale),  yCoord + (0.5*scale),  zValue,	// top left
+		        xCoord + (0.1*scale),  yCoord + (-1.5*scale), zValue,	// bottom left
+				xCoord + (1.0*scale),  yCoord + (-1.5*scale), zValue,	// bottom right
+				// second item (left side)
+				xCoord + (-1.0*scale),  yCoord + (0.5*scale),  zValue,	// top left
+				xCoord + (-0.5*scale),  yCoord + (0.5*scale), zValue,	// bottom left
+		        xCoord + (-0.1*scale),  yCoord + (-1.5*scale), zValue,	// bottom right 
+				xCoord + (-1.0*scale),  yCoord + (-1.5*scale), zValue	// top right
 		    };
 		numData = 8*3;
 		data = new float[numData];
@@ -87,10 +87,12 @@ void GameIcon::drawIcon(void)
 
 	if (!complete)
 	{
+		// r, g, b
 		glColor3f(1.0f, 0.0f, 0.0f);
 	}
 	else
 	{
+		// r, g, b
 		glColor3f(0.0f, 1.0f, 0.0f);
 	}
 
@@ -109,8 +111,6 @@ void GameIcon::drawIcon(void)
 
 void GameIcon::drawCircle()
 {
-	glBegin(GL_LINE_LOOP);
-	glColor3f(1.0f, 1.0f, 1.0f);
 
 	float xCenter = 0;
 	float yCenter = 0;
@@ -124,21 +124,26 @@ void GameIcon::drawCircle()
 	}
 	else if (type == Valley)
 	{
-		xCenter = (xCoord*3 + 1.005*scale + -1.005*scale)/3;
-		yCenter = (yCoord*3 + 1.99*scale)/3;
-		radius = yCoord + 1.99*scale - yCenter;
+		xCenter = xCoord;
+		yCenter = (yCoord*3 + (0.5*scale) + (0.5*scale) + (-1.5*scale) + (-1.5*scale))/4;
+		radius = 1.50 * scale;
 	}
 
-	for (int i=0; i < 360; i++)
+	for (float i=0.00; i < 0.05; i = i +0.001)
 	{
-		float degInRad = i*DEG2RAD;
-		glVertex3f( xCenter + cos(degInRad)*radius,
-					yCenter + sin(degInRad)*radius + (2/3)*radius,
-					zValue);
+		glBegin(GL_LINE_LOOP);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		for (int f=0; f < 360; f++)
+		{
+			float degInRad = f*DEG2RAD;
+			glVertex3f( xCenter + cos(degInRad)*radius,
+						yCenter + sin(degInRad)*radius + (2/3)*radius,
+						zValue);
+		}
+		radius = radius + 0.001;
+		glEnd();
+		glFlush();
 	}
-
-	glEnd();
-	glFlush();
 }
 
 void GameIcon::toggleComplete()
