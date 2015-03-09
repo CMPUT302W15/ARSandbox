@@ -385,12 +385,25 @@ void Sandbox::receiveFilteredFrame(const Kinect::FrameBuffer& frameBuffer)
 //OUR NEW METHOD
 void Sandbox::receiveOurFrame(const Kinect::FrameBuffer& frameBuffer)
     {
-        std::cout<<"Our frame function was called!"<<std::endl;
-        std::cout<<frameBuffer.getBuffer()<<std::endl;
+        //std::cout<<"Our frame function was called!"<<std::endl;
+        //std::cout<<frameBuffer.getBuffer()<<std::endl;
         const void* pixelBuffer = frameBuffer.getBuffer();
         gameFrames.postNewValue(frameBuffer);
-
         Vrui::requestUpdate();
+
+        //float* diPtr= (float*) frameBuffer.getBuffer();
+        /*float* diPtr = ourFrameFilter->validBuffer;
+        for(unsigned int y=0;y<480;++y)
+            for(unsigned int x=0;x<640;++x,++diPtr){
+                if((x == 10 || x == 150) && (y == 20 || y == 50)){
+                    std::cout<<"x=";
+                    std::cout<<x;
+                    std::cout<<" y=";
+                    std::cout<<y;
+                    std::cout<<" diPtr=";
+                    std::cout<<*diPtr<<std::endl;
+                }
+            }*/
     }
 //OUR NEW METHOD ENDS
 
@@ -406,7 +419,7 @@ void Sandbox::receiveRainObjects(const RainMaker::BlobList& newRainObjects)
 /* ### FLAG ### Where rain is being triggered*/
 void Sandbox::addWater(GLContextData& contextData) const
 	{
-    std::cout<<"Sandbox::addWater called."<<std::endl;
+    //std::cout<<"Sandbox::addWater called."<<std::endl;
 	/* Check if the most recent rain object list is not empty: */
 	if(!rainObjects.getLockedValue().empty())
 		{
@@ -839,6 +852,8 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	frameFilter->setOutputFrameFunction(Misc::createFunctionCall(this,&Sandbox::receiveFilteredFrame));
 
 	//HERE GOES OUR SHIT
+	std::cout<<elevationMin<<std::endl;
+	std::cout<<elevationMax<<std::endl;
 	ourFrameFilter = new FrameFilter(frameSize, 10, cameraIps.depthProjection, basePlane);
 	ourFrameFilter->setDepthCorrection(*depthCorrection);
     ourFrameFilter->setValidElevationInterval(cameraIps.depthProjection,basePlane,elevationMin,elevationMax);
@@ -1011,7 +1026,7 @@ void Sandbox::frame(void)
 
     if(gameFrames.lockNewValue())
         {
-        gameRenderer->setDepthImage(gameFrames.getLockedValue());
+        gameRenderer->setDepthImage(filteredFrames.getLockedValue());
         }
 	/* Lock the most recent rain object list: */
 	rainObjects.lockNewValue();
@@ -1037,7 +1052,7 @@ void Sandbox::frame(void)
 void Sandbox::display(GLContextData& contextData) const
 	{
 	//OUR SHIT HERE
-	std:cout<<"Sandbox::display called.\n"<<std::endl;
+	//std:cout<<"Sandbox::display called.\n"<<std::endl;
 	//OUR SHIT ENDS
 	/* Get the data item: */
 	DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);

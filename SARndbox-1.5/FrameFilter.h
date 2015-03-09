@@ -51,7 +51,7 @@ class FrameFilter
 	typedef Geometry::Plane<double,3> Plane;
 	typedef Geometry::ProjectiveTransformation<double,3> PTransform;
 	typedef Kinect::FrameSource::DepthCorrection::PixelCorrection PixelDepthCorrection; // Type for per-pixel depth correction factors
-	
+
 	/* Elements: */
 	private:
 	unsigned int size[2]; // Width and height of processed frames
@@ -75,15 +75,15 @@ class FrameFilter
 	float* validBuffer; // Buffer holding the most recent stable depth value for each pixel
 	Kinect::FrameBuffer outputFrame; // The most recently filtered output frame
 	OutputFrameFunction* outputFrameFunction; // Function called when a new output frame is ready
-	
+
 	/* Private methods: */
 	void* filterThreadMethod(void); // Method for the background filtering thread
-	
+
 	/* Constructors and destructors: */
 	public:
 	FrameFilter(const unsigned int sSize[2],int sNumAveragingSlots,const PTransform& depthProjection,const Plane& basePlane); // Creates a filter for frames of the given size and the given running average length
 	~FrameFilter(void); // Destroys the frame filter
-	
+
 	/* Methods: */
 	void setDepthCorrection(const Kinect::FrameSource::DepthCorrection& newDepthCorrection); // Sets the frame filter's per-pixel depth correction coefficients
 	void setValidDepthInterval(unsigned int newMinDepth,unsigned int newMaxDepth); // Sets the interval of depth values considered by the depth image filter

@@ -1244,16 +1244,6 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
 
         /* Restore OpenGL state: */
         glPopAttrib();
-        float* diPtr=static_cast<float*>(depthImage.getBuffer());
-        for(unsigned int y=0;y<size[1];++y)
-            for(unsigned int x=0;x<size[0];++x,++diPtr){
-                std::cout<<"x=";
-                std::cout<<x;
-                std::cout<<" y=";
-                std::cout<<y;
-                std::cout<<" diPtr=";
-                std::cout<<*diPtr<<std::endl;
-            }
     }
 
 void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& icon)
@@ -1342,6 +1332,24 @@ void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& ico
 
         /* Restore OpenGL state: */
         glPopAttrib();
+
+        //Depth image 0,0 = render x=-200 y=200.
+        //We can get the floats of depth values from depthImage.getBuffer(), but how do
+        //they map to the rendering coordinate system and why aren't the values changing?
+        long long int i = 0;
+        float* diPtr=static_cast<float*>(depthImage.getBuffer());
+        for(unsigned int y=0;y<size[1];++y)
+            for(unsigned int x=0;x<size[0];++x,++diPtr, i++){
+                if((x == 320) && (y == 240)){
+                    std::cout<<i;
+                    std::cout<<"x=";
+                    std::cout<<x;
+                    std::cout<<" y=";
+                    std::cout<<y;
+                    std::cout<<" diPtr=";
+                    std::cout<<*diPtr<<std::endl;
+                }
+            }
     }
 
 void SurfaceRenderer::glRenderGlobalAmbientHeightMap(GLuint heightColorMapTexture,GLContextData& contextData) const
