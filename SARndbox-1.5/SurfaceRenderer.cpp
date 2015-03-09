@@ -1261,8 +1261,7 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
 
 void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& icon)
     {
-    DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
-
+        DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
         icon.drawIcon();
     }
 

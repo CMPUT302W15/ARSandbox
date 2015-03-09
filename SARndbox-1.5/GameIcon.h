@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string>
 #include <GL/gl.h>
-#include <GL/glut.h>
 
 class GameIcon
 {
