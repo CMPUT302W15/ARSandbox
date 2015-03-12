@@ -114,23 +114,26 @@ void addRainSound()
                 } }
 	}
 
+
 /* Play the Correct Sound when the player complete one task*/
 void playCorrectSound()
-	{
-                if ( player == NULL )
-                {
-                     player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
-                     player->start();
-                }
-                else
-                {
-                     if ( ! player->isPlaying() )
-                {
-                          delete player;
-                          player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
-                          player->start();
-                } }
-	}
+{
+
+    if ( player == NULL )
+    {
+        player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
+        player->start();
+    }
+    else
+    {
+        if ( ! player->isPlaying() )
+        {
+            delete player;
+            player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
+            player->start();
+        }
+    }
+}
 
 
 /***********************************
@@ -1310,9 +1313,6 @@ void Sandbox::display(GLContextData& contextData) const
         //const char* name1 = "hill_icon1.png";
         //const char* name2 = "water_icon.png";
         //GameIcon* tempIcon2 = new GameIcon(0, 0, name1);
-
-        // Testing the game sound
-        //playCorrectSound();
 
         for(int i = 0; i < numIcons; i++)
             {

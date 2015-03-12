@@ -32,9 +32,8 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 }
 
 GameIcon::GameIcon(){
-    scale = 25.0;
-    zValue = -900.0f;
-
+    scale = 10.0;
+    zValue = -980.0f;
 }
 
 void GameIcon::setType(const char* typeString)
@@ -53,20 +52,22 @@ void GameIcon::setType(const char* typeString)
 
 void GameIcon::drawIcon(void)
 {
+    xTranslation = -220.00f;
+    yTranslation = -155.00f;
 	int numData;
 
 	if (type == Mountain)
 	{
 		float tempData[] = {
-                xCoord + (-1.005*scale), yCoord,    zValue,
-				xCoord,     yCoord + (1.99*scale), zValue,
-		        xCoord + (1.005*scale),  yCoord,    zValue,
-		        xCoord,     yCoord,    zValue,
+                xCoord + (-1.005*scale) + xTranslation, yCoord + yTranslation,    zValue,
+				xCoord + xTranslation,     yCoord + (1.99*scale) + yTranslation, zValue,
+		        xCoord + (1.005*scale) + xTranslation,  yCoord + yTranslation,    zValue,
+		        xCoord + xTranslation,     yCoord + yTranslation,    zValue,
 
-                xCoord + (1.005*scale),  yCoord,    zValue,
-				xCoord,     yCoord + (1.99*scale), zValue,
-				xCoord + (-1.005*scale), yCoord,    zValue,
-		        xCoord,     yCoord,    zValue,
+                xCoord + (1.005*scale) + xTranslation,  yCoord + yTranslation,    zValue,
+				xCoord + xTranslation,     yCoord + (1.99*scale) + yTranslation, zValue,
+				xCoord + (-1.005*scale) + xTranslation, yCoord + yTranslation,    zValue,
+		        xCoord + xTranslation,     yCoord + yTranslation,    zValue,
 		    };
 		numData = 8*3;
 		data = new float[numData];
@@ -77,16 +78,16 @@ void GameIcon::drawIcon(void)
 	{
 		float tempData[] = {
 				// second item (left side)
-				xCoord + (-1.0*scale),  yCoord + (2.0*scale),  zValue,	// top left
-				xCoord + (-1.0*scale),  yCoord + (0.0*scale),  zValue,	// bottom left
-				xCoord + (0.0*scale),   yCoord + (0.0*scale),  zValue,	// bottom right
-		        xCoord + (-0.75*scale), yCoord + (2.0*scale),  zValue,	// top right
+				xCoord + (-1.0*scale) + xTranslation,  yCoord + (2.0*scale) + yTranslation,  zValue,	// top left
+				xCoord + (-1.0*scale) + xTranslation,  yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom left
+				xCoord + (0.0*scale) + xTranslation,   yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom right
+		        xCoord + (-0.75*scale) + xTranslation, yCoord + (2.0*scale) + yTranslation,  zValue,	// top right
 
 				// first item (right side)
-				xCoord + (0.75*scale), yCoord + (2.0*scale),  zValue,	// top left
-				xCoord + (0.0*scale),  yCoord + (0.0*scale),  zValue,	// bottom left
-				xCoord + (1.0*scale),  yCoord + (0.0*scale),  zValue,	// bottom right
-		        xCoord + (1.0*scale),  yCoord + (2.0*scale),  zValue,	// top right
+				xCoord + (0.75*scale) + xTranslation, yCoord + (2.0*scale) + yTranslation,  zValue,	// top left
+				xCoord + (0.0*scale) + xTranslation,  yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom left
+				xCoord + (1.0*scale) + xTranslation,  yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom right
+		        xCoord + (1.0*scale) + xTranslation,  yCoord + (2.0*scale) + yTranslation,  zValue,	// top right
 		    };
 		numData = 8*3;
 		data = new float[numData];
@@ -127,14 +128,14 @@ void GameIcon::drawCircle()
 
 	if (type == Mountain)
 	{
-		xCenter = xCoord;
-		yCenter = (yCoord*3 + 1.99*scale)/3;
+		xCenter = xCoord + xTranslation;
+		yCenter = (yCoord*3 + 1.99*scale)/3 + yTranslation;
 		radius = yCoord + 1.99*scale - yCenter;
 	}
 	else if (type == Valley)
 	{
-		xCenter = xCoord;
-		yCenter = yCoord + 1*scale;
+		xCenter = xCoord + xTranslation;
+		yCenter = yCoord + 1*scale + yTranslation;
 		radius = 1.85 * scale;
 	}
 

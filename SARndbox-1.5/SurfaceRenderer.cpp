@@ -779,9 +779,13 @@ void SurfaceRenderer::glRenderDepthOnly(const SurfaceRenderer::PTransform& model
 	pmvdp*=depthProjection;
 	GLfloat pmvdpMatrix[16];
 	GLfloat* pmvdpPtr=pmvdpMatrix;
-	for(int j=0;j<4;++j)
-		for(int i=0;i<4;++i,++pmvdpPtr)
+	for(int j=0;j<4;++j) {
+		for(int i=0;i<4;++i,++pmvdpPtr) {
 			*pmvdpPtr=GLfloat(pmvdp.getMatrix()(i,j));
+			std::cout<<pmvdp.getMatrix()(i,j)<< " ";
+			}
+			std::cout<<std::endl;
+			}
 	glUniformMatrix4fvARB(dataItem->depthShaderUniforms[1],1,GL_FALSE,pmvdpMatrix);
 
 	/* Draw the surface: */
@@ -1252,6 +1256,14 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
 void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& icon)
     {
         DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
+        for(int i = 0; i < 17; i++){
+            std::cout<<"i="<<i<<" depthProjectionMatrix= "<<depthProjectionMatrix[i]<<"\n";
+        }
+        /* Upload the depth projection matrix: */
+        //glUniformMatrix4fvARB(dataItem->elevationShaderUniforms[1],1,GL_FALSE,depthProjectionMatrix);
+
+        ///* Upload the base plane equation: */
+        //glUniformARB<4>(dataItem->elevationShaderUniforms[2],1,basePlaneEq);
         icon.drawIcon();
     }
 
