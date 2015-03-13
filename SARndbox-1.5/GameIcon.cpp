@@ -14,7 +14,7 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 
 	zValue = 0.0f;
 
-	scale = 0.50;
+	scale = 0.5;
 	DEG2RAD = 3.14159/180;
 
 	if (strcasecmp(iconType,"mountain") == 0) {
