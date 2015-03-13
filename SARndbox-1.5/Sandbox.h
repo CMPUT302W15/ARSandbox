@@ -175,6 +175,7 @@ class Sandbox:public Vrui::Application,public GLObject
 
 	//OUR ELEMENTS GO HERE
 	FrameFilter* ourFrameFilter;
+	Threads::TripleBuffer<Kinect::FrameBuffer> gameFrames;
 	SurfaceRenderer* gameRenderer;//Surface renderer used for rendering game objects.
 	bool useGame;//A boolean that determines whether or not game elements will be used.
 	GameIcon* gameIcons;//An array of GameIcon objects that must be rendered.

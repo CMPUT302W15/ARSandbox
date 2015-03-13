@@ -779,9 +779,13 @@ void SurfaceRenderer::glRenderDepthOnly(const SurfaceRenderer::PTransform& model
 	pmvdp*=depthProjection;
 	GLfloat pmvdpMatrix[16];
 	GLfloat* pmvdpPtr=pmvdpMatrix;
-	for(int j=0;j<4;++j)
-		for(int i=0;i<4;++i,++pmvdpPtr)
+	for(int j=0;j<4;++j) {
+		for(int i=0;i<4;++i,++pmvdpPtr) {
 			*pmvdpPtr=GLfloat(pmvdp.getMatrix()(i,j));
+			std::cout<<pmvdp.getMatrix()(i,j)<< " ";
+			}
+			std::cout<<std::endl;
+			}
 	glUniformMatrix4fvARB(dataItem->depthShaderUniforms[1],1,GL_FALSE,pmvdpMatrix);
 
 	/* Draw the surface: */
@@ -1201,34 +1205,37 @@ void SurfaceRenderer::glRenderSinglePass(GLuint heightColorMapTexture,GLContextD
 
 void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
     {
+        /*
                 //Our rendering stuff will go here.
         DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
         float zValue = -1000.0f;
         float xTranslation = 0.0f;
         float yTranslation = 0.0f;
+        */
         	/* Set up OpenGL state: */
+        /*
         glPushAttrib(GL_ENABLE_BIT);
         glEnable(GL_TEXTURE_2D);
         glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
-
+        */
         /* Bind the texture object: */
-        glBindTexture(GL_TEXTURE_2D,dataItem->imageTextureId);
+        //glBindTexture(GL_TEXTURE_2D,dataItem->imageTextureId);
 
         /* Draw the image: */
-        glBegin(GL_QUADS);
-        glTexCoord2f(dataItem->texMin[0],dataItem->texMin[1]);
-        glVertex3f(0 + xTranslation,0 + yTranslation, zValue);
+        //glBegin(GL_QUADS);
+        //glTexCoord2f(dataItem->texMin[0],dataItem->texMin[1]);
+        //glVertex3f(0 + xTranslation,0 + yTranslation, zValue);
         //glVertex2i(0.5,0.5);
-        glTexCoord2f(dataItem->texMax[0],dataItem->texMin[1]);
-        glVertex3f(dataItem->image.getSize(0) + xTranslation,0 + yTranslation, zValue);
-        glTexCoord2f(dataItem->texMax[0],dataItem->texMax[1]);
-        glVertex3f(dataItem->image.getSize(0) + xTranslation,dataItem->image.getSize(1) + yTranslation, zValue);
-        glTexCoord2f(dataItem->texMin[0],dataItem->texMax[1]);
-        glVertex3f(0 + xTranslation,dataItem->image.getSize(1) + yTranslation, zValue);
-        glEnd();
+        //glTexCoord2f(dataItem->texMax[0],dataItem->texMin[1]);
+        //glVertex3f(dataItem->image.getSize(0) + xTranslation,0 + yTranslation, zValue);
+        //glTexCoord2f(dataItem->texMax[0],dataItem->texMax[1]);
+        //glVertex3f(dataItem->image.getSize(0) + xTranslation,dataItem->image.getSize(1) + yTranslation, zValue);
+        //glTexCoord2f(dataItem->texMin[0],dataItem->texMax[1]);
+        //glVertex3f(0 + xTranslation,dataItem->image.getSize(1) + yTranslation, zValue);
+        // glEnd();
 
         /* Protect the texture object: */
-        glBindTexture(GL_TEXTURE_2D,0);
+        //glBindTexture(GL_TEXTURE_2D,0);
 
         /* Draw the image's backside: */
         //glDisable(GL_TEXTURE_2D);
@@ -1248,90 +1255,16 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
 
 void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& icon)
     {
-    DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
-    GLuint texId;
-    bool haveNpotdt=GLARBTextureNonPowerOfTwo::isSupported();
-	if(haveNpotdt)
-		GLARBTextureNonPowerOfTwo::initExtension();
+        DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
+        for(int i = 0; i < 17; i++){
+            std::cout<<"i="<<i<<" depthProjectionMatrix= "<<depthProjectionMatrix[i]<<"\n";
+        }
+        /* Upload the depth projection matrix: */
+        //glUniformMatrix4fvARB(dataItem->elevationShaderUniforms[1],1,GL_FALSE,depthProjectionMatrix);
 
-	/* Calculate the texture coordinate rectangle: */
-	unsigned int texSize[2];
-	if(haveNpotdt)
-		{
-		for(int i=0;i<2;++i)
-			texSize[i]=icon.iconImage.getSize(i);
-		}
-	else
-		{
-		for(int i=0;i<2;++i)
-			for(texSize[i]=1U;texSize[i]<icon.iconImage.getSize(i);texSize[i]<<=1)
-				;
-		}
-	for(int i=0;i<2;++i)
-		{
-		dataItem->texMin[i]=0.0f;
-		dataItem->texMax[i]=GLfloat(icon.iconImage.getSize(i))/GLfloat(texSize[i]);
-		}
-
-	/* Bind the texture object: */
-	glBindTexture(GL_TEXTURE_2D,icon.texId);
-
-	/* Initialize basic texture settings: */
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_BASE_LEVEL,0);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAX_LEVEL,0);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
-
-	/* Upload the texture image: */
-	icon.iconImage.glTexImage2D(GL_TEXTURE_2D,0,GL_RGB8,!haveNpotdt);
-	//Changed this.
-
-	/* Protect the texture object: */
-	glBindTexture(GL_TEXTURE_2D,0);
-
-                    //Our rendering stuff will go here.
-        float zValue = -900.0f;
-        float xTranslation = 0.0f;
-        float yTranslation = 0.0f;
-        	/* Set up OpenGL state: */
-        glPushAttrib(GL_ENABLE_BIT);
-        glEnable(GL_TEXTURE_2D);
-        glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_REPLACE);
-
-        /* Bind the texture object: */
-        glBindTexture(GL_TEXTURE_2D,icon.texId);
-
-        /* Draw the image: */
-        glBegin(GL_QUADS);
-        glTexCoord2f(dataItem->texMin[0],dataItem->texMin[1]);
-        glVertex3f(icon.xCoord,icon.yCoord,zValue);
-        glTexCoord2f(dataItem->texMax[0],dataItem->texMin[1]);
-        glVertex3f(icon.iconImage.getSize(0) + icon.xCoord,0 + icon.yCoord, zValue);
-        glTexCoord2f(dataItem->texMax[0],dataItem->texMax[1]);
-        glVertex3f(icon.iconImage.getSize(0) + icon.xCoord,icon.iconImage.getSize(1) + icon.yCoord, zValue);
-        glTexCoord2f(dataItem->texMin[0],dataItem->texMax[1]);
-        glVertex3f(icon.xCoord,icon.iconImage.getSize(1) + icon.yCoord, zValue);
-        glEnd();
-
-        /* Protect the texture object: */
-        glBindTexture(GL_TEXTURE_2D,0);
-
-        /* Draw the image's backside: */
-        //glDisable(GL_TEXTURE_2D);
-        //glMaterial(GLMaterialEnums::FRONT,GLMaterial(GLMaterial::Color(0.7f,0.7f,0.7f)));
-
-        //glBegin(GL_QUADS);
-        //glNormal3f(0.0f,0.0f,-1.0f);
-        //glVertex2i(0,0);
-        //glVertex2i(0,dataItem->image.getSize(1));
-        //glVertex2i(dataItem->image.getSize(0),dataItem->image.getSize(1));
-        //glVertex2i(dataItem->image.getSize(0),0);
-        //glEnd();
-
-        /* Restore OpenGL state: */
-        glPopAttrib();
+        ///* Upload the base plane equation: */
+        //glUniformARB<4>(dataItem->elevationShaderUniforms[2],1,basePlaneEq);
+        icon.drawIcon();
     }
 
 void SurfaceRenderer::glRenderGlobalAmbientHeightMap(GLuint heightColorMapTexture,GLContextData& contextData) const

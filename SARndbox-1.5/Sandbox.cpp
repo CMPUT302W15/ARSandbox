@@ -114,6 +114,28 @@ void addRainSound()
                 } }
 	}
 
+
+/* Play the Correct Sound when the player complete one task*/
+void playCorrectSound()
+{
+
+    if ( player == NULL )
+    {
+        player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
+        player->start();
+    }
+    else
+    {
+        if ( ! player->isPlaying() )
+        {
+            delete player;
+            player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
+            player->start();
+        }
+    }
+}
+
+
 /***********************************
 Methods of class Sandbox::WaterTool:
 ***********************************/
@@ -292,7 +314,6 @@ void Sandbox::LocalWaterTool::addWater(GLContextData& contextData) const
 		{
 		glPushAttrib(GL_ENABLE_BIT);
 		glDisable(GL_CULL_FACE);
-
 		/* Get the current rain disk position and size in camera coordinates: */
 		Vrui::Point rainPos=Vrui::getInverseNavigationTransformation().transform(getButtonDevicePosition(0));
 		Vrui::Scalar rainRadius=Vrui::getPointPickDistance()*Vrui::Scalar(3);
@@ -386,7 +407,25 @@ void Sandbox::receiveFilteredFrame(const Kinect::FrameBuffer& frameBuffer)
 //OUR NEW METHOD
 void Sandbox::receiveOurFrame(const Kinect::FrameBuffer& frameBuffer)
     {
-        std::cout<<"Our frame function was called!\n"<<std::endl;
+        //std::cout<<"Our frame function was called!"<<std::endl;
+        //std::cout<<frameBuffer.getBuffer()<<std::endl;
+        const void* pixelBuffer = frameBuffer.getBuffer();
+        gameFrames.postNewValue(frameBuffer);
+        Vrui::requestUpdate();
+
+        //float* diPtr= (float*) frameBuffer.getBuffer();
+        /*float* diPtr = ourFrameFilter->validBuffer;
+        for(unsigned int y=0;y<480;++y)
+            for(unsigned int x=0;x<640;++x,++diPtr){
+                if((x == 10 || x == 150) && (y == 20 || y == 50)){
+                    std::cout<<"x=";
+                    std::cout<<x;
+                    std::cout<<" y=";
+                    std::cout<<y;
+                    std::cout<<" diPtr=";
+                    std::cout<<*diPtr<<std::endl;
+                }
+            }*/
     }
 //OUR NEW METHOD ENDS
 
@@ -402,12 +441,12 @@ void Sandbox::receiveRainObjects(const RainMaker::BlobList& newRainObjects)
 /* ### FLAG ### Where rain is being triggered*/
 void Sandbox::addWater(GLContextData& contextData) const
 	{
-
+    //std::cout<<"Sandbox::addWater called."<<std::endl;
 	/* Check if the most recent rain object list is not empty: */
 	if(!rainObjects.getLockedValue().empty())
 		{
 
-                addRainSound();
+               addRainSound();
 
 		/* Render all rain objects into the water table: */
 		glPushAttrib(GL_ENABLE_BIT);
@@ -653,16 +692,17 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 					{
 					numIcons++;
 					}
+
                 gameIcons = new GameIcon[numIcons];
                 for (pugi::xml_node icon = icons.first_child(); icon; icon = icon.next_sibling())
 					{
 					float tempX = atof(icon.attribute("xCoords").value());
 					float tempY = atof(icon.attribute("yCoords").value());
-					const char* tempfilename = (char *)icon.attribute("fileName").value();
+					const char* tempIconType = (char *)icon.attribute("iconType").value();
 					gameIcons[iconTracker].xCoord = tempX;
 					gameIcons[iconTracker].yCoord = tempY;
-					gameIcons[iconTracker].fileName = tempfilename;
-					gameIcons[iconTracker].generateImage();
+					gameIcons[iconTracker].setType(tempIconType);
+					//gameIcons[iconTracker].generateImage();
 					iconTracker++;
 					}
 				}
@@ -835,6 +875,8 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	frameFilter->setOutputFrameFunction(Misc::createFunctionCall(this,&Sandbox::receiveFilteredFrame));
 
 	//HERE GOES OUR SHIT
+	std::cout<<elevationMin<<std::endl;
+	std::cout<<elevationMax<<std::endl;
 	ourFrameFilter = new FrameFilter(frameSize, 10, cameraIps.depthProjection, basePlane);
 	ourFrameFilter->setDepthCorrection(*depthCorrection);
     ourFrameFilter->setValidElevationInterval(cameraIps.depthProjection,basePlane,elevationMin,elevationMax);
@@ -1005,6 +1047,10 @@ void Sandbox::frame(void)
 		surfaceRenderer->setDepthImage(filteredFrames.getLockedValue());
 		}
 
+    if(gameFrames.lockNewValue())
+        {
+        gameRenderer->setDepthImage(filteredFrames.getLockedValue());
+        }
 	/* Lock the most recent rain object list: */
 	rainObjects.lockNewValue();
 	#if 0
@@ -1029,7 +1075,7 @@ void Sandbox::frame(void)
 void Sandbox::display(GLContextData& contextData) const
 	{
 	//OUR SHIT HERE
-	std:cout<<"Sandbox::display called.\n"<<std::endl;
+	//std:cout<<"Sandbox::display called.\n"<<std::endl;
 	//OUR SHIT ENDS
 	/* Get the data item: */
 	DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
@@ -1262,14 +1308,12 @@ void Sandbox::display(GLContextData& contextData) const
 		}
     if(useGame)
         {
-        //GameIcon* tempIcon = new GameIcon(200, 200,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
+        //GameIcon* tempIcon = new GameIcon(0.0f, 0.0f,"Mountain");
         //GameIcon* tempIcon2 = new GameIcon(0, 0,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
         //const char* name1 = "hill_icon1.png";
         //const char* name2 = "water_icon.png";
-        //GameIcon* tempIcon = new GameIcon(200, 200, name1);
         //GameIcon* tempIcon2 = new GameIcon(0, 0, name1);
-        //gameRenderer->glRenderGameIcon(contextData, *tempIcon);
-        //gameRenderer->glRenderGameIcon(contextData, *tempIcon2);
+
         for(int i = 0; i < numIcons; i++)
             {
             gameRenderer->glRenderGameIcon(contextData, gameIcons[i]);

@@ -68,19 +68,12 @@ $(OBJDIR)/Sandbox.o: Sandbox.cpp  Sandbox.h \
  /home/sandbox/Vrui-3.1/include/Threads/MutexCond.h \
  /home/sandbox/Vrui-3.1/include/Misc/Time.h \
   GameIcon.h \
- /home/sandbox/Vrui-3.1/include/Images/RGBImage.h \
- /home/sandbox/Vrui-3.1/include/Images/Image.h \
- /home/sandbox/Vrui-3.1/include/Images/GetImageFileSize.h \
- /home/sandbox/Vrui-3.1/include/Images/ReadImageFile.h \
- /home/sandbox/Vrui-3.1/include/IO/File.h \
- /home/sandbox/Vrui-3.1/include/Misc/RefCounted.h \
- /home/sandbox/Vrui-3.1/include/Misc/Autopointer.h \
- /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h \
- /home/sandbox/Vrui-3.1/include/IO/Directory.h \
- /home/sandbox/Vrui-3.1/include/Misc/FileTests.h \
  /home/sandbox/Vrui-3.1/include/Misc/SelfDestructPointer.h \
  /home/sandbox/Vrui-3.1/include/Misc/FunctionCalls.h \
  /home/sandbox/Vrui-3.1/include/Misc/FileNameExtensions.h \
+ /home/sandbox/Vrui-3.1/include/IO/File.h \
+ /home/sandbox/Vrui-3.1/include/Misc/RefCounted.h \
+ /home/sandbox/Vrui-3.1/include/Misc/Autopointer.h \
  /home/sandbox/Vrui-3.1/include/IO/ValueSource.h \
  /home/sandbox/Vrui-3.1/include/Geometry/AffineCombiner.h \
  /home/sandbox/Vrui-3.1/include/Geometry/Plane.h \
@@ -130,12 +123,18 @@ $(OBJDIR)/Sandbox.o: Sandbox.cpp  Sandbox.h \
  /home/sandbox/Vrui-3.1/include/Vrui/OpenFile.h \
  /home/sandbox/Vrui-3.1/include/IO/OpenFile.h \
  /home/sandbox/Vrui-3.1/include/IO/SeekableFile.h \
+ /home/sandbox/Vrui-3.1/include/IO/Directory.h \
+ /home/sandbox/Vrui-3.1/include/Misc/FileTests.h \
  /home/sandbox/Vrui-3.1/include/Kinect/Camera.h \
  /home/sandbox/Vrui-3.1/include/Misc/Timer.h \
  /home/sandbox/Vrui-3.1/include/USB/Device.h \
  /home/sandbox/Vrui-3.1/include/USB/VendorProductId.h FrameFilter.h \
  SurfaceRenderer.h /home/sandbox/Vrui-3.1/include/IO/FileMonitor.h \
- /home/sandbox/Vrui-3.1/include/Threads/Mutex.h WaterTable2.h \
+ /home/sandbox/Vrui-3.1/include/Threads/Mutex.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBImage.h \
+ /home/sandbox/Vrui-3.1/include/Images/Image.h \
+ /home/sandbox/Vrui-3.1/include/Images/ReadImageFile.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h WaterTable2.h \
  /home/sandbox/Vrui-3.1/include/Sound/SoundPlayer.h \
  /home/sandbox/Vrui-3.1/include/Sound/Config.h \
  /home/sandbox/Vrui-3.1/include/Sound/Linux/ALSAPCMDevice.h \
