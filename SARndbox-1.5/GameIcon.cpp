@@ -14,6 +14,8 @@
 GameIcon::GameIcon(float x, float y, const char* iconType)
 {
     //ctor
+   	//SurfaceRenderer::PTransform::Point p1 = transformMatrix.transform(SurfaceRenderer::PTransform::Point(x, y, zValue));
+
     xCoord = x;
     yCoord = y;
 	complete = false;
@@ -65,7 +67,8 @@ void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
 
 	if (type == Mountain)
 	{
-		/**float tempData[] = {
+        /**
+		float tempData[] = {
                 xCoord + (-1.005*scale) + xTranslation, yCoord + yTranslation,    zValue,
 				xCoord + xTranslation,     yCoord + (1.99*scale) + yTranslation, zValue,
 		        xCoord + (1.005*scale) + xTranslation,  yCoord + yTranslation,    zValue,
@@ -75,7 +78,8 @@ void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
 				xCoord + xTranslation,     yCoord + (1.99*scale) + yTranslation, zValue,
 				xCoord + (-1.005*scale) + xTranslation, yCoord + yTranslation,    zValue,
 		        xCoord + xTranslation,     yCoord + yTranslation,    zValue,
-		    };**/
+		    };
+        **/
         float tempData[] = {
                 p1[0] + (-1.005*scale) + xTranslation, p1[1] + yTranslation,    p1[2],
 				p1[0] + xTranslation,     p1[1] + (1.99*scale) + yTranslation, p1[2],
@@ -170,40 +174,25 @@ void GameIcon::drawCircle()
 		radius = 1.85 * scale;
 	}
 
-	//for (float i=0.00; i < 0.05; i = i +0.001)
-	//{
-	/*
-		glBegin(GL_LINE_STRIP);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		for (int f=0; f < 360; f++)
-		{
-			float degInRad = f*DEG2RAD;
-			glVertex3f( xCenter + cos(degInRad)*radius,
-						yCenter + sin(degInRad)*radius,
-						zValue);
-            //glVertex3f(cos(degInRad)*radius,sin(degInRad)*radius, zValue);
-		}
-		radius = radius + 0.001;
-		glEnd();
-		glFlush();
-		*/
-
+	for (int i=0; i < 10; i++)
+	{
         glBegin(GL_LINES);
         glColor3f(1.0f, 1.0f, 1.0f);
 
         for (int i = 0; i < 180; i++)
         {
-            xCenter = radius * cos(i);
-            yCenter = radius * sin(i);
+            xCenter = radius * cos(i) + xCoord;
+            yCenter = radius * sin(i) + yCoord;
             glVertex3f(xCenter,yCenter, zValue);
 
-            xCenter = radius * cos(i + 0.1);
-            yCenter = radius * sin(i + 0.1);
+            xCenter = radius * cos(i + 0.1) + xCoord;
+            yCenter = radius * sin(i + 0.1) + yCoord;
             glVertex3f(xCenter,yCenter, zValue);
         }
         glEnd();
-
-	//}
+        glFlush();
+        radius += 0.005;
+	}
 }
 
 void GameIcon::toggleComplete()
