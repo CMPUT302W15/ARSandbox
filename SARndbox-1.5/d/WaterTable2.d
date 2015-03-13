@@ -55,5 +55,4 @@ $(OBJDIR)/WaterTable2.o: WaterTable2.cpp  \
  /home/sandbox/Vrui-3.1/include/Misc/Endianness.h \
  /home/sandbox/Vrui-3.1/include/Misc/RefCounted.h \
  /home/sandbox/Vrui-3.1/include/Misc/Autopointer.h \
- /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h GameIcon.h \
- 
+ /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h

@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include <Geometry/ProjectiveTransformation.h>
+#include "SurfaceRenderer.h"
+
 
 
 
@@ -32,8 +35,9 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 }
 
 GameIcon::GameIcon(){
-    scale = 10.0;
-    zValue = -980.0f;
+    scale = 25.0;
+    zValue = 720.0f;
+    complete = false;
 }
 
 void GameIcon::setType(const char* typeString)
@@ -50,15 +54,18 @@ void GameIcon::setType(const char* typeString)
 	}
 }
 
-void GameIcon::drawIcon(void)
+void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
 {
-    xTranslation = -220.00f;
-    yTranslation = -155.00f;
+    xTranslation = 0;//-220.00f;
+    yTranslation = 0;//-155.00f;
 	int numData;
+    std::cout<<"Normal x="<<xCoord<<" y="<<yCoord<<" z="<<zValue<<std::endl;
+	SurfaceRenderer::PTransform::Point p1 = transformMatrix.transform(SurfaceRenderer::PTransform::Point(xCoord, yCoord, zValue));
+	std::cout<<"Transformed x="<<p1[0]<<" y="<<p1[1]<<" z="<<p1[2]<<std::endl;
 
 	if (type == Mountain)
 	{
-		float tempData[] = {
+		/**float tempData[] = {
                 xCoord + (-1.005*scale) + xTranslation, yCoord + yTranslation,    zValue,
 				xCoord + xTranslation,     yCoord + (1.99*scale) + yTranslation, zValue,
 		        xCoord + (1.005*scale) + xTranslation,  yCoord + yTranslation,    zValue,
@@ -68,6 +75,17 @@ void GameIcon::drawIcon(void)
 				xCoord + xTranslation,     yCoord + (1.99*scale) + yTranslation, zValue,
 				xCoord + (-1.005*scale) + xTranslation, yCoord + yTranslation,    zValue,
 		        xCoord + xTranslation,     yCoord + yTranslation,    zValue,
+		    };**/
+        float tempData[] = {
+                p1[0] + (-1.005*scale) + xTranslation, p1[1] + yTranslation,    p1[2],
+				p1[0] + xTranslation,     p1[1] + (1.99*scale) + yTranslation, p1[2],
+		        p1[0] + (1.005*scale) + xTranslation,  p1[1] + yTranslation,    p1[2],
+		        p1[0] + xTranslation,     p1[1] + yTranslation,    p1[2],
+
+                p1[0] + (1.005*scale) + xTranslation,  p1[1] + yTranslation,    p1[2],
+				p1[0] + xTranslation,     p1[1] + (1.99*scale) + yTranslation, p1[2],
+				p1[0] + (-1.005*scale) + xTranslation, p1[1] + yTranslation,    p1[2],
+		        p1[0] + xTranslation,     p1[1] + yTranslation,    p1[2],
 		    };
 		numData = 8*3;
 		data = new float[numData];
@@ -76,7 +94,7 @@ void GameIcon::drawIcon(void)
 	}
 	else if (type == Valley)
 	{
-		float tempData[] = {
+		/**float tempData[] = {
 				// second item (left side)
 				xCoord + (-1.0*scale) + xTranslation,  yCoord + (2.0*scale) + yTranslation,  zValue,	// top left
 				xCoord + (-1.0*scale) + xTranslation,  yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom left
@@ -88,6 +106,19 @@ void GameIcon::drawIcon(void)
 				xCoord + (0.0*scale) + xTranslation,  yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom left
 				xCoord + (1.0*scale) + xTranslation,  yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom right
 		        xCoord + (1.0*scale) + xTranslation,  yCoord + (2.0*scale) + yTranslation,  zValue,	// top right
+		    };**/
+            float tempData[] = {
+				// second item (left side)
+				p1[0] + (-1.0*scale) + xTranslation,  p1[1] + (2.0*scale) + yTranslation,  p1[2],	// top left
+				p1[0] + (-1.0*scale) + xTranslation,  p1[1] + (0.0*scale) + yTranslation,  p1[2],	// bottom left
+				p1[0] + (0.0*scale) + xTranslation,   p1[1] + (0.0*scale) + yTranslation,  p1[2],	// bottom right
+		        p1[0] + (-0.75*scale) + xTranslation, p1[1] + (2.0*scale) + yTranslation,  p1[2],	// top right
+
+				// first item (right side)
+				p1[0] + (0.75*scale) + xTranslation, p1[1] + (2.0*scale) + yTranslation,  p1[2],	// top left
+				p1[0] + (0.0*scale) + xTranslation,  p1[1] + (0.0*scale) + yTranslation,  p1[2],	// bottom left
+				p1[0] + (1.0*scale) + xTranslation,  p1[1] + (0.0*scale) + yTranslation,  p1[2],	// bottom right
+		        p1[0] + (1.0*scale) + xTranslation,  p1[1] + (2.0*scale) + yTranslation,  p1[2],	// top right
 		    };
 		numData = 8*3;
 		data = new float[numData];
@@ -128,32 +159,51 @@ void GameIcon::drawCircle()
 
 	if (type == Mountain)
 	{
-		xCenter = xCoord + xTranslation;
-		yCenter = (yCoord*3 + 1.99*scale)/3 + yTranslation;
+		xCenter = xCoord;//+ xTranslation;
+		yCenter = (yCoord*3 + 1.99*scale)/3 ;//+ yTranslation;
 		radius = yCoord + 1.99*scale - yCenter;
 	}
 	else if (type == Valley)
 	{
-		xCenter = xCoord + xTranslation;
-		yCenter = yCoord + 1*scale + yTranslation;
+		xCenter = xCoord;//+ xTranslation;
+		yCenter = yCoord + 1*scale ;//+ yTranslation;
 		radius = 1.85 * scale;
 	}
 
-	for (float i=0.00; i < 0.05; i = i +0.001)
-	{
-		glBegin(GL_LINE_LOOP);
+	//for (float i=0.00; i < 0.05; i = i +0.001)
+	//{
+	/*
+		glBegin(GL_LINE_STRIP);
 		glColor3f(1.0f, 1.0f, 1.0f);
 		for (int f=0; f < 360; f++)
 		{
 			float degInRad = f*DEG2RAD;
 			glVertex3f( xCenter + cos(degInRad)*radius,
-						yCenter + sin(degInRad)*radius + (2/3)*radius,
+						yCenter + sin(degInRad)*radius,
 						zValue);
+            //glVertex3f(cos(degInRad)*radius,sin(degInRad)*radius, zValue);
 		}
 		radius = radius + 0.001;
 		glEnd();
 		glFlush();
-	}
+		*/
+
+        glBegin(GL_LINES);
+        glColor3f(1.0f, 1.0f, 1.0f);
+
+        for (int i = 0; i < 180; i++)
+        {
+            xCenter = radius * cos(i);
+            yCenter = radius * sin(i);
+            glVertex3f(xCenter,yCenter, zValue);
+
+            xCenter = radius * cos(i + 0.1);
+            yCenter = radius * sin(i + 0.1);
+            glVertex3f(xCenter,yCenter, zValue);
+        }
+        glEnd();
+
+	//}
 }
 
 void GameIcon::toggleComplete()

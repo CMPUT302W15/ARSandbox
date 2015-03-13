@@ -67,16 +67,27 @@ $(OBJDIR)/Sandbox.o: Sandbox.cpp  Sandbox.h \
  /home/sandbox/Vrui-3.1/include/Kinect/Config.h RainMaker.h \
  /home/sandbox/Vrui-3.1/include/Threads/MutexCond.h \
  /home/sandbox/Vrui-3.1/include/Misc/Time.h \
-  GameIcon.h \
- /home/sandbox/Vrui-3.1/include/Misc/SelfDestructPointer.h \
- /home/sandbox/Vrui-3.1/include/Misc/FunctionCalls.h \
- /home/sandbox/Vrui-3.1/include/Misc/FileNameExtensions.h \
+  GameIcon.h SurfaceRenderer.h \
+ /home/sandbox/Vrui-3.1/include/IO/FileMonitor.h \
+ /home/sandbox/Vrui-3.1/include/Misc/HashTable.h \
+ /home/sandbox/Vrui-3.1/include/Misc/PoolAllocator.h \
+ /home/sandbox/Vrui-3.1/include/Misc/StandardHashFunction.h \
+ /home/sandbox/Vrui-3.1/include/Threads/Mutex.h \
+ /home/sandbox/Vrui-3.1/include/Geometry/Plane.h \
+ /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBShaderObjects.h \
+ /home/sandbox/Vrui-3.1/include/GL/Extensions/GLExtension.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBImage.h \
+ /home/sandbox/Vrui-3.1/include/Images/Image.h \
+ /home/sandbox/Vrui-3.1/include/Images/ReadImageFile.h \
  /home/sandbox/Vrui-3.1/include/IO/File.h \
  /home/sandbox/Vrui-3.1/include/Misc/RefCounted.h \
  /home/sandbox/Vrui-3.1/include/Misc/Autopointer.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h \
+ /home/sandbox/Vrui-3.1/include/Misc/SelfDestructPointer.h \
+ /home/sandbox/Vrui-3.1/include/Misc/FunctionCalls.h \
+ /home/sandbox/Vrui-3.1/include/Misc/FileNameExtensions.h \
  /home/sandbox/Vrui-3.1/include/IO/ValueSource.h \
  /home/sandbox/Vrui-3.1/include/Geometry/AffineCombiner.h \
- /home/sandbox/Vrui-3.1/include/Geometry/Plane.h \
  /home/sandbox/Vrui-3.1/include/Geometry/GeometryValueCoders.h \
  /home/sandbox/Vrui-3.1/include/Misc/ValueCoder.h \
  /home/sandbox/Vrui-3.1/include/Geometry/OutputOperators.h \
@@ -84,20 +95,15 @@ $(OBJDIR)/Sandbox.o: Sandbox.cpp  Sandbox.h \
  /home/sandbox/Vrui-3.1/include/GL/GLPrintError.h \
  /home/sandbox/Vrui-3.1/include/GL/GLLightTracker.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLEXTFramebufferObject.h \
- /home/sandbox/Vrui-3.1/include/GL/Extensions/GLExtension.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBTextureRectangle.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBTextureFloat.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBTextureRg.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBDepthTexture.h \
- /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBShaderObjects.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBVertexShader.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBVertexProgram.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBFragmentShader.h \
  /home/sandbox/Vrui-3.1/include/GL/Extensions/GLARBMultitexture.h \
  /home/sandbox/Vrui-3.1/include/GL/GLContextData.h \
- /home/sandbox/Vrui-3.1/include/Misc/HashTable.h \
- /home/sandbox/Vrui-3.1/include/Misc/PoolAllocator.h \
- /home/sandbox/Vrui-3.1/include/Misc/StandardHashFunction.h \
  /home/sandbox/Vrui-3.1/include/GL/GLGeometryWrappers.h \
  /home/sandbox/Vrui-3.1/include/GL/GLTexCoordTemplates.h \
  /home/sandbox/Vrui-3.1/include/GL/GLNormalTemplates.h \
@@ -129,13 +135,7 @@ $(OBJDIR)/Sandbox.o: Sandbox.cpp  Sandbox.h \
  /home/sandbox/Vrui-3.1/include/Misc/Timer.h \
  /home/sandbox/Vrui-3.1/include/USB/Device.h \
  /home/sandbox/Vrui-3.1/include/USB/VendorProductId.h FrameFilter.h \
- SurfaceRenderer.h /home/sandbox/Vrui-3.1/include/IO/FileMonitor.h \
- /home/sandbox/Vrui-3.1/include/Threads/Mutex.h \
- /home/sandbox/Vrui-3.1/include/Images/RGBImage.h \
- /home/sandbox/Vrui-3.1/include/Images/Image.h \
- /home/sandbox/Vrui-3.1/include/Images/ReadImageFile.h \
- /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h WaterTable2.h \
- /home/sandbox/Vrui-3.1/include/Sound/SoundPlayer.h \
+ WaterTable2.h /home/sandbox/Vrui-3.1/include/Sound/SoundPlayer.h \
  /home/sandbox/Vrui-3.1/include/Sound/Config.h \
  /home/sandbox/Vrui-3.1/include/Sound/Linux/ALSAPCMDevice.h \
  /home/sandbox/Vrui-3.1/include/Sound/SoundDataFormat.h pugixml.hpp \

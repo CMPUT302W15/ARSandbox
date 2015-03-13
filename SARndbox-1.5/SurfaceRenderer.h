@@ -33,11 +33,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #include <Images/RGBImage.h>
 #include <Images/ReadImageFile.h>
-#include "GameIcon.h"
+
 
 /* Forward declarations: */
 class GLLightTracker;
 class WaterTable2;
+
+class GameIcon;
 
 class SurfaceRenderer:public GLObject
 	{

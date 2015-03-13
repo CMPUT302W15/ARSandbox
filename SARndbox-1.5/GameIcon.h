@@ -7,12 +7,16 @@
 #include <string>
 #include <GL/gl.h>
 
+#include <Geometry/ProjectiveTransformation.h>
+#include "SurfaceRenderer.h"
+
 class GameIcon
 {
     public:
         GameIcon(float x, float y, const char* iconType); // const std::string& filename
         GameIcon();
         virtual ~GameIcon();
+
 
         /*Public Elements*/
 		enum Type {Mountain, Valley, None};
@@ -35,7 +39,7 @@ class GameIcon
         GLuint texId;
 
         /*Public methods*/
-		void drawIcon();
+		void drawIcon(SurfaceRenderer::PTransform transformMatrix);
 		void drawCircle();
 		void setType(const char* typeString);
 		void toggleComplete();
