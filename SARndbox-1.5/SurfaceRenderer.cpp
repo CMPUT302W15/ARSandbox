@@ -1252,15 +1252,12 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
 
 void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& icon)
     {
+        float* ptr = (float*) depthImage.getBuffer();
         DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
-        //for(int i = 0; i < 17; i++){
-        //    std::cout<<"i="<<i<<" depthProjectionMatrix= "<<depthProjectionMatrix[i]<<"\n";
-        //}
-        /* Upload the depth projection matrix: */
-        //glUniformMatrix4fvARB(dataItem->elevationShaderUniforms[1],1,GL_FALSE,depthProjectionMatrix);
-
-        ///* Upload the base plane equation: */
-        //glUniformARB<4>(dataItem->elevationShaderUniforms[2],1,basePlaneEq);
+        //std::cout<<"Size[0] of depth image="<<size[0]<<" size[1]="<<size[1]<<std::endl;
+        //std::cout<<"\nz value at x=0 y=0: "<< ptr[0*640 + 0] <<std::endl;
+        //std::cout<<"\nz value at x=320 y=240: "<< ptr[240*640 + 320] <<std::endl;
+        //std::cout<<"\nz value at x=640 y=480: "<< ptr[480*640 + 640] <<std::endl;
         icon.drawIcon(depthProjection);
     }
 

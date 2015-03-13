@@ -1308,12 +1308,8 @@ void Sandbox::display(GLContextData& contextData) const
 		}
     if(useGame)
         {
-        //GameIcon* tempIcon = new GameIcon(0.0f, 0.0f,"Mountain");
-        //GameIcon* tempIcon2 = new GameIcon(0, 0,Images::readImageFile("hill_icon1.png",Vrui::openFile("hill_icon1.png")));
-        //const char* name1 = "hill_icon1.png";
-        //const char* name2 = "water_icon.png";
-        //GameIcon* tempIcon2 = new GameIcon(0, 0, name1);
-
+       // std::cout<<"Bounding box data: min_x="<<bbox.min[0]<<" min_y="<<bbox.min[1]<<" min_z"<<bbox.min[2]<<std::endl;
+        //std::cout<<"max_x="<<bbox.max[0]<<" max_y="<<bbox.max[1]<<" max_z="<<bbox.max[2]<<std::endl;
         for(int i = 0; i < numIcons; i++)
             {
             gameRenderer->glRenderGameIcon(contextData, gameIcons[i]);
