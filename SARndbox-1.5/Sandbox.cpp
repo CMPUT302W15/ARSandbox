@@ -701,6 +701,8 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 					const char* tempIconType = (char *)icon.attribute("iconType").value();
 					gameIcons[iconTracker].xCoord = tempX;
 					gameIcons[iconTracker].yCoord = tempY;
+					gameIcons[iconTracker].kinectSpaceX = tempX;
+					gameIcons[iconTracker].kinectSpaceY = tempY;
 					gameIcons[iconTracker].setType(tempIconType);
 					//gameIcons[iconTracker].generateImage();
 					iconTracker++;
@@ -875,8 +877,8 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	frameFilter->setOutputFrameFunction(Misc::createFunctionCall(this,&Sandbox::receiveFilteredFrame));
 
 	//HERE GOES OUR SHIT
-	std::cout<<elevationMin<<std::endl;
-	std::cout<<elevationMax<<std::endl;
+	//std::cout<<elevationMin<<std::endl;
+	//std::cout<<elevationMax<<std::endl;
 	ourFrameFilter = new FrameFilter(frameSize, 10, cameraIps.depthProjection, basePlane);
 	ourFrameFilter->setDepthCorrection(*depthCorrection);
     ourFrameFilter->setValidElevationInterval(cameraIps.depthProjection,basePlane,elevationMin,elevationMax);
@@ -960,6 +962,28 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	gameRenderer->setUseHeightMap(false);
 	gameRenderer->setDrawContourLines(false);
 	gameRenderer->setDrawGameElements(useGame);
+	//Now we have to translate our coordinates from Kinect space to VRUI space.
+	for(int i = 0; i < numIcons; i++){
+        SurfaceRenderer::PTransform::Point p = gameRenderer->depthProjection.transform(SurfaceRenderer::PTransform::Point(gameIcons[i].xCoord, gameIcons[i].yCoord, gameIcons[i].zValue));
+        std::cout<<"Untransformed point coordinates: x="<<gameIcons[i].xCoord<<" y="<<gameIcons[i].yCoord<<" z="<<gameIcons[i].zValue<<"\n"<<std::endl;
+        std::cout<<"Transformed point coordinates: x="<<p[0]<<" y="<<p[1]<<" z="<<p[2]<<"\n"<<std::endl;
+        gameIcons[i].xCoord = p[0];
+        gameIcons[i].yCoord = p[1];
+        gameIcons[i].zValue = p[2];
+	}
+	//Now that our icon coordinates have been translated, we have to make sure they fall within the bounding box.
+	for(int i = 0; i < numIcons; i++){
+        if(gameIcons[i].xCoord < bbox.min[0])
+            gameIcons[i].xCoord = bbox.min[0] + (0.1 * (bbox.max[0] - bbox.min[0]));
+        else if(gameIcons[i].xCoord > bbox.max[0])
+            gameIcons[i].xCoord = bbox.max[0] - (0.1 * (bbox.max[0] - bbox.min[0]));
+
+        if(gameIcons[i].yCoord < bbox.min[1])
+            gameIcons[i].yCoord = bbox.min[1] + (0.1 * (bbox.max[1] - bbox.min[1]));
+        else if(gameIcons[i].yCoord > bbox.max[1])
+            gameIcons[i].yCoord = bbox.max[1] - (0.1 * (bbox.max[1] - bbox.min[1]));
+	}
+
 	if(hillshade)
 		surfaceRenderer->setIlluminate(true);
 	if(waterTable!=0&&waterSpeed>0.0)
@@ -1074,9 +1098,6 @@ void Sandbox::frame(void)
 
 void Sandbox::display(GLContextData& contextData) const
 	{
-	//OUR SHIT HERE
-	//std:cout<<"Sandbox::display called.\n"<<std::endl;
-	//OUR SHIT ENDS
 	/* Get the data item: */
 	DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
 

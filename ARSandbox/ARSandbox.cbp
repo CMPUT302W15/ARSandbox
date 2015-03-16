@@ -249,6 +249,13 @@
 		<Unit filename="../SARndbox-1.5/WaterTable2.h" />
 		<Unit filename="../SARndbox-1.5/bin/CalibrateProjector" />
 		<Unit filename="../SARndbox-1.5/bin/SARndbox" />
+		<Unit filename="../SARndbox-1.5/bin/hill_icon.png" />
+		<Unit filename="../SARndbox-1.5/bin/hill_icon1.png" />
+		<Unit filename="../SARndbox-1.5/bin/hole_icon.png" />
+		<Unit filename="../SARndbox-1.5/bin/home-cat.jpg" />
+		<Unit filename="../SARndbox-1.5/bin/test.xml" />
+		<Unit filename="../SARndbox-1.5/bin/text.xml" />
+		<Unit filename="../SARndbox-1.5/bin/water_icon.png" />
 		<Unit filename="../SARndbox-1.5/d/CalibrateProjector.d" />
 		<Unit filename="../SARndbox-1.5/d/FrameFilter.d" />
 		<Unit filename="../SARndbox-1.5/d/RainMaker.d" />

@@ -25,6 +25,10 @@ class GameIcon
         float yCoord;
 		float zValue;
 
+		float kinectSpaceX;
+		float kinectSpaceY;
+		float kinectSpaceZ;
+
 		float scale;
 		float xTranslation;
 		float yTranslation;

@@ -49,6 +49,10 @@ class SurfaceRenderer:public GLObject
 	typedef Geometry::Plane<Scalar,3> Plane; // Type for planes in camera space
 	typedef Geometry::ProjectiveTransformation<Scalar,3> PTransform; // Type for projective transformations
 
+    unsigned int size[2]; // Width and height of the depth image
+	PTransform depthProjection; // The transformation from depth image space to camera space
+	GLfloat depthProjectionMatrix[16]; // Same, in GLSL-compatible format
+
 	private:
 	struct DataItem:public GLObject::DataItem
 		{
@@ -87,9 +91,6 @@ class SurfaceRenderer:public GLObject
 
 	/* Elements: */
 	IO::FileMonitor fileMonitor; // Monitor to watch the renderer's external shader source files
-	unsigned int size[2]; // Width and height of the depth image
-	PTransform depthProjection; // The transformation from depth image space to camera space
-	GLfloat depthProjectionMatrix[16]; // Same, in GLSL-compatible format
 	GLfloat tangentDepthProjectionMatrix[16]; // Depth projection for tangent planes in GLSL-compatible format
 	Plane basePlane; // Base plane to calculate surface elevation
 	GLfloat basePlaneEq[4]; // Base plane equation in GLSL-compatible format

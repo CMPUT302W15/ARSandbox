@@ -20,6 +20,10 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
     yCoord = y;
 	complete = false;
 
+	kinectSpaceX = x;
+	kinectSpaceY = y;
+	kinectSpaceZ = 0.0f;
+
 	zValue = 0.0f;
 
 	scale = 25.0;
@@ -61,13 +65,13 @@ void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
     xTranslation = 0;//-220.00f;
     yTranslation = 0;//-155.00f;
 	int numData;
-    std::cout<<"Normal x="<<xCoord<<" y="<<yCoord<<" z="<<zValue<<std::endl;
-	SurfaceRenderer::PTransform::Point p1 = transformMatrix.transform(SurfaceRenderer::PTransform::Point(xCoord, yCoord, zValue));
-	std::cout<<"Transformed x="<<p1[0]<<" y="<<p1[1]<<" z="<<p1[2]<<std::endl;
+    //std::cout<<"Normal x="<<xCoord<<" y="<<yCoord<<" z="<<zValue<<std::endl;
+	//SurfaceRenderer::PTransform::Point p1 = transformMatrix.transform(SurfaceRenderer::PTransform::Point(xCoord, yCoord, zValue));
+	//std::cout<<"Transformed x="<<p1[0]<<" y="<<p1[1]<<" z="<<p1[2]<<std::endl;
 
 	if (type == Mountain)
 	{
-        /**
+
 		float tempData[] = {
                 xCoord + (-1.005*scale) + xTranslation, yCoord + yTranslation,    zValue,
 				xCoord + xTranslation,     yCoord + (1.99*scale) + yTranslation, zValue,
@@ -79,8 +83,8 @@ void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
 				xCoord + (-1.005*scale) + xTranslation, yCoord + yTranslation,    zValue,
 		        xCoord + xTranslation,     yCoord + yTranslation,    zValue,
 		    };
-        **/
-        float tempData[] = {
+
+        /**float tempData[] = {
                 p1[0] + (-1.005*scale) + xTranslation, p1[1] + yTranslation,    p1[2],
 				p1[0] + xTranslation,     p1[1] + (1.99*scale) + yTranslation, p1[2],
 		        p1[0] + (1.005*scale) + xTranslation,  p1[1] + yTranslation,    p1[2],
@@ -90,7 +94,7 @@ void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
 				p1[0] + xTranslation,     p1[1] + (1.99*scale) + yTranslation, p1[2],
 				p1[0] + (-1.005*scale) + xTranslation, p1[1] + yTranslation,    p1[2],
 		        p1[0] + xTranslation,     p1[1] + yTranslation,    p1[2],
-		    };
+		    };**/
 		numData = 8*3;
 		data = new float[numData];
 		data = tempData;
@@ -98,7 +102,7 @@ void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
 	}
 	else if (type == Valley)
 	{
-		/**float tempData[] = {
+		float tempData[] = {
 				// second item (left side)
 				xCoord + (-1.0*scale) + xTranslation,  yCoord + (2.0*scale) + yTranslation,  zValue,	// top left
 				xCoord + (-1.0*scale) + xTranslation,  yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom left
@@ -110,8 +114,8 @@ void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
 				xCoord + (0.0*scale) + xTranslation,  yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom left
 				xCoord + (1.0*scale) + xTranslation,  yCoord + (0.0*scale) + yTranslation,  zValue,	// bottom right
 		        xCoord + (1.0*scale) + xTranslation,  yCoord + (2.0*scale) + yTranslation,  zValue,	// top right
-		    };**/
-            float tempData[] = {
+		    };
+            /**float tempData[] = {
 				// second item (left side)
 				p1[0] + (-1.0*scale) + xTranslation,  p1[1] + (2.0*scale) + yTranslation,  p1[2],	// top left
 				p1[0] + (-1.0*scale) + xTranslation,  p1[1] + (0.0*scale) + yTranslation,  p1[2],	// bottom left
@@ -123,7 +127,7 @@ void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
 				p1[0] + (0.0*scale) + xTranslation,  p1[1] + (0.0*scale) + yTranslation,  p1[2],	// bottom left
 				p1[0] + (1.0*scale) + xTranslation,  p1[1] + (0.0*scale) + yTranslation,  p1[2],	// bottom right
 		        p1[0] + (1.0*scale) + xTranslation,  p1[1] + (2.0*scale) + yTranslation,  p1[2],	// top right
-		    };
+		    };**/
 		numData = 8*3;
 		data = new float[numData];
 		data = tempData;
