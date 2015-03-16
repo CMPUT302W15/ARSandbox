@@ -1254,8 +1254,9 @@ void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& ico
     {
         float* ptr = (float*) depthImage.getBuffer();
         int mountainHeight = 740;
-        DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
-        SurfaceRenderer::PTransform::Point p1 = depthProjection.transform(SurfaceRenderer::PTransform::Point(320, 240, ptr[240*640 + 320]));
+        int valleyHeight = 770;
+        //DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
+        //SurfaceRenderer::PTransform::Point p1 = depthProjection.transform(SurfaceRenderer::PTransform::Point(320, 240, ptr[240*640 + 320]));
         //std::cout<<"Size[0] of depth image="<<size[0]<<" size[1]="<<size[1]<<std::endl;
         //std::cout<<"\nz value at x=0 y=0: "<< ptr[0*640 + 0] <<std::endl;
         //std::cout<<"\nz value at x=320 y=240 in kinect space: "<< ptr[240*640 + 320] <<std::endl;
@@ -1265,6 +1266,12 @@ void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& ico
             int tempX = (int)icon.kinectSpaceX;
             int tempY = (int)icon.kinectSpaceY;
             icon.complete = (ptr[tempY*640 + tempX] <= mountainHeight);
+            std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
+        }
+        if(icon.type == icon.Valley && !icon.complete){
+            int tempX = (int)icon.kinectSpaceX;
+            int tempY = (int)icon.kinectSpaceY;
+            icon.complete = (ptr[tempY*640 + tempX] >= valleyHeight);
             std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
         }
         icon.drawIcon(depthProjection);
