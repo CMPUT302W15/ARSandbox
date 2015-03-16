@@ -973,15 +973,28 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	}
 	//Now that our icon coordinates have been translated, we have to make sure they fall within the bounding box.
 	for(int i = 0; i < numIcons; i++){
-        if(gameIcons[i].xCoord < bbox.min[0])
+        bool change = false;
+        if(gameIcons[i].xCoord < bbox.min[0]){
             gameIcons[i].xCoord = bbox.min[0] + (0.1 * (bbox.max[0] - bbox.min[0]));
-        else if(gameIcons[i].xCoord > bbox.max[0])
+            change = true;
+        } else if(gameIcons[i].xCoord > bbox.max[0]){
             gameIcons[i].xCoord = bbox.max[0] - (0.1 * (bbox.max[0] - bbox.min[0]));
-
-        if(gameIcons[i].yCoord < bbox.min[1])
+            change = true;
+        }
+        if(gameIcons[i].yCoord < bbox.min[1]){
             gameIcons[i].yCoord = bbox.min[1] + (0.1 * (bbox.max[1] - bbox.min[1]));
-        else if(gameIcons[i].yCoord > bbox.max[1])
+            change = true;
+        }
+        else if(gameIcons[i].yCoord > bbox.max[1]){
             gameIcons[i].yCoord = bbox.max[1] - (0.1 * (bbox.max[1] - bbox.min[1]));
+            change = true;
+        }
+        if(change){
+            SurfaceRenderer::PTransform::Point p = gameRenderer->depthProjection.inverseTransform(SurfaceRenderer::PTransform::Point(gameIcons[i].xCoord, gameIcons[i].yCoord, gameIcons[i].zValue));
+            gameIcons[i].kinectSpaceX = p[0];
+            gameIcons[i].kinectSpaceY = p[1];
+            std::cout<<"\nAfter shifting for BB: kinectX="<<gameIcons[i].kinectSpaceX<<" kinectY="<<gameIcons[i].kinectSpaceY<<std::endl;
+        }
 	}
 
 	if(hillshade)

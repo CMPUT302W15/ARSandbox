@@ -1253,11 +1253,20 @@ void SurfaceRenderer::glRenderGameElements(GLContextData& contextData)
 void SurfaceRenderer::glRenderGameIcon(GLContextData& contextData, GameIcon& icon)
     {
         float* ptr = (float*) depthImage.getBuffer();
+        int mountainHeight = 740;
         DataItem* dataItem=contextData.retrieveDataItem<DataItem>(this);
+        SurfaceRenderer::PTransform::Point p1 = depthProjection.transform(SurfaceRenderer::PTransform::Point(320, 240, ptr[240*640 + 320]));
         //std::cout<<"Size[0] of depth image="<<size[0]<<" size[1]="<<size[1]<<std::endl;
         //std::cout<<"\nz value at x=0 y=0: "<< ptr[0*640 + 0] <<std::endl;
-        //std::cout<<"\nz value at x=320 y=240: "<< ptr[240*640 + 320] <<std::endl;
+        //std::cout<<"\nz value at x=320 y=240 in kinect space: "<< ptr[240*640 + 320] <<std::endl;
+        //std::cout<<"\nValues in VRUI space: x="<<p1[0]<<" y="<<p1[1]<<" z="<<p1[2]<<std::endl;
         //std::cout<<"\nz value at x=640 y=480: "<< ptr[480*640 + 640] <<std::endl;
+       if(icon.type == icon.Mountain && !icon.complete){
+            int tempX = (int)icon.kinectSpaceX;
+            int tempY = (int)icon.kinectSpaceY;
+            icon.complete = (ptr[tempY*640 + tempX] <= mountainHeight);
+            std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
+        }
         icon.drawIcon(depthProjection);
     }
 
