@@ -5,10 +5,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-<<<<<<< HEAD
-=======
-
-
 
 GameIcon::GameIcon(float x, float y, const char* iconType)
 {
@@ -19,7 +15,7 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 
 	zValue = 0.0f;
 
-	scale = 0.5;
+	scale = 0.25;
 	DEG2RAD = 3.14159/180;
 
 	if (strcasecmp(iconType,"mountain") == 0) {
@@ -33,13 +29,8 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 	}
 }
 
-GameIcon::GameIcon()
-{
-	//ctor
-}
-
 GameIcon::GameIcon(){
-    scale = 10.0;
+    scale = 0.0;
     zValue = -980.0f;
 }
 
@@ -134,6 +125,8 @@ void GameIcon::drawCircle()
 	float xCenter = 0;
 	float yCenter = 0;
 	float radius = 0;
+	xCoord = 0.0;
+	yCoord = 0.0;
 
 	if (type == Mountain)
 	{
@@ -149,20 +142,24 @@ void GameIcon::drawCircle()
 		radius = 1.85 * scale;
 	}
 
-	for (float i=0.00; i < 0.05; i = i +0.001)
+	for (int i=0; i < 10; i += 1)
 	{
-		glBegin(GL_LINE_LOOP);
-		glColor3f(1.0f, 1.0f, 1.0f);
-		for (int f=0; f < 360; f++)
-		{
-			float degInRad = f*DEG2RAD;
-			glVertex3f( xCenter + cos(degInRad)*radius,
-						yCenter + sin(degInRad)*radius + (2/3)*radius,
-						zValue);
-		}
-		radius = radius + 0.001;
-		glEnd();
+        glBegin(GL_LINES);
+        glColor3f(1.0f, 1.0f, 1.0f);
+
+        for (int i = 0; i < 360; i++)
+        {
+            xCenter = radius * cos(i) + xCoord;
+            yCenter = radius * sin(i) + yCoord + ;
+            glVertex3f(xCenter,yCenter, zValue);
+
+            xCenter = radius * cos(i + 0.1)  + xCoord;
+            yCenter = radius * sin(i + 0.1)  + yCoord + ;
+            glVertex3f(xCenter,yCenter, zValue);
+        }
+        glEnd();
 		glFlush();
+		radius += 0.005;
 	}
 }
 

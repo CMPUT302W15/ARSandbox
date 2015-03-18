@@ -23,11 +23,9 @@ class GameIcon
 		float zValue;
 
 		float scale;
-<<<<<<< HEAD
-=======
+
 		float xTranslation;
 		float yTranslation;
->>>>>>> 5b436f7682cca1f87b7f8d14daabb2eeee250548
 
 		float DEG2RAD;
 
