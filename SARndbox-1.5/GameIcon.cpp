@@ -18,14 +18,20 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 	scale = 0.25;
 	DEG2RAD = 3.14159/180;
 
-	if (strcasecmp(iconType,"mountain") == 0) {
+	if (strcasecmp(iconType,"mountain") == 0)
+	{
 		type = Mountain;
 	}
-	else if (strcasecmp(iconType,"valley") == 0) {
+	else if (strcasecmp(iconType,"valley") == 0)
+	{
 		type = Valley;
 	}
+	else if (strcasecmp(iconType,"plain") == 0)
+	{
+		type = Plain;
+	}
 	else {
-		std::cout << "No type found" << std::endl;
+		type = None;
 	}
 }
 
@@ -90,6 +96,24 @@ void GameIcon::drawIcon(void)
 		data = tempData;
 	}
 
+	else if (type == Plain)
+	{
+		float tempData[] = {
+				xCoord + (-1.0*scale), 	yCoord + (0.5*scale), 	zValue,
+				xCoord + (-1.0*scale), 	yCoord + (0.0*scale), 	zValue,
+				xCoord, 				yCoord, 				zValue,
+				xCoord,				 	yCoord + (0.4*scale), 	zValue,
+
+				xCoord,				 	yCoord + (0.4*scale), 	zValue,
+				xCoord, 				yCoord, 				zValue,
+				xCoord + (1.0*scale), 	yCoord + (0.0*scale), 	zValue,
+				xCoord + (1.0*scale), 	yCoord + (0.5*scale), 	zValue,
+			};
+		numData = 8*3;
+		data = new float[numData];
+		data = tempData;
+	}
+
 	glEnable( GL_COLOR_MATERIAL );
 
 	if (!complete)
@@ -136,6 +160,10 @@ void GameIcon::drawCircle()
 		xCenter = xCoord;
 		yCenter = yCoord + 1*scale;
 		radius = 1.85 * scale;
+	}
+	else if (type == Plain)
+	{
+		radius = 1.11*scale;
 	}
 
 	for (int i=0; i < 10; i += 1)

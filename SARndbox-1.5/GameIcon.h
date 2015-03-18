@@ -16,7 +16,7 @@ class GameIcon
         virtual ~GameIcon();
 
         /*Public Elements*/
-		enum Type {Mountain, Valley, None};
+		enum Type {Mountain, Valley, Plain, None};
 
         float xCoord;
         float yCoord;
