@@ -23,10 +23,6 @@ class GameIcon
 		float zValue;
 
 		float scale;
-
-		float xTranslation;
-		float yTranslation;
-
 		float DEG2RAD;
 
 		float * data;
@@ -41,6 +37,7 @@ class GameIcon
 		void drawCircle();
 		void setType(const char* typeString);
 		void toggleComplete();
+		void translate(float xTranslation, float yTranslation);
     protected:
     private:
 };
