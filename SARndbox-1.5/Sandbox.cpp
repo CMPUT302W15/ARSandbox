@@ -975,18 +975,18 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	for(int i = 0; i < numIcons; i++){
         bool change = false;
         if(gameIcons[i].xCoord < bbox.min[0]){
-            gameIcons[i].xCoord = bbox.min[0] + (0.1 * (bbox.max[0] - bbox.min[0]));
+            gameIcons[i].xCoord = bbox.min[0] + (0.2 * (bbox.max[0] - bbox.min[0]));
             change = true;
         } else if(gameIcons[i].xCoord > bbox.max[0]){
-            gameIcons[i].xCoord = bbox.max[0] - (0.1 * (bbox.max[0] - bbox.min[0]));
+            gameIcons[i].xCoord = bbox.max[0] - (0.2 * (bbox.max[0] - bbox.min[0]));
             change = true;
         }
         if(gameIcons[i].yCoord < bbox.min[1]){
-            gameIcons[i].yCoord = bbox.min[1] + (0.1 * (bbox.max[1] - bbox.min[1]));
+            gameIcons[i].yCoord = bbox.min[1] + (0.2 * (bbox.max[1] - bbox.min[1]));
             change = true;
         }
         else if(gameIcons[i].yCoord > bbox.max[1]){
-            gameIcons[i].yCoord = bbox.max[1] - (0.1 * (bbox.max[1] - bbox.min[1]));
+            gameIcons[i].yCoord = bbox.max[1] - (0.2 * (bbox.max[1] - bbox.min[1]));
             change = true;
         }
         if(change){
@@ -1346,6 +1346,20 @@ void Sandbox::display(GLContextData& contextData) const
         //std::cout<<"max_x="<<bbox.max[0]<<" max_y="<<bbox.max[1]<<" max_z="<<bbox.max[2]<<std::endl;
         for(int i = 0; i < numIcons; i++)
             {
+            float* ptr = (float*) gameRenderer->depthImage.getBuffer();
+            int tempX = (int)gameIcons[i].kinectSpaceX;
+            int tempY = (int)gameIcons[i].kinectSpaceY;
+            if(gameIcons[i].type == gameIcons[i].Mountain){
+                gameIcons[i].complete = (ptr[tempY*640 + tempX] <= gameIcons[i].mountainHeight);
+                //std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
+            }
+            else if(gameIcons[i].type == gameIcons[i].Valley){
+                gameIcons[i].complete = (ptr[tempY*640 + tempX] >= gameIcons[i].valleyHeight);
+                //std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
+            } else if(gameIcons[i].type == gameIcons[i].Plain){
+                float height = ptr[tempY*640 + tempX];
+                gameIcons[i].complete = (height >= gameIcons[i].plainMax && height <= gameIcons[i].plainMin);
+            }
             gameRenderer->glRenderGameIcon(contextData, gameIcons[i]);
             }
         //gameRenderer->glRenderGameElements(contextData, tempIcon);

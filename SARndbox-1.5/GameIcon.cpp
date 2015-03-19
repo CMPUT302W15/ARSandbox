@@ -24,6 +24,12 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 	kinectSpaceY = y;
 	kinectSpaceZ = 0.0f;
 
+    mountainHeight = 745;
+    valleyHeight = 770;
+
+    plainMax = 755;
+    plainMin = 760;
+
 	zValue = 0.0f;
 
 	scale = 25.0;
@@ -44,6 +50,11 @@ GameIcon::GameIcon(){
     scale = 25.0;
     zValue = 720.0f;
     complete = false;
+    mountainHeight = 745;
+    valleyHeight = 770;
+
+    plainMax = 755;
+    plainMin = 760;
 }
 
 void GameIcon::setType(const char* typeString)

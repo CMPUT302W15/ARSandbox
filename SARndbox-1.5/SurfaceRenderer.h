@@ -52,6 +52,7 @@ class SurfaceRenderer:public GLObject
     unsigned int size[2]; // Width and height of the depth image
 	PTransform depthProjection; // The transformation from depth image space to camera space
 	GLfloat depthProjectionMatrix[16]; // Same, in GLSL-compatible format
+    Kinect::FrameBuffer depthImage; // The most recent float-pixel depth image
 
 	private:
 	struct DataItem:public GLObject::DataItem
@@ -104,7 +105,6 @@ class SurfaceRenderer:public GLObject
 	bool advectWaterTexture; // Flag whether water texture coordinates are advected to visualize water flow
 	unsigned int surfaceSettingsVersion; // Version number of surface settings to invalidate surface rendering shader on changes
 	GLfloat waterOpacity; // Scaling factor for water opacity
-	Kinect::FrameBuffer depthImage; // The most recent float-pixel depth image
 	unsigned int depthImageVersion; // Version number of the depth image
 	double animationTime; // Time value for water animation
 

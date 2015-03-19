@@ -19,7 +19,7 @@ class GameIcon
 
 
         /*Public Elements*/
-		enum Type {Mountain, Valley, None};
+		enum Type {Mountain, Valley, Plain None};
 
         float xCoord;
         float yCoord;
@@ -41,6 +41,11 @@ class GameIcon
 
 		Type type;
         GLuint texId;
+
+        int mountainHeight;
+        int valleyHeight;
+        int plainMin;
+        int plainMax;
 
         /*Public methods*/
 		void drawIcon(SurfaceRenderer::PTransform transformMatrix);
