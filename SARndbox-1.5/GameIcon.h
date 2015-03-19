@@ -19,7 +19,7 @@ class GameIcon
 
 
         /*Public Elements*/
-		enum Type {Mountain, Valley, None};
+		enum Type {Mountain, Valley, Plain, Ditch, Hill, None};
 
         float xCoord;
         float yCoord;
