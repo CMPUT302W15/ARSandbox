@@ -17,22 +17,7 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 
 	scale = 0.25;
 	DEG2RAD = 3.14159/180;
-
-	if (strcasecmp(iconType,"mountain") == 0)
-	{
-		type = Mountain;
-	}
-	else if (strcasecmp(iconType,"valley") == 0)
-	{
-		type = Valley;
-	}
-	else if (strcasecmp(iconType,"plain") == 0)
-	{
-		type = Plain;
-	}
-	else {
-		type = None;
-	}
+	setType(iconType);
 }
 
 GameIcon::GameIcon(){
@@ -42,14 +27,28 @@ GameIcon::GameIcon(){
 
 void GameIcon::setType(const char* typeString)
 {
-	if (strcasecmp(typeString,"mountain") == 0) {
+	if (strcasecmp(typeString,"mountain") == 0)
+	{
 		type = Mountain;
 	}
-	else if (strcasecmp(typeString,"valley") == 0) {
+	else if (strcasecmp(typeString,"valley") == 0)
+	{
 		type = Valley;
 	}
-	else {
-		std::cout << "No type found" << std::endl;
+	else if (strcasecmp(typeString,"plain") == 0)
+	{
+		type = Plain;
+	}
+	else if (strcasecmp(typeString,"ditch") == 0)
+	{
+		type = Ditch;
+	}
+	else if (strcasecmp(typeString,"hill") == 0)
+	{
+		type = Hill;
+	}
+	else 
+	{
 		type = None;
 	}
 }
@@ -114,6 +113,42 @@ void GameIcon::drawIcon(void)
 		data = tempData;
 	}
 
+	else if (type == Ditch)
+	{
+		float tempData[] = {
+				xCoord + (-1.0*scale), 	yCoord + (0.5*scale), 	zValue,
+				xCoord + (-1.0*scale), 	yCoord + (0.0*scale), 	zValue,
+				xCoord + (0.25*scale),	yCoord, 				zValue,
+				xCoord + (-0.25*scale),	yCoord + (0.45*scale), 	zValue,
+
+				xCoord + (0.25*scale), 	yCoord + (0.45*scale), 	zValue,
+				xCoord + (-0.25*scale),	yCoord, 				zValue,
+				xCoord + (1.0*scale), 	yCoord + (0.0*scale), 	zValue,
+				xCoord + (1.0*scale), 	yCoord + (0.5*scale), 	zValue,
+			};
+		numData = 8*3;
+		data = new float[numData];
+		data = tempData;
+	}
+
+	else if (type == Hill)
+	{
+		float tempData[] = {
+				xCoord + (-1.0*scale), 	yCoord + (0.1*scale), 	zValue,
+				xCoord + (-1.0*scale), 	yCoord + (0.0*scale), 	zValue,
+				xCoord,					yCoord, 				zValue,
+				xCoord,					yCoord + (0.5*scale), 	zValue,
+
+				xCoord,					yCoord + (0.5*scale), 	zValue,
+				xCoord,					yCoord, 				zValue,
+				xCoord + (1.0*scale), 	yCoord + (0.0*scale), 	zValue,
+				xCoord + (1.0*scale), 	yCoord + (0.1*scale), 	zValue,
+			};
+		numData = 8*3;
+		data = new float[numData];
+		data = tempData;
+	}
+
 	glEnable( GL_COLOR_MATERIAL );
 
 	if (!complete)
@@ -163,7 +198,7 @@ void GameIcon::drawCircle()
 	}
 	else if (type == Plain)
 	{
-		radius = 1.11*scale;
+		radius = 1.20*scale;
 	}
 
 	for (int i=0; i < 10; i += 1)
