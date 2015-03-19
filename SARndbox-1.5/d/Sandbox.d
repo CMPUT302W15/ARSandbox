@@ -82,7 +82,7 @@ $(OBJDIR)/Sandbox.o: Sandbox.cpp  Sandbox.h \
  /home/sandbox/Vrui-3.1/include/IO/File.h \
  /home/sandbox/Vrui-3.1/include/Misc/RefCounted.h \
  /home/sandbox/Vrui-3.1/include/Misc/Autopointer.h \
- /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h \
+ /home/sandbox/Vrui-3.1/include/Images/RGBAImage.h GameMap.h \
  /home/sandbox/Vrui-3.1/include/Misc/SelfDestructPointer.h \
  /home/sandbox/Vrui-3.1/include/Misc/FunctionCalls.h \
  /home/sandbox/Vrui-3.1/include/Misc/FileNameExtensions.h \
