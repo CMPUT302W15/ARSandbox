@@ -120,6 +120,7 @@ SARNDBOX_SOURCES = FrameFilter.cpp \
                    RainMaker.cpp \
                    Sandbox.cpp \
                    GameIcon.cpp \
+                   GameMap.cpp \
                    pugixml.cpp
 
 # Set location of shader directory:

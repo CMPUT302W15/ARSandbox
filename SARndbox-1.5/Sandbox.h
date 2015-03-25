@@ -42,6 +42,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include "RainMaker.h"
 
 #include "GameIcon.h"
+#include "GameMap.h"
 
 /* Forward declarations: */
 namespace Misc {
@@ -178,8 +179,11 @@ class Sandbox:public Vrui::Application,public GLObject
 	Threads::TripleBuffer<Kinect::FrameBuffer> gameFrames;
 	SurfaceRenderer* gameRenderer;//Surface renderer used for rendering game objects.
 	bool useGame;//A boolean that determines whether or not game elements will be used.
-	GameIcon* gameIcons;//An array of GameIcon objects that must be rendered.
-	int numIcons;//The number of GameIcons that must be rendered.
+	//GameIcon* gameIcons;//An array of GameIcon objects that must be rendered.
+	//int numIcons;//The number of GameIcons that must be rendered.
+	GameMap* maps;
+	int numMaps;
+	int mapTracker;
 	//OUR ELEMENTS END HERE
 
 	/* Private methods: */

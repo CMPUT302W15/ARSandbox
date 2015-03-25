@@ -84,6 +84,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 #include <iostream>
 #include "GameIcon.h"
+#include "GameMap.h"
 #include "pugixml.hpp"
 
 using namespace std;
@@ -682,35 +683,18 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 				{
 				++i;
                 useGame=true;
-                numIcons = 0;
-                int iconTracker = 0;
-				const char* source = argv[i];
-				pugi::xml_document doc;
-				pugi::xml_parse_result result = doc.load_file(source);
-				pugi::xml_node icons = doc.child("object");
-				for (pugi::xml_node icon = icons.first_child(); icon; icon = icon.next_sibling())
-					{
-					numIcons++;
-					}
-
-                gameIcons = new GameIcon[numIcons];
-                for (pugi::xml_node icon = icons.first_child(); icon; icon = icon.next_sibling())
-					{
-					float tempX = atof(icon.attribute("xCoords").value());
-					float tempY = atof(icon.attribute("yCoords").value());
-					const char* tempIconType = (char *)icon.attribute("iconType").value();
-					gameIcons[iconTracker].xCoord = tempX;
-					gameIcons[iconTracker].yCoord = tempY;
-					gameIcons[iconTracker].kinectSpaceX = tempX;
-					gameIcons[iconTracker].kinectSpaceY = tempY;
-					gameIcons[iconTracker].setType(tempIconType);
-					//gameIcons[iconTracker].generateImage();
-					iconTracker++;
-					}
+                mapTracker = 0;
+                //numMaps = argc - i;
+                numMaps = 10;
+                maps = new GameMap[numMaps];
+                std::cout<<argc - i<<std::endl;
+                for(i; i < argc; i++){
+                    maps[i].generateIcons(argv[i]);
+                }
 				}
 			}
 		}
-
+    std::cout<<"Past CL"<<std::endl;
 	if(printHelp)
 		{
 		std::cout<<"Usage: SARndbox [option 1] ... [option n]"<<std::endl;
@@ -963,16 +947,22 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	gameRenderer->setDrawContourLines(false);
 	gameRenderer->setDrawGameElements(useGame);
 	//Now we have to translate our coordinates from Kinect space to VRUI space.
-	for(int i = 0; i < numIcons; i++){
-        SurfaceRenderer::PTransform::Point p = gameRenderer->depthProjection.transform(SurfaceRenderer::PTransform::Point(gameIcons[i].xCoord, gameIcons[i].yCoord, gameIcons[i].zValue));
-        std::cout<<"Untransformed point coordinates: x="<<gameIcons[i].xCoord<<" y="<<gameIcons[i].yCoord<<" z="<<gameIcons[i].zValue<<"\n"<<std::endl;
+	/**for(int j = 0; j < numMaps; j++){
+	for(int i = 0; i < maps[j].numIcons; i++){
+        SurfaceRenderer::PTransform::Point p = gameRenderer->depthProjection.transform(SurfaceRenderer::PTransform::Point(maps[j].gameIcons[i].xCoord, maps[j].gameIcons[i].yCoord, maps[j].gameIcons[i].zValue));
+        std::cout<<"Untransformed point coordinates: x="<<maps[j].gameIcons[i].xCoord<<" y="<<maps[j].gameIcons[i].yCoord<<" z="<<maps[j].gameIcons[i].zValue<<"\n"<<std::endl;
         std::cout<<"Transformed point coordinates: x="<<p[0]<<" y="<<p[1]<<" z="<<p[2]<<"\n"<<std::endl;
-        gameIcons[i].xCoord = p[0];
-        gameIcons[i].yCoord = p[1];
-        gameIcons[i].zValue = p[2];
+        maps[j].gameIcons[i].xCoord = p[0];
+        maps[j].gameIcons[i].yCoord = p[1];
+        maps[j].gameIcons[i].zValue = p[2];
+	}
+	}**/
+	if(useGame){
+        maps[0].translateMapSpace(gameRenderer->depthProjection);
+        //maps[0].translateIntoBoundingBox(bbox, gameRenderer->depthProjection);
 	}
 	//Now that our icon coordinates have been translated, we have to make sure they fall within the bounding box.
-	for(int i = 0; i < numIcons; i++){
+	/**for(int i = 0; i < numIcons; i++){
         bool change = false;
         if(gameIcons[i].xCoord < bbox.min[0]){
             gameIcons[i].xCoord = bbox.min[0] + (0.2 * (bbox.max[0] - bbox.min[0]));
@@ -995,7 +985,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
             gameIcons[i].kinectSpaceY = p[1];
             std::cout<<"\nAfter shifting for BB: kinectX="<<gameIcons[i].kinectSpaceX<<" kinectY="<<gameIcons[i].kinectSpaceY<<std::endl;
         }
-	}
+	}**/
 
 	if(hillshade)
 		surfaceRenderer->setIlluminate(true);
@@ -1342,8 +1332,7 @@ void Sandbox::display(GLContextData& contextData) const
 		}
     if(useGame)
         {
-       // std::cout<<"Bounding box data: min_x="<<bbox.min[0]<<" min_y="<<bbox.min[1]<<" min_z"<<bbox.min[2]<<std::endl;
-        //std::cout<<"max_x="<<bbox.max[0]<<" max_y="<<bbox.max[1]<<" max_z="<<bbox.max[2]<<std::endl;
+        /*
         for(int i = 0; i < numIcons; i++)
             {
             float* ptr = (float*) gameRenderer->depthImage.getBuffer();
@@ -1361,8 +1350,25 @@ void Sandbox::display(GLContextData& contextData) const
                 gameIcons[i].complete = (height >= gameIcons[i].plainMax && height <= gameIcons[i].plainMin);
             }
             gameRenderer->glRenderGameIcon(contextData, gameIcons[i]);
+            }*/
+       /* for(int i = 0; i < maps[mapTracker].numIcons; i++)
+            {
+            float* ptr = (float*) gameRenderer->depthImage.getBuffer();
+            int tempX = (int)maps[mapTracker].gameIcons[i].kinectSpaceX;
+            int tempY = (int)maps[mapTracker].gameIcons[i].kinectSpaceY;
+            if(maps[mapTracker].gameIcons[i].type == maps[mapTracker].gameIcons[i].Mountain){
+                maps[mapTracker].gameIcons[i].complete = (ptr[tempY*640 + tempX] <= maps[mapTracker].gameIcons[i].mountainHeight);
+                //std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
             }
-        //gameRenderer->glRenderGameElements(contextData, tempIcon);
+            else if(maps[mapTracker].gameIcons[i].type == maps[mapTracker].gameIcons[i].Valley){
+                maps[mapTracker].gameIcons[i].complete = (ptr[tempY*640 + tempX] >= maps[mapTracker].gameIcons[i].valleyHeight);
+                //std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
+            } else if(maps[mapTracker].gameIcons[i].type == maps[mapTracker].gameIcons[i].Plain){
+                float height = ptr[tempY*640 + tempX];
+                maps[mapTracker].gameIcons[i].complete = (height >= maps[mapTracker].gameIcons[i].plainMax && height <= maps[mapTracker].gameIcons[i].plainMin);
+            }
+            gameRenderer->glRenderGameIcon(contextData, maps[mapTracker].gameIcons[i]);
+            }*/
         }
 	}
 
