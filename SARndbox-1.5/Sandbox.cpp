@@ -684,15 +684,39 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 				++i;
                 useGame=true;
                 mapTracker = 0;
-                //numMaps = argc - i;
-                numMaps = 10;
-                maps = new GameMap[numMaps];
+                numMaps = argc - i;
+                gameIcons = new GameIcon*[numMaps];
                 std::cout<<argc - i<<std::endl;
-                for(i; i < argc; i++){
-                    maps[i].generateIcons(argv[i]);
+                int iconTracker = 0;
+                for(i; i < argc; i++)
+                {
+                    //maps[i].generateIcons(argv[i]);
+                    const char* source = argv[i];
+                    int localNumIcons = 0;
+                    pugi::xml_document doc;
+                    pugi::xml_parse_result result = doc.load_file(source);
+                    pugi::xml_node icons = doc.child("object");
+                    for (pugi::xml_node icon = icons.first_child(); icon; icon = icon.next_sibling())
+                    {
+                        localNumIcons++;
+                    }
+
+                    gameIcons[iconTracker] = new GameIcon[localNumIcons];
+                    for (pugi::xml_node icon = icons.first_child(); icon; icon = icon.next_sibling())
+                    {
+                        float tempX = atof(icon.attribute("xCoords").value());
+                        float tempY = atof(icon.attribute("yCoords").value());
+                        const char* tempIconType = (char *)icon.attribute("iconType").value();
+                        gameIcons[iconTracker][i].xCoord = tempX;
+                        gameIcons[iconTracker][i].yCoord = tempY;
+                        gameIcons[iconTracker][i].kinectSpaceX = tempX;
+                        gameIcons[iconTracker][i].kinectSpaceY = tempY;
+                        gameIcons[iconTracker][i].setType(tempIconType);
+                        iconTracker++;
+                    }
                 }
 				}
-			}
+            }
 		}
     std::cout<<"Past CL"<<std::endl;
 	if(printHelp)
@@ -958,7 +982,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 	}
 	}**/
 	if(useGame){
-        maps[0].translateMapSpace(gameRenderer->depthProjection);
+        //maps[0].translateMapSpace(gameRenderer->depthProjection);
         //maps[0].translateIntoBoundingBox(bbox, gameRenderer->depthProjection);
 	}
 	//Now that our icon coordinates have been translated, we have to make sure they fall within the bounding box.
