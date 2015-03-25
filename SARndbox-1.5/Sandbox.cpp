@@ -115,13 +115,22 @@ void addRainSound()
 	}
 
 
-/* Play the Correct Sound when the player complete one task*/
-void playCorrectSound()
+/* Play the Correct Sound (Input: 1-Correct Icon / 2-Correct Map ) */
+void playCorrectSound(int soundType)
 {
+    const char* soundAdress;
+
+    /* Set the sound according to the input parameter */
+    if (soundType == 1)
+        soundAdress = "/home/sandbox/Downloads/correct_icon.wav";
+    else if (soundType == 2)
+        soundAdress = "/home/sandbox/Downloads/correct_map.wav";
+    else
+        return;
 
     if ( player == NULL )
     {
-        player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
+        player = new Sound::SoundPlayer(soundAdress);
         player->start();
     }
     else
@@ -129,7 +138,7 @@ void playCorrectSound()
         if ( ! player->isPlaying() )
         {
             delete player;
-            player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
+            player = new Sound::SoundPlayer(soundAdress);
             player->start();
         }
     }
