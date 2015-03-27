@@ -116,12 +116,20 @@ void addRainSound()
 
 
 /* Play the Correct Sound when the player complete one task*/
-void playCorrectSound()
+void playCorrectSound(int soundType)
 {
+    const char* soundAdress;
+
+    if (soundType == 1)
+        soundAdress = "correct_icon.wav";
+    else if (soundType == 2)
+        soundAdress = "correct_map.wav";
+    else
+        return;
 
     if ( player == NULL )
     {
-        player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
+        player = new Sound::SoundPlayer(soundAdress);
         player->start();
     }
     else
@@ -129,7 +137,7 @@ void playCorrectSound()
         if ( ! player->isPlaying() )
         {
             delete player;
-            player = new Sound::SoundPlayer("/home/sandbox/Downloads/correct_sound.wav");
+            player = new Sound::SoundPlayer(soundAdress);
             player->start();
         }
     }
@@ -346,6 +354,7 @@ Sandbox::DataItem::DataItem(void)
 	:heightColorMapObject(0),
 	 shadowFramebufferObject(0),shadowDepthTextureObject(0)
 	{
+	mapComplete = false;
 	/* Check if all required extensions are supported: */
 	bool supported=GLEXTFramebufferObject::isSupported();
 	supported=supported&&GLARBTextureRectangle::isSupported();
@@ -445,8 +454,8 @@ void Sandbox::addWater(GLContextData& contextData) const
 	/* Check if the most recent rain object list is not empty: */
 	if(!rainObjects.getLockedValue().empty())
 		{
-
-               addRainSound();
+                //Rain sound disabled
+               //addRainSound();
 
 		/* Render all rain objects into the water table: */
 		glPushAttrib(GL_ENABLE_BIT);
@@ -683,6 +692,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 				++i;
                 useGame=true;
                 numIcons = 0;
+                //bool GameIcon::allIconsComplete = false;
                 int iconTracker = 0;
 				const char* source = argv[i];
 				pugi::xml_document doc;
@@ -707,6 +717,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 					//gameIcons[iconTracker].generateImage();
 					iconTracker++;
 					}
+					gameIcons[0].allIconsComplete = false;
 				}
 			}
 		}
@@ -1077,6 +1088,7 @@ Sandbox::~Sandbox(void)
 
 void Sandbox::frame(void)
 	{
+
 	/* Check if the filtered frame has been updated: */
 	if(filteredFrames.lockNewValue())
 		{
@@ -1344,11 +1356,13 @@ void Sandbox::display(GLContextData& contextData) const
         {
        // std::cout<<"Bounding box data: min_x="<<bbox.min[0]<<" min_y="<<bbox.min[1]<<" min_z"<<bbox.min[2]<<std::endl;
         //std::cout<<"max_x="<<bbox.max[0]<<" max_y="<<bbox.max[1]<<" max_z="<<bbox.max[2]<<std::endl;
+        bool allComplete = true;
         for(int i = 0; i < numIcons; i++)
             {
             float* ptr = (float*) gameRenderer->depthImage.getBuffer();
             int tempX = (int)gameIcons[i].kinectSpaceX;
             int tempY = (int)gameIcons[i].kinectSpaceY;
+            bool oldCompleteness = gameIcons[i].complete;
             if(gameIcons[i].type == gameIcons[i].Mountain){
                 gameIcons[i].complete = (ptr[tempY*640 + tempX] <= gameIcons[i].mountainHeight);
                 //std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
@@ -1360,9 +1374,21 @@ void Sandbox::display(GLContextData& contextData) const
                 float height = ptr[tempY*640 + tempX];
                 gameIcons[i].complete = (height >= gameIcons[i].plainMax && height <= gameIcons[i].plainMin);
             }
+            if(!gameIcons[i].complete)
+                allComplete = false;
+            if(allComplete && !gameIcons[0].allIconsComplete){
+                playCorrectSound(2);
+                gameIcons[0].allIconsComplete = true;
+            }
+            else if(!oldCompleteness && gameIcons[i].complete)
+            {
+                playCorrectSound(1);
+            }
             gameRenderer->glRenderGameIcon(contextData, gameIcons[i]);
             }
-        //gameRenderer->glRenderGameElements(contextData, tempIcon);
+        cout <<"allComplete" << allComplete<<"\n";
+        cout <<"dataItem" <<gameIcons[0].allIconsComplete<<"\n";
+
         }
 	}
 
@@ -1414,6 +1440,7 @@ void Sandbox::initContext(GLContextData& contextData) const
 	glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,currentFrameBuffer);
 	}
 	}
+
 
 /*************
 Main function:

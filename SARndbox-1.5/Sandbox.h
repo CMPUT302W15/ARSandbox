@@ -134,6 +134,8 @@ class Sandbox:public Vrui::Application,public GLObject
 		GLuint shadowFramebufferObject; // Frame buffer object to render shadow maps
 		GLuint shadowDepthTextureObject; // Depth texture for the shadow rendering frame buffer
 
+        bool mapComplete;
+
 		/* Constructors and destructors: */
 		DataItem(void);
 		virtual ~DataItem(void);
@@ -202,6 +204,7 @@ class Sandbox:public Vrui::Application,public GLObject
 	/* Methods from Vrui::Application: */
 	virtual void frame(void);
 	virtual void display(GLContextData& contextData) const;
+	//virtual void display(GLContextData& contextData);
 
 	/* Methods from GLObject: */
 	virtual void initContext(GLContextData& contextData) const;

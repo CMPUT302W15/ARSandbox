@@ -34,6 +34,8 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 	scale = 25.0;
 	DEG2RAD = 3.14159/180;
 
+	allIconsComplete = false;
+
 	setType(iconType);
 }
 
@@ -46,6 +48,8 @@ GameIcon::GameIcon(){
 
     plainMax = 755;
     plainMin = 760;
+
+    allIconsComplete = false;
 }
 
 void GameIcon::setType(const char* typeString)
@@ -70,7 +74,7 @@ void GameIcon::setType(const char* typeString)
 	{
 		type = Hill;
 	}
-	else 
+	else
 	{
 		type = None;
 	}

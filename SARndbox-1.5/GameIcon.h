@@ -47,6 +47,8 @@ class GameIcon
         int plainMin;
         int plainMax;
 
+        bool allIconsComplete;
+
         /*Public methods*/
 		void drawIcon(SurfaceRenderer::PTransform transformMatrix);
 		void drawCircle();

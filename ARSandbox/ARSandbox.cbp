@@ -235,6 +235,8 @@
 		<Unit filename="../SARndbox-1.5/FrameFilter.h" />
 		<Unit filename="../SARndbox-1.5/GameIcon.cpp" />
 		<Unit filename="../SARndbox-1.5/GameIcon.h" />
+		<Unit filename="../SARndbox-1.5/GameMap.cpp" />
+		<Unit filename="../SARndbox-1.5/GameMap.h" />
 		<Unit filename="../SARndbox-1.5/HISTORY" />
 		<Unit filename="../SARndbox-1.5/README" />
 		<Unit filename="../SARndbox-1.5/RainMaker.cpp" />
