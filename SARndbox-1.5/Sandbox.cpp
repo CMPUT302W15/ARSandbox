@@ -718,6 +718,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 					iconTracker++;
 					}
 					gameIcons[0].allIconsComplete = false;
+					numIncomplete = numIcons;
 				}
 			}
 		}
@@ -1356,38 +1357,35 @@ void Sandbox::display(GLContextData& contextData) const
         {
        // std::cout<<"Bounding box data: min_x="<<bbox.min[0]<<" min_y="<<bbox.min[1]<<" min_z"<<bbox.min[2]<<std::endl;
         //std::cout<<"max_x="<<bbox.max[0]<<" max_y="<<bbox.max[1]<<" max_z="<<bbox.max[2]<<std::endl;
-        bool allComplete = true;
+        bool allComplete = false;
         for(int i = 0; i < numIcons; i++)
             {
-            float* ptr = (float*) gameRenderer->depthImage.getBuffer();
-            int tempX = (int)gameIcons[i].kinectSpaceX;
-            int tempY = (int)gameIcons[i].kinectSpaceY;
-            bool oldCompleteness = gameIcons[i].complete;
-            if(gameIcons[i].type == gameIcons[i].Mountain){
-                gameIcons[i].complete = (ptr[tempY*640 + tempX] <= gameIcons[i].mountainHeight);
-                //std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
-            }
-            else if(gameIcons[i].type == gameIcons[i].Valley){
-                gameIcons[i].complete = (ptr[tempY*640 + tempX] >= gameIcons[i].valleyHeight);
-                //std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
-            } else if(gameIcons[i].type == gameIcons[i].Plain){
-                float height = ptr[tempY*640 + tempX];
-                gameIcons[i].complete = (height >= gameIcons[i].plainMax && height <= gameIcons[i].plainMin);
-            }
-            if(!gameIcons[i].complete)
-                allComplete = false;
-            if(allComplete && !gameIcons[0].allIconsComplete){
-                playCorrectSound(2);
-                gameIcons[0].allIconsComplete = true;
-            }
-            else if(!oldCompleteness && gameIcons[i].complete)
-            {
-                playCorrectSound(1);
-            }
-            gameRenderer->glRenderGameIcon(contextData, gameIcons[i]);
-            }
-        cout <<"allComplete" << allComplete<<"\n";
-        cout <<"dataItem" <<gameIcons[0].allIconsComplete<<"\n";
+                float* ptr = (float*) gameRenderer->depthImage.getBuffer();
+                int tempX = (int)gameIcons[i].kinectSpaceX;
+                int tempY = (int)gameIcons[i].kinectSpaceY;
+                bool oldCompleteness = gameIcons[i].complete;
+                if(gameIcons[i].type == gameIcons[i].Mountain){
+                    gameIcons[i].complete = (ptr[tempY*640 + tempX] <= gameIcons[i].mountainHeight);
+                    //std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
+                } else if(gameIcons[i].type == gameIcons[i].Valley){
+                    gameIcons[i].complete = (ptr[tempY*640 + tempX] >= gameIcons[i].valleyHeight);
+                    //std::cout<<"\nz value at x="<<tempX<<" y="<<tempY<<":"<< ptr[tempY*640 + tempX] <<std::endl;
+                } else if(gameIcons[i].type == gameIcons[i].Plain){
+                    float height = ptr[tempY*640 + tempX];
+                    gameIcons[i].complete = (height >= gameIcons[i].plainMax && height <= gameIcons[i].plainMin);
+                }
+                if(!gameIcons[i].complete)
+                    allComplete = false;
+                if(allComplete && !gameIcons[0].allIconsComplete){
+                    playCorrectSound(2);
+                    gameIcons[0].allIconsComplete = true;
+                } else if(!oldCompleteness && gameIcons[i].complete){
+                    playCorrectSound(1);
+                }
+                gameRenderer->glRenderGameIcon(contextData, gameIcons[i]);
+                }
+                cout <<"allComplete" << allComplete<<"\n";
+                cout <<"dataItem" <<gameIcons[0].allIconsComplete<<"\n";
 
         }
 	}

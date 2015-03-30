@@ -1,0 +1,7 @@
+<object>
+  <icon xCoords="320" yCoords="240" iconType="mountain"/>
+  <icon xCoords="0" yCoords="0" iconType="valley"/>
+  <icon xCoords="640" yCoords="480" iconType="mountain"/>
+  <icon xCoords="640" yCoords="0" iconType="mountain"/>
+  <icon xCoords="0" yCoords="480" iconType="mountain"/>
+</object>

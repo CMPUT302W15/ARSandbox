@@ -8,7 +8,10 @@
 #include <Geometry/ProjectiveTransformation.h>
 #include "SurfaceRenderer.h"
 
-
+#define MOUNTAIN_HEIGHT 740
+#define VALLEY_HEIGHT 765
+#define PLAIN_MAX 755
+#define PLAIN_MIN 760
 
 
 GameIcon::GameIcon(float x, float y, const char* iconType)
@@ -23,8 +26,8 @@ GameIcon::GameIcon(float x, float y, const char* iconType)
 	kinectSpaceY = y;
 	kinectSpaceZ = 0.0f;
 
-    mountainHeight = 745;
-    valleyHeight = 770;
+    mountainHeight = 740;
+    valleyHeight = 762;
 
     plainMax = 755;
     plainMin = 760;
@@ -43,8 +46,8 @@ GameIcon::GameIcon(){
     scale = 25.0;
     zValue = 720.0f;
     complete = false;
-    mountainHeight = 745;
-    valleyHeight = 770;
+    mountainHeight = 740;
+    valleyHeight = 762;
 
     plainMax = 755;
     plainMin = 760;
