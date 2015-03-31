@@ -172,7 +172,7 @@ void GameIcon::drawIcon(void)
 	glEnd();
 	glFlush();
 
-	//drawCircle();
+	drawCircle();
 }
 
 void GameIcon::drawCircle()
@@ -180,8 +180,6 @@ void GameIcon::drawCircle()
 	float xCenter = 0;
 	float yCenter = 0;
 	float radius = 0;
-	xCoord = 0.0;
-	yCoord = 0.0;
 
 	if (type == Mountain)
 	{
@@ -201,25 +199,21 @@ void GameIcon::drawCircle()
 		radius = 1.20*scale;
 	}
 
-	for (int i=0; i < 10; i += 1)
-	{
-        glBegin(GL_LINES);
-        glColor3f(1.0f, 1.0f, 1.0f);
+    glBegin(GL_LINES);
+    glColor3f(1.0f, 1.0f, 1.0f);
 
-        for (int i = 0; i < 360; i++)
-        {
-            xCenter = radius * cos(i) + xCoord;
-            yCenter = radius * sin(i) + yCoord;
-            glVertex3f(xCenter,yCenter, zValue);
+    for (int i = 0; i < 360; i++)
+    {
+        xCenter = radius * cos(i) + xCoord;
+        yCenter = radius * sin(i) + yCoord;
+        glVertex3f(xCenter,yCenter, zValue);
 
-            xCenter = radius * cos(i + 0.1)  + xCoord;
-            yCenter = radius * sin(i + 0.1)  + yCoord;
-            glVertex3f(xCenter,yCenter, zValue);
-        }
-        glEnd();
-		glFlush();
-		radius += 0.005;
-	}
+        xCenter = radius * cos(i + 0.1)  + xCoord;
+        yCenter = radius * sin(i + 0.1)  + yCoord;
+        glVertex3f(xCenter,yCenter, zValue);
+    }
+    glEnd();
+	glFlush();
 }
 
 void GameIcon::translate(float xTranslation, float yTranslation)
