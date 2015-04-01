@@ -86,7 +86,7 @@ void GameIcon::setType(const char* typeString)
 void GameIcon::drawIcon(SurfaceRenderer::PTransform transformMatrix)
 {
     xTranslation = 0;//-220.00f;
-    yTranslation = 0;//-155.00f;
+    yTranslation = -0.5*scale;//-155.00f;
 	int numData;
     //std::cout<<"Normal x="<<xCoord<<" y="<<yCoord<<" z="<<zValue<<std::endl;
 	//SurfaceRenderer::PTransform::Point p1 = transformMatrix.transform(SurfaceRenderer::PTransform::Point(xCoord, yCoord, zValue));
