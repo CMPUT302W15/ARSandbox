@@ -1,7 +1,7 @@
 <object>
   <icon xCoords="300" yCoords="360" iconType="mountain"/>
-  <icon xCoords="280" yCoords="100" iconType="valley"/>
+  <icon xCoords="280" yCoords="150" iconType="valley"/>
   <icon xCoords="450" yCoords="200" iconType="mountain"/>
   <icon xCoords="350" yCoords="220" iconType="mountain"/>
-  <icon xCoords="400" yCoords="320" iconType="valley"/>
+  <icon xCoords="450" yCoords="350" iconType="valley"/>
 </object>
