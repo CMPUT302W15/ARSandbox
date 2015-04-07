@@ -422,19 +422,81 @@ void Sandbox::receiveOurFrame(const Kinect::FrameBuffer& frameBuffer)
         gameFrames.postNewValue(frameBuffer);
         Vrui::requestUpdate();
 
-        //float* diPtr= (float*) frameBuffer.getBuffer();
-        /*float* diPtr = ourFrameFilter->validBuffer;
-        for(unsigned int y=0;y<480;++y)
-            for(unsigned int x=0;x<640;++x,++diPtr){
-                if((x == 10 || x == 150) && (y == 20 || y == 50)){
-                    std::cout<<"x=";
-                    std::cout<<x;
-                    std::cout<<" y=";
-                    std::cout<<y;
-                    std::cout<<" diPtr=";
-                    std::cout<<*diPtr<<std::endl;
+        if(useGame){
+            bool allComplete = true;
+            for(int i = 0; i++; i < numIcons){
+                allComplete = (allComplete && gameIcons[i].complete);
+            }
+            if(allComplete && (mapoffset < argnum)){
+                numIcons = 0;
+                //mapoffset = i;
+                //bool GameIcon::allIconsComplete = false;
+                int iconTracker = 0;
+				const char* source = args[mapoffset];
+				fprintf(stderr, "Loading map %s\n", source);
+				pugi::xml_document doc;
+				pugi::xml_parse_result result = doc.load_file(source);
+				pugi::xml_node icons = doc.child("object");
+				for (pugi::xml_node icon = icons.first_child(); icon; icon = icon.next_sibling())
+					{
+					numIcons++;
+					}
+
+                gameIcons = new GameIcon[numIcons];
+                for (pugi::xml_node icon = icons.first_child(); icon; icon = icon.next_sibling())
+					{
+					float tempX = atof(icon.attribute("xCoords").value());
+					float tempY = atof(icon.attribute("yCoords").value());
+					const char* tempIconType = (char *)icon.attribute("iconType").value();
+					gameIcons[iconTracker].xCoord = tempX;
+					gameIcons[iconTracker].yCoord = tempY;
+					gameIcons[iconTracker].kinectSpaceX = tempX;
+					gameIcons[iconTracker].kinectSpaceY = tempY;
+					gameIcons[iconTracker].setType(tempIconType);
+					//gameIcons[iconTracker].generateImage();
+					iconTracker++;
+					}
+                gameIcons[0].allIconsComplete = false;
+                numIncomplete = numIcons;
+                for(int i = 0; i < numIcons; i++){
+                    SurfaceRenderer::PTransform::Point p = gameRenderer->depthProjection.transform(SurfaceRenderer::PTransform::Point(gameIcons[i].xCoord, gameIcons[i].yCoord, gameIcons[i].zValue));
+                    std::cout<<"Untransformed point coordinates: x="<<gameIcons[i].xCoord<<" y="<<gameIcons[i].yCoord<<" z="<<gameIcons[i].zValue<<"\n"<<std::endl;
+                    std::cout<<"Transformed point coordinates: x="<<p[0]<<" y="<<p[1]<<" z="<<p[2]<<"\n"<<std::endl;
+                    gameIcons[i].xCoord = p[0];
+                    gameIcons[i].yCoord = p[1];
+                    gameIcons[i].zValue = p[2];
                 }
-            }*/
+                //Now that our icon coordinates have been translated, we have to make sure they fall within the bounding box.
+                for(int i = 0; i < numIcons; i++){
+                    bool change = false;
+                    if(gameIcons[i].xCoord < bbox.min[0]){
+                        gameIcons[i].xCoord = bbox.min[0] + (0.2 * (bbox.max[0] - bbox.min[0]));
+                        change = true;
+                    } else if(gameIcons[i].xCoord > bbox.max[0]){
+                        gameIcons[i].xCoord = bbox.max[0] - (0.2 * (bbox.max[0] - bbox.min[0]));
+                        change = true;
+                    }
+                    if(gameIcons[i].yCoord < bbox.min[1]){
+                        gameIcons[i].yCoord = bbox.min[1] + (0.2 * (bbox.max[1] - bbox.min[1]));
+                        change = true;
+                    }
+                    else if(gameIcons[i].yCoord > bbox.max[1]){
+                        gameIcons[i].yCoord = bbox.max[1] - (0.2 * (bbox.max[1] - bbox.min[1]));
+                        change = true;
+                    }
+                    if(change){
+                        SurfaceRenderer::PTransform::Point p = gameRenderer->depthProjection.inverseTransform(SurfaceRenderer::PTransform::Point(gameIcons[i].xCoord, gameIcons[i].yCoord, gameIcons[i].zValue));
+                        gameIcons[i].kinectSpaceX = p[0];
+                        gameIcons[i].kinectSpaceY = p[1];
+                        std::cout<<"\nAfter shifting for BB: kinectX="<<gameIcons[i].kinectSpaceX<<" kinectY="<<gameIcons[i].kinectSpaceY<<std::endl;
+                    }
+                }
+            } else if (mapoffset >= argnum){
+                fprintf(stderr, "All maps complete/n");
+                exit(0);
+            }
+            mapoffset += 1;
+        }
     }
 //OUR NEW METHOD ENDS
 
@@ -586,8 +648,12 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 
 	//Our CL parameters:
 	useGame = false;
+	argnum = argc;
+	args = (char**) calloc(argc, sizeof(char*));
 	for(int i=1;i<argc;++i)
 		{
+		args[i] = (char*) calloc(strlen(argv[i]), sizeof(char));
+		memcpy(args[i], argv[i], sizeof(char) * strlen(argv[i]));
 		if(argv[i][0]=='-')
 			{
 			if(strcasecmp(argv[i]+1,"h")==0)
@@ -692,6 +758,7 @@ Sandbox::Sandbox(int& argc,char**& argv,char**& appDefaults)
 				++i;
                 useGame=true;
                 numIcons = 0;
+                mapoffset = i+1;
                 //bool GameIcon::allIconsComplete = false;
                 int iconTracker = 0;
 				const char* source = argv[i];
@@ -1384,9 +1451,6 @@ void Sandbox::display(GLContextData& contextData) const
                 }
                 gameRenderer->glRenderGameIcon(contextData, gameIcons[i]);
                 }
-                cout <<"allComplete" << allComplete<<"\n";
-                cout <<"dataItem" <<gameIcons[0].allIconsComplete<<"\n";
-
         }
 	}
 

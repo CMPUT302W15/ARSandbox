@@ -183,6 +183,9 @@ class Sandbox:public Vrui::Application,public GLObject
 	GameIcon* gameIcons;//An array of GameIcon objects that must be rendered.
 	int numIcons;//The number of GameIcons that must be rendered.
 	int numIncomplete;
+	char** args;
+	int argnum;
+	int mapoffset;
 	//OUR ELEMENTS END HERE
 
 	/* Private methods: */
